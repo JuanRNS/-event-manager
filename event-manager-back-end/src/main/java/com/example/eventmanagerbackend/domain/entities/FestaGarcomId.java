@@ -1,4 +1,4 @@
-package com.example.eventmanagerbackend.domain.festagarcom;
+package com.example.eventmanagerbackend.domain.entities;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;
