@@ -1,0 +1,130 @@
+<div class="page-layout">
+  <div class="dashboard-sidebar">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Sistema de Garçons</h2>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a routerLink="/dashboard" routerLinkActive="active">
+            <mat-icon class="icon">dashboard</mat-icon>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="/event-components" routerLinkActive="active">
+            <mat-icon class="icon">group</mat-icon>
+            Garçons
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <mat-icon class="icon">celebration</mat-icon>
+            Tipos de Festa
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <mat-icon class="icon">inventory</mat-icon>
+            Materiais
+          </a>
+        </li>
+        <li>
+          <a routerLink="/party-registration" routerLinkActive="active">
+            <mat-icon class="icon">work</mat-icon>
+            Trabalhos
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <mat-icon class="icon">assignment</mat-icon>
+            Relatórios
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link">
+            <mat-icon class="icon">trending_up</mat-icon>
+            Histórico
+          </a>
+        </li>
+        <li>
+          <a routerLink="/login" class="nav-link">
+            <mat-icon class="icon">exit_to_app</mat-icon>
+            Sair
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Dashboard</h1>
+      <button class="btn btn-primary">
+        <mat-icon>description</mat-icon>
+        Gerar Relatório
+      </button>
+    </div>
+    
+    <div class="content-wrapper">
+      <!-- Cards dos Garçons -->
+      <div class="waiters-grid">
+        <div class="waiter-card" *ngFor="let waiter of waiters">
+          <div class="waiter-header">
+            <h3 class="waiter-name">
+              <mat-icon class="waiter-icon">person</mat-icon>
+              Garçom: {{ waiter.name }}
+            </h3>
+          </div>
+          <div class="waiter-stats">
+            <div class="stat-item">
+              <span class="stat-label">
+                <mat-icon class="stat-icon">event</mat-icon>
+                Festas na semana:
+              </span>
+              <span class="stat-value">{{ waiter.weeklyParties }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">
+                <mat-icon class="stat-icon">attach_money</mat-icon>
+                Total a receber:
+              </span>
+              <span class="stat-value">{{ waiter.totalEarnings | currency:'BRL':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Resumo Geral -->
+      <div class="summary-section">
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-header">
+              <mat-icon class="summary-icon">group</mat-icon>
+              <h3 class="summary-title">Total de Garçons</h3>
+            </div>
+            <div class="summary-value">{{ totalWaiters }}</div>
+          </div>
+          
+          <div class="summary-card">
+            <div class="summary-header">
+              <mat-icon class="summary-icon">celebration</mat-icon>
+              <h3 class="summary-title">Total de Festas</h3>
+            </div>
+            <div class="summary-value">{{ totalParties }}</div>
+          </div>
+          
+          <div class="summary-card">
+            <div class="summary-header">
+              <mat-icon class="summary-icon">payments</mat-icon>
+              <h3 class="summary-title">Total Pago</h3>
+            </div>
+            <div class="summary-value">{{ totalPaid | currency:'BRL':'symbol':'1.2-2' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
