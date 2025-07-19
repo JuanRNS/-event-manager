@@ -1,35 +1,44 @@
 package com.example.eventmanagerbackend.domain.infrastructure.security;
 
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
+import java.time.Instant;
+import java.util.stream.Collectors;
+
 
 @Service
 public class JwtService {
 
-    @Value("${jwt.public.key}")
-    private RSAPublicKey publicKey;
-
-    @Value("${jwt.private.key}")
-    private RSAPrivateKey privateKey;
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        auth -> auth
-                                .requestMatchers("/api/**").authenticated()
-                                .anyRequest().permitAll()
-                ).httpBasic(Customizer.withDefaults())
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
-        return http.build();
+    private final JwtEncoder jwtEncoder;
+    public JwtService(JwtEncoder enconder) {
+        this.jwtEncoder = enconder;
     }
+
+    public String generateToken(Authentication authentication) {
+        Instant now = Instant.now();
+        long exp = 4000L;
+
+        String scope = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(" "));
+
+        var claims = JwtClaimsSet.builder()
+                .issuer("event-manager-back-end")
+                .issuedAt(now)
+                .expiresAt(now.plusSeconds(exp))
+                .subject(authentication.getName())
+                .claim("scope", scope)
+                .build();
+
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+    }
+
+
+
+
 }
