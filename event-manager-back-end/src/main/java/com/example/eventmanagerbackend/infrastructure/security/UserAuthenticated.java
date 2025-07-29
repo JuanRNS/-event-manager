@@ -1,4 +1,4 @@
-package com.example.eventmanagerbackend.domain.infrastructure.security;
+package com.example.eventmanagerbackend.infrastructure.security;
 
 import com.example.eventmanagerbackend.domain.entities.User;
 import org.springframework.security.core.GrantedAuthority;

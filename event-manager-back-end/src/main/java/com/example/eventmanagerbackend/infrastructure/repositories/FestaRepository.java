@@ -1,4 +1,4 @@
-package com.example.eventmanagerbackend.domain.infrastructure.repositories;
+package com.example.eventmanagerbackend.infrastructure.repositories;
 
 import com.example.eventmanagerbackend.domain.entities.Festa;
 import org.springframework.data.jpa.repository.JpaRepository;

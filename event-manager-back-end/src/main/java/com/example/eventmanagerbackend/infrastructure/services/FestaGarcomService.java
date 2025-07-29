@@ -1,9 +1,9 @@
-package com.example.eventmanagerbackend.domain.infrastructure.services;
+package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.entities.Festa;
 import com.example.eventmanagerbackend.domain.entities.FestaGarcom;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
-import com.example.eventmanagerbackend.domain.infrastructure.repositories.FestaRepository;
+import com.example.eventmanagerbackend.infrastructure.repositories.FestaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

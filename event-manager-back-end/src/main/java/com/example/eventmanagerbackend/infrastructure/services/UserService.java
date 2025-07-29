@@ -1,7 +1,8 @@
-package com.example.eventmanagerbackend.domain.infrastructure.services;
+package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.entities.User;
-import com.example.eventmanagerbackend.domain.infrastructure.repositories.UserRepository;
+import com.example.eventmanagerbackend.infrastructure.exceptions.EmailExistsException;
+import com.example.eventmanagerbackend.infrastructure.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,11 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        String email = user.getEmail();
+        boolean emailExists = userRepository.findByEmail(email).isPresent();
+        if (emailExists) {
+            throw new EmailExistsException();
+        }
         User createdUser = userRepository.save(user);
         createdUser.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(createdUser);

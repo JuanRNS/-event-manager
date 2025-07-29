@@ -1,8 +1,9 @@
-package com.example.eventmanagerbackend.domain.infrastructure.services;
+package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.dtos.MaterialRequestDTO;
 import com.example.eventmanagerbackend.domain.entities.Material;
-import com.example.eventmanagerbackend.domain.infrastructure.repositories.MaterialRepository;
+import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
+import com.example.eventmanagerbackend.infrastructure.repositories.MaterialRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,12 +28,15 @@ public class MaterialService {
     }
 
     public Material updateMaterial(Long id, MaterialRequestDTO materialRequest) {
-        Material material = materialRepository.findById(id).orElseThrow(() -> new RuntimeException("Material não encontrado"));
+        Material material = materialRepository.findById(id).orElseThrow(MaterialNotFoundException::new);
         material.setDescricao(materialRequest.descricao());
         return materialRepository.save(material);
     }
 
     public void deleteMaterial(Long id) {
+        if (!materialRepository.existsById(id)) {
+            throw new MaterialNotFoundException();
+        }
         materialRepository.deleteById(id);
     }
 

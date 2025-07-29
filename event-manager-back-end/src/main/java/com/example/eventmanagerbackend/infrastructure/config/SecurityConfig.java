@@ -1,4 +1,4 @@
-package com.example.eventmanagerbackend.config;
+package com.example.eventmanagerbackend.infrastructure.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;

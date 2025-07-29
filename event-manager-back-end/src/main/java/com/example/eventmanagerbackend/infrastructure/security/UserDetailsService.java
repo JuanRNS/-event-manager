@@ -1,7 +1,7 @@
-package com.example.eventmanagerbackend.domain.infrastructure.security;
+package com.example.eventmanagerbackend.infrastructure.security;
 
 
-import com.example.eventmanagerbackend.domain.infrastructure.repositories.UserRepository;
+import com.example.eventmanagerbackend.infrastructure.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
