@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../sidebar/sidebar';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 interface Waiter {
   id: number;
@@ -26,8 +26,8 @@ interface Material {
   selector: 'app-event-components',
   standalone: true,
   imports: [FormsModule, CommonModule, SidebarComponent],
-  templateUrl: './event-components.html',
-  styleUrl: './event-components.scss'
+  templateUrl: './event-components.component.html',
+  styleUrl: './event-components.component.scss'
 })
 export class EventComponentsComponent {
   waiterData = {
@@ -48,6 +48,7 @@ export class EventComponentsComponent {
 
   materials: Material[] = [];
 
+  // Getters para valores dinâmicos
   get totalWaiters(): number {
     return this.waiters.length;
   }

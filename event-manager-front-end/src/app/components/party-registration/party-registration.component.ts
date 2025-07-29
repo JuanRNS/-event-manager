@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../sidebar/sidebar';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 interface Party {
   id: number;
@@ -18,8 +18,8 @@ interface Party {
   selector: 'app-party-registration',
   standalone: true,
   imports: [FormsModule, CommonModule, SidebarComponent],
-  templateUrl: './party-registration.html',
-  styleUrl: './party-registration.scss'
+  templateUrl: './party-registration.component.html',
+  styleUrl: './party-registration.component.scss'
 })
 export class PartyRegistrationComponent {
   partyData = {

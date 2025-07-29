@@ -7,7 +7,7 @@
     </div>
     
     <div class="content-wrapper">
-      <!-- Cadastro de Garçons -->
+      <!-- seção de cadastro dos garçons -->
       <div class="section">
         <form class="waiter-form" (ngSubmit)="onSubmitWaiter()">
           <div class="form-row">
@@ -61,7 +61,7 @@
           <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
         
-        <!-- Lista dos Garçons -->
+        <!-- lista de garçons -->
         <div class="waiters-section">
           <h3 class="subsection-title">Garçons Cadastrados</h3>
           
@@ -82,7 +82,7 @@
         </div>
       </div>
       
-      <!--  Cadastro de Materiais -->
+      <!-- seção de cadastro dos materiais -->
       <div class="section materials-section">
         <h2 class="section-title">Cadastro de Materiais</h2>
         
@@ -100,7 +100,7 @@
           <button type="submit" class="btn btn-primary">Cadastrar</button>
         </form>
         
-        <!-- Lista dos Materiais -->
+        <!-- lista de materiais -->
         <div class="materials-list">
           <div class="material-item" *ngFor="let material of materials">
             <span class="material-name">{{ material.description }}</span>

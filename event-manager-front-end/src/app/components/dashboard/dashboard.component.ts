@@ -14,12 +14,13 @@ interface DashboardWaiter {
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, RouterModule, MatIconModule],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss'
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
   waiters: DashboardWaiter[] = [];
 
+  // Valores dinâmicos calculados
   get totalWaiters(): number {
     return this.waiters.length;
   }

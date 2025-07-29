@@ -7,8 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-login',
   standalone: true,
   imports: [FormsModule, MatIconModule],
-  templateUrl: './login.html',
-  styleUrl: './login.scss'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   email: string = '';
