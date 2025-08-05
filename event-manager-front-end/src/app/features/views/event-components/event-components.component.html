@@ -1,0 +1,61 @@
+<div class="page-layout">
+  <app-sidebar></app-sidebar>
+  
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Cadastro de Garçons</h1>
+    </div>
+    
+    <div class="content-wrapper">
+      <!-- seção de cadastro dos garçons -->
+      <div class="section">
+        <app-form
+        [group]="formGroupItensPrimary"
+        [form]="formPrimary"
+        ></app-form>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        
+        <!-- lista de garçons -->
+        <div class="waiters-section">
+          <h3 class="subsection-title">Garçons Cadastrados</h3>
+          
+          <div class="waiters-list">
+            <div class="waiter-item">
+              <div class="waiter-info">
+                <span class="waiter-details">
+                </span>
+              </div>
+              <div class="waiter-actions">
+                <button class="btn btn-primary btn-sm">
+                  Editar garçom
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- seção de cadastro dos materiais -->
+      <div class="section materials-section">
+        <h2 class="section-title">Cadastro de Materiais</h2>
+        
+          <div class="form-group">
+            <app-form
+            [group]="formGroupItensSecondary"
+            [form]="formSecondary"
+            ></app-form>
+          </div>
+          
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        
+        <!-- lista de materiais -->
+        <div class="materials-list">
+          <div class="material-item">
+            <span class="material-name"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

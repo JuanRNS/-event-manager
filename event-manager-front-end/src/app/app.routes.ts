@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { PartyRegistrationComponent } from './components/party-registration/party-registration.component';
-import { EventComponentsComponent } from './components/event-components/event-components.component';
+import { LoginComponent } from './features/views/login/login.component';
+import { DashboardComponent } from './features/views/dashboard/dashboard.component';
+import { PartyRegistrationComponent } from './features/views/party-registration/party-registration.component';
+import { EventComponentsComponent } from './features/views/event-components/event-components.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

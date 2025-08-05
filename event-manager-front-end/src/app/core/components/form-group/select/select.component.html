@@ -1,0 +1,8 @@
+<mat-form-field [formGroup]="form()">
+    <mat-label>{{label()}}</mat-label>
+    <mat-select [formControlName]="formControl()" [required]="required()">
+        @for (item of options(); track $index) {
+            <mat-option value="{{item.id}}">{{item.value}}</mat-option>
+        }
+    </mat-select>
+</mat-form-field>
