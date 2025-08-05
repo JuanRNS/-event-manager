@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface GarcomMapper {
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "FestaGarcoms", ignore = true)
+    @Mapping(target = "festaGarcoms", ignore = true)
     Garcom toGarcom(GarcomRequestDTO garcomRequestDTO);
     GarcomRequestDTO toGarcomDTO(Garcom garcom);
     GarcomResponseDTO toGarcomResponseDTO(Garcom garcom);
