@@ -1,0 +1,16 @@
+package com.example.eventmanagerbackend.infrastructure.mappers;
+
+import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
+import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
+import com.example.eventmanagerbackend.domain.entities.Garcom;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface GarcomMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "FestaGarcoms", ignore = true)
+    Garcom toGarcom(GarcomRequestDTO garcomRequestDTO);
+    GarcomRequestDTO toGarcomDTO(Garcom garcom);
+    GarcomResponseDTO toGarcomResponseDTO(Garcom garcom);
+}

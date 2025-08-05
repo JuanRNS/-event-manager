@@ -1,7 +1,5 @@
-package com.example.eventmanagerbackend.domain.festagarcom;
+package com.example.eventmanagerbackend.domain.entities;
 
-import com.example.eventmanagerbackend.domain.festa.Festa;
-import com.example.eventmanagerbackend.domain.garcom.Garcom;
 import jakarta.persistence.*;
 import lombok.Data;
 

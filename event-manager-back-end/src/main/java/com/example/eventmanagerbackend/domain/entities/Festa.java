@@ -1,8 +1,5 @@
-package com.example.eventmanagerbackend.domain.festa;
+package com.example.eventmanagerbackend.domain.entities;
 
-import com.example.eventmanagerbackend.domain.festagarcom.FestaGarcom;
-import com.example.eventmanagerbackend.domain.garcom.Garcom;
-import com.example.eventmanagerbackend.domain.material.Material;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,6 +37,13 @@ public class Festa {
     private List<FestaGarcom> festaGarcoms = new ArrayList<>();
 
     @ManyToOne
-    private Material materiais = new Material();
+    private Material materiais;
 
+    public Festa(String nomeCliente, String local, LocalDateTime data, BigDecimal bigDecimal, Material material) {
+        this.local = local;
+        this.nomeCliente = nomeCliente;
+        this.data = data;
+        this.valorDiariaGarcom = bigDecimal;
+        this.materiais = material;
+    }
 }

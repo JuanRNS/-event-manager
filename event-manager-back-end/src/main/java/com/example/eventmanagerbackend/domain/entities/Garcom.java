@@ -1,7 +1,6 @@
-package com.example.eventmanagerbackend.domain.garcom;
+package com.example.eventmanagerbackend.domain.entities;
 
-import com.example.eventmanagerbackend.domain.festa.Festa;
-import com.example.eventmanagerbackend.domain.festagarcom.FestaGarcom;
+import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +34,4 @@ public class Garcom {
 
     @OneToMany(mappedBy = "garcom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestaGarcom> festaGarcoms = new ArrayList<>();
-    
-    public Garcom(String nome, String chavePix, String telefone) {
-        this.nome = nome;
-        this.chavePix = chavePix;
-        this.telefone = telefone;
-    }
 }
