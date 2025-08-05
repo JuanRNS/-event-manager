@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 public interface FestaMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "FestaGarcoms", ignore = true)
+    @Mapping(target = "festaGarcoms", ignore = true)
     Festa toFesta(FestaRequestDTO festaRequestDTO);
     FestaResponseDTO toFestaResponseDTO(Festa festa);
 }
