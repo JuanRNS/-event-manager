@@ -1,0 +1,15 @@
+<mat-form-field [formGroup]="form()" >
+    <mat-label>{{label()}}</mat-label>
+    <input 
+    matInput 
+    [type]="type()" 
+    [placeholder]="placeholder() ?? label()" 
+    [formControlName]="formControl()"
+    [required]="required()"
+    >
+    @if (form().get(formControl())?.hasError('required')) {
+        <mat-error>
+           Esse Campo é obrigatório
+        </mat-error>
+    }
+</mat-form-field>

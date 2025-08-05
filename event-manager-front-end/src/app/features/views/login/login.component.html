@@ -1,0 +1,75 @@
+<div class="login-container">
+  <div class="login-sidebar">
+    <div class="login-sidebar-content">
+      <div class="user-icon">
+        <mat-icon class="user-icon-material">playlist_add_check</mat-icon>
+      </div>
+      
+      <h2 class="login-sidebar-title">Controle de Eventos</h2>
+      
+      <div class="features-list">
+        <div class="feature-item">
+          <mat-icon class="check-icon">check_circle</mat-icon>
+          <span>Gerencie suas aplicações facilmente</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon class="check-icon">check_circle</mat-icon>
+          <span>Acesso rápido a dados ddos eventos</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon class="check-icon">check_circle</mat-icon>
+          <span>Resultados e peformance melhorada</span>
+        </div>
+        <div class="feature-item">
+          <mat-icon class="check-icon">check_circle</mat-icon>
+          <span>Dashboard completo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- link de cadastro na barra superior da tela -->
+  <div class="login-form-section">
+    <div class="login-header">
+      <div class="login-options">
+        <span class="login-option">Ainda não tem uma conta?</span>
+        <a href="#" class="signup-link">Sign up</a>
+      </div>
+    </div>
+    <!-- login -->
+    <div class="login-form-container">
+      <h1 class="login-title">Faça seu Login</h1>
+      <p class="login-subtitle">Entre com a sua plataforma de preferência</p>
+      
+      <div class="social-login">
+        <button class="btn btn-social btn-google" mat-button>
+          <mat-icon class="social-icon">Google</mat-icon>
+          Google
+        </button>
+        <button class="btn btn-social btn-apple" mat-button>
+          <mat-icon class="social-icon">apple</mat-icon>
+          Apple
+        </button>
+      </div>
+      
+      <div class="divider">
+        <span>Ou faça entre com seu email</span>
+      </div>
+      
+
+      <app-form
+      [group]="formGroupItens"
+      [form]="formGroup"
+      ></app-form>
+      <button mat-button class="btn btn-login">
+        <mat-icon fontIcon="login"></mat-icon>
+        Entrar
+      </button>
+      
+      <p class="terms-text">
+        Este site é protegido por reCAPTCHA e pela 
+        <a href="#">Política de Privacidade do Google</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
