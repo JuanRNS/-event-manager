@@ -3,6 +3,7 @@ package com.example.eventmanagerbackend.infrastructure.services;
 import com.example.eventmanagerbackend.domain.entities.Festa;
 import com.example.eventmanagerbackend.domain.entities.FestaGarcom;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
+import com.example.eventmanagerbackend.infrastructure.exceptions.FestaNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.repositories.FestaRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class FestaGarcomService {
     }
 
     public void addGarcomToFesta(Long festaId, List<Long> garcomIds) {
-        Festa festa = festaRepository.findById(festaId).orElseThrow(() -> new RuntimeException("Festa não encontrada"));
+        Festa festa = festaRepository.findById(festaId).orElseThrow(FestaNotFoundException::new);
         for (Long garcomId : garcomIds) {
             FestaGarcom festaGarcom = new FestaGarcom();
             Garcom garcom = new Garcom();
