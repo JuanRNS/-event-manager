@@ -50,11 +50,14 @@ html {
   --warning: #FFC107;
 }
 
+
+html, body { height: 100%; }
 body {
-  font-family: 'Inter', sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .container {
@@ -329,5 +332,3 @@ body {
 .w-100 { width: 100%; }
 
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -30,6 +30,7 @@ export class InputComponent {
   public type = input.required<string>();
   public formControl = input.required<string>();
   public form = input.required<FormGroup>();
+  public size = input<string>();
 
   public required(): boolean{
     return this.form().get(this.formControl())?.hasValidator(Validators.required) ?? false;

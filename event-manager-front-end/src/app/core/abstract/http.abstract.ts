@@ -11,8 +11,8 @@ export abstract class HttpServiceAbstract {
     return this.sendRequest<T>(HttpEnum.GET, path);
   }
 
-  protected post<T>(path: string, body: any) {
-    return this.sendRequest<T>(HttpEnum.POST, path, body);
+  protected post<T>(path: string, body?: any, basicAuth?: string, responseType: 'json' | 'text' = 'json') {
+    return this.sendRequest<T>(HttpEnum.POST, path, body, undefined, basicAuth, responseType);
   }
 
   protected put<T>(path: string, body: any) {
@@ -33,24 +33,30 @@ export abstract class HttpServiceAbstract {
     path: string,
     body?: any,
     params?: { [param: string]: string | number | boolean },
+    basicAuth?: string,
+    responseType: 'json' | 'text' = 'json'
   ) {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-
-    const token = localStorage.getItem('token');
-    if (token) {
-      headers = headers.set('Authorization', `Bearer ${token}`);
-  }
+    if(basicAuth) {
+      headers = headers.set('Authorization', `Basic ${basicAuth}`);
+    }else{
+      const token = localStorage.getItem('token');
+      if (token) {
+        headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    }
 
     const httpParams = new HttpParams({
       fromObject: params as any,
     });
 
-    return this._http.request<T>(method, `${this._baseUrl}/${path}`, {
+    return this._http.request<T>(method, `${this._baseUrl}${path}`, {
       body,
       headers,
       params: httpParams,
+      responseType: responseType as any
     });
   }
 }

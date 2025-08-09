@@ -16,3 +16,19 @@ export interface Material {
   unitPrice: number;
   createdAt: string;
 }
+
+export interface IRequestGarcom{
+  name: string;
+  phone: string;
+  pixKey: string;
+  status: string;
+}
+
+export interface IResponseGarcom{
+  id: number;
+  name: string;
+  phone: string;
+  pixKey: string;
+  status: string;
+  festaGarcoms: number[];
+}

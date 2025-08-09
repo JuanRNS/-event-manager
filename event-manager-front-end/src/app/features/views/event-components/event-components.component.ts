@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from '../../../core/components/sidebar/sidebar.component';
 import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormComponent } from "../../../core/components/form-group/form/form.component";
+import { ApiService } from '../../services/api.service';
+import { IRequestGarcom } from '../../../core/interface/event.interface';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
@@ -15,13 +18,15 @@ import { FormComponent } from "../../../core/components/form-group/form/form.com
     FormsModule, 
     CommonModule, 
     SidebarComponent, 
-    FormComponent],
+    MatButtonModule,
+    FormComponent
+  ],
   templateUrl: './event-components.component.html',
   styleUrl: './event-components.component.scss'
 })
-export class EventComponentsComponent {
+export class EventComponentsComponent implements OnInit{
   public formPrimary = new FormGroup({
-    nome: new FormControl<string | null>(null),
+    name: new FormControl<string | null>(null),
     pixKey: new FormControl<string | null>(null),
     phone: new FormControl<string | null>(null),
     status: new FormControl<string | null>(null),
@@ -31,14 +36,22 @@ export class EventComponentsComponent {
     description: new FormControl<string | null>(null),
   });
 
-  constructor() { }
+  constructor(
+    private readonly _service: ApiService
+  ) { }
+
+  ngOnInit(): void {
+      this.formPrimary.controls.status.valueChanges.subscribe((value) => {
+        console.log(value);
+      })
+  }
 
   public get formGroupItensPrimary(): FormGroupArray{
     return [
       {
         component: FormFieldEnum.INPUT,
         label: 'Nome',
-        controlName: 'nome',
+        controlName: 'name',
         type: 'text',
         placeholder: 'Digite seu nome'
       },
@@ -61,16 +74,7 @@ export class EventComponentsComponent {
         label: 'Status',
         controlName: 'status',
         type: 'select',
-        options: [
-          {
-            id: 'A',
-            value: 'Ativo'
-          },
-          {
-            id: 'I',
-            value: 'Inativo'
-          }
-        ]
+        options: this._service.getStatusGarcom()
       }
     ]
   }
@@ -82,9 +86,17 @@ export class EventComponentsComponent {
         label: 'Descrição do Material',
         controlName: 'description',
         type: 'text',
-        placeholder: 'Digite a descrição do material'
       }
     ]
+  }
+
+  public createGarcom(){
+    const garcom: IRequestGarcom = this.formPrimary.value as IRequestGarcom;
+
+    this._service.postCreateGarcom(garcom).subscribe((res) => {
+      console.log(res);
+    });
+  
   }
 
   
