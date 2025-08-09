@@ -2,6 +2,7 @@ package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.exceptions.GarcomNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.GarcomMapper;
@@ -43,5 +44,12 @@ public class GarcomService {
                 .stream()
                 .map(garcomMapper::toGarcomResponseDTO)
                 .toList();
+    }
+
+    public List<StatusResponseDTO> getStatus() {
+        return List.of(
+                new StatusResponseDTO("ATIVO", "ATIVO"),
+                new StatusResponseDTO("INATIVO", "INATIVO")
+        );
     }
 }

@@ -1,6 +1,7 @@
 package com.example.eventmanagerbackend.domain.entities;
 
 import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
+import com.example.eventmanagerbackend.domain.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,16 +22,17 @@ public class Garcom {
     private Long id;
     
     @Column(nullable = false)
-    private String nome;
+    private String name;
     
-    @Column(name = "chave_pix", nullable = false, unique = true)
-    private String chavePix;
-    
-    @Column(nullable = false)
-    private String telefone;
+    @Column(name = "pix_key", nullable = false, unique = true)
+    private String pixKey;
     
     @Column(nullable = false)
-    private boolean ativo = true;
+    private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status = Status.ATIVO;
 
     @OneToMany(mappedBy = "garcom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestaGarcom> festaGarcoms = new ArrayList<>();

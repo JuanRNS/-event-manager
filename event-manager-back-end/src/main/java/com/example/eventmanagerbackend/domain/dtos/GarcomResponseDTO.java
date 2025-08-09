@@ -4,5 +4,8 @@ import com.example.eventmanagerbackend.domain.entities.Festa;
 
 import java.util.List;
 
-public record GarcomResponseDTO(String garcomName, List<Festa> festas) {
+public record GarcomResponseDTO(
+        Long id,
+        String nome
+) {
 }

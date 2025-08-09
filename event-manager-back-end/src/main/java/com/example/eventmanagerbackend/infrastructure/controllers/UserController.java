@@ -1,5 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
+import com.example.eventmanagerbackend.domain.dtos.UserRequestDTO;
 import com.example.eventmanagerbackend.domain.entities.User;
 import com.example.eventmanagerbackend.infrastructure.security.AuthenticationService;
 import com.example.eventmanagerbackend.infrastructure.services.UserService;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<User> register(@RequestBody UserRequestDTO user) {
         User createdUser = userService.createUser(user);
         return ResponseEntity.ok(createdUser);
     }
