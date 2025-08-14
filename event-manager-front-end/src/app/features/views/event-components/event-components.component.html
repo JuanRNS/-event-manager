@@ -22,13 +22,48 @@
           <div class="waiters-list">
             <div class="waiter-item">
               <div class="waiter-info">
-                <span class="waiter-details">
-                </span>
+                <div class="table">
+                  <div class="table-header">
+                    <div class="title">
+                      Nome
+                    </div>
+                    <div class="title">
+                      Chave Pix
+                    </div>
+                    <div class="title">
+                      Telefone
+                    </div>
+                    <div class="title">
+                      Status
+                    </div>
+                    <div class="title">
+                      Ações
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="title">
+                    exemplo values          
+                    </div>
+                    <div class="title">
+                    exemplo values          
+                    </div>
+                    <div class="title">
+                    exemplo values          
+                    </div>
+                    <div class="title">
+                    exemplo values          
+                    </div>
+                    <div class="title">
+                      <button mat-button class="btn btn-primary btn-sm">
+                        Editar garçom
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <mat-paginator [length]="100" [pageSize]="5"></mat-paginator>
               </div>
               <div class="waiter-actions">
-                <button class="btn btn-primary btn-sm">
-                  Editar garçom
-                </button>
+                
               </div>
             </div>
           </div>
@@ -51,7 +86,27 @@
         <!-- lista de materiais -->
         <div class="materials-list">
           <div class="material-item">
-            <span class="material-name"></span>
+            <div class="table">
+                  <div class="table-header">
+                    <div class="title">
+                      Tipo de material
+                    </div>
+                    <div class="title">
+                      Ações
+                    </div>
+                  </div>
+                  <div class="table-row">
+                    <div class="title">
+                    exemplo values          
+                    </div>
+                    <div class="title">
+                      <button mat-button class="btn btn-primary btn-sm">
+                        Editar Material
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <mat-paginator [length]="100" [pageSize]="5"></mat-paginator>
           </div>
         </div>
       </div>

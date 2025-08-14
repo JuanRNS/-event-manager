@@ -8,6 +8,8 @@ import { FormComponent } from "../../../core/components/form-group/form/form.com
 import { ApiService } from '../../services/api.service';
 import { IRequestGarcom } from '../../../core/interface/event.interface';
 import { MatButtonModule } from '@angular/material/button';
+import { OptionsService } from '../../services/options.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -19,7 +21,8 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule, 
     SidebarComponent, 
     MatButtonModule,
-    FormComponent
+    FormComponent,
+    MatPaginatorModule
   ],
   templateUrl: './event-components.component.html',
   styleUrl: './event-components.component.scss'
@@ -37,7 +40,8 @@ export class EventComponentsComponent implements OnInit{
   });
 
   constructor(
-    private readonly _service: ApiService
+    private readonly _service: ApiService,
+    private readonly _optionsService: OptionsService
   ) { }
 
   ngOnInit(): void {
@@ -74,7 +78,7 @@ export class EventComponentsComponent implements OnInit{
         label: 'Status',
         controlName: 'status',
         type: 'select',
-        options: this._service.getStatusGarcom()
+        options: this._optionsService.getOptionsStatus()
       }
     ]
   }
