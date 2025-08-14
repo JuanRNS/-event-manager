@@ -1,4 +1,9 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public class FestaGarcomRequestDTO {
+import java.util.List;
+
+public record FestaGarcomRequestDTO (
+        Long festaId,
+        List<Long> garcomIds
+){
 }

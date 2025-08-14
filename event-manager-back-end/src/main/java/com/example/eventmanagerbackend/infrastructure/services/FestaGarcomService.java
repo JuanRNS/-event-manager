@@ -2,9 +2,11 @@ package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.entities.Festa;
 import com.example.eventmanagerbackend.domain.entities.FestaGarcom;
+import com.example.eventmanagerbackend.domain.entities.FestaGarcomId;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.exceptions.FestaNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.repositories.FestaRepository;
+import com.example.eventmanagerbackend.infrastructure.repositories.GarcomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,20 +15,28 @@ import java.util.List;
 public class FestaGarcomService {
 
     private final FestaRepository festaRepository;
+    private final GarcomRepository garcomRepository;
 
-    public FestaGarcomService(FestaRepository festaRepository) {
+    public FestaGarcomService(FestaRepository festaRepository, GarcomRepository garcomRepository) {
         this.festaRepository = festaRepository;
+        this.garcomRepository = garcomRepository;
     }
 
     public void addGarcomToFesta(Long festaId, List<Long> garcomIds) {
         Festa festa = festaRepository.findById(festaId).orElseThrow(FestaNotFoundException::new);
         for (Long garcomId : garcomIds) {
             FestaGarcom festaGarcom = new FestaGarcom();
-            Garcom garcom = new Garcom();
-            garcom.setId(garcomId);
+            Garcom garcom = garcomRepository.findById(garcomId).orElseThrow();
+
+            FestaGarcomId festaGarcomId = new FestaGarcomId();
+            festaGarcomId.setFestaId(festa.getId());
+            festaGarcomId.setGarcomId(garcom.getId());
+
+            festaGarcom.setId(festaGarcomId);
             festaGarcom.setFesta(festa);
             festaGarcom.setGarcom(garcom);
             festaGarcom.setValorDiariaGarcom(festa.getValorDiariaGarcom());
+
             festa.getFestaGarcoms().add(festaGarcom);
         }
         festaRepository.save(festa);

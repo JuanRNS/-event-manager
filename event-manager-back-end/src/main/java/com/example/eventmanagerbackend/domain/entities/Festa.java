@@ -1,5 +1,6 @@
 package com.example.eventmanagerbackend.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,13 +38,13 @@ public class Festa {
     private List<FestaGarcom> festaGarcoms = new ArrayList<>();
 
     @ManyToOne
-    private Material materiais;
+    private Material material;
 
     public Festa(String nomeCliente, String local, LocalDateTime data, BigDecimal bigDecimal, Material material) {
         this.local = local;
         this.nomeCliente = nomeCliente;
         this.data = data;
         this.valorDiariaGarcom = bigDecimal;
-        this.materiais = material;
+        this.material = material;
     }
 }

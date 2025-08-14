@@ -1,7 +1,9 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
+import com.example.eventmanagerbackend.domain.dtos.FestaGarcomRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.FestaRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.FestaResponseDTO;
+import com.example.eventmanagerbackend.infrastructure.services.FestaGarcomService;
 import com.example.eventmanagerbackend.infrastructure.services.FestaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,11 @@ import java.util.List;
 public class FestaController {
 
     private final FestaService festaService;
+    private final FestaGarcomService festaGarcomService;
 
-    public FestaController(FestaService festaService) {
+    public FestaController(FestaService festaService, FestaGarcomService festaGarcomService) {
         this.festaService = festaService;
+        this.festaGarcomService = festaGarcomService;
     }
 
     @GetMapping("list")
@@ -28,7 +32,7 @@ public class FestaController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<FestaResponseDTO> createFesta(FestaRequestDTO festa) {
+    public ResponseEntity<FestaResponseDTO> createFesta(@RequestBody FestaRequestDTO festa) {
         FestaResponseDTO createdFesta = festaService.createFesta(festa);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -57,5 +61,13 @@ public class FestaController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(festa);
+    }
+
+    @PostMapping("adicionar-garcom")
+    public ResponseEntity<Void> addGarcom(@RequestBody FestaGarcomRequestDTO festaGarcom) {
+        festaGarcomService.addGarcomToFesta(festaGarcom.festaId(), festaGarcom.garcomIds());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
     }
 }

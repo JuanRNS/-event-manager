@@ -1,10 +1,13 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
+import com.example.eventmanagerbackend.domain.dtos.GarcomOptionsResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.services.GarcomService;
+import org.apache.coyote.Response;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +24,17 @@ public class GarcomController {
         this.garcomService = garcomService;
     }
 
+    @GetMapping("options")
+    public ResponseEntity<List<GarcomOptionsResponseDTO>> getOptions() {
+        List<GarcomOptionsResponseDTO> garcomList = garcomService.getOptions();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(garcomList);
+    }
+
     @GetMapping("list")
-    public ResponseEntity<List<GarcomResponseDTO>> getAll() {
-        List<GarcomResponseDTO> garcomList = garcomService.getGarcoms();
+    public ResponseEntity<List<GarcomResponseDTO>> getAllGarcoms(Pageable pageable) {
+        List<GarcomResponseDTO> garcomList = garcomService.getAllGarcoms(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(garcomList);

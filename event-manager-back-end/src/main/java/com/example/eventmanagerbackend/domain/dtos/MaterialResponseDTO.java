@@ -1,4 +1,7 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public class MaterialResponseDTO {
+public record MaterialResponseDTO(
+    Long id,
+    String descricao
+) {
 }

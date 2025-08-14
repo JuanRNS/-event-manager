@@ -2,6 +2,7 @@ package com.example.eventmanagerbackend.domain.entities;
 
 import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
 import com.example.eventmanagerbackend.domain.enums.Status;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

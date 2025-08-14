@@ -1,5 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.services;
 
+import com.example.eventmanagerbackend.domain.dtos.GarcomOptionsResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
@@ -7,6 +8,8 @@ import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.exceptions.GarcomNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.GarcomMapper;
 import com.example.eventmanagerbackend.infrastructure.repositories.GarcomRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +30,14 @@ public class GarcomService {
         return garcomRepository.save(garcomCreated);
     }
 
+    public List<GarcomResponseDTO > getAllGarcoms(Pageable pageable) {
+        Page<Garcom> garcomPage = garcomRepository.findAll(pageable);
+        return garcomPage
+                .stream()
+                .map(garcomMapper::toGarcomResponseDTO)
+                .toList();
+    }
+
     public void deleteGarcom(Long id) {
         if (!garcomRepository.existsById(id)) {
             throw new GarcomNotFoundException();
@@ -38,11 +49,11 @@ public class GarcomService {
         return garcomRepository.findById(id).orElseThrow(GarcomNotFoundException::new);
     }
 
-    public List<GarcomResponseDTO> getGarcoms() {
+    public List<GarcomOptionsResponseDTO> getOptions() {
         List<Garcom> garcomList = garcomRepository.findAll();
         return garcomList
                 .stream()
-                .map(garcomMapper::toGarcomResponseDTO)
+                .map(garcomMapper::toGarcomOptionsResponseDTO)
                 .toList();
     }
 

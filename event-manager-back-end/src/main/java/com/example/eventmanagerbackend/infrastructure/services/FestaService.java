@@ -2,8 +2,8 @@ package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.dtos.FestaRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.FestaResponseDTO;
-import com.example.eventmanagerbackend.domain.entities.Festa;
-import com.example.eventmanagerbackend.domain.entities.Material;
+import com.example.eventmanagerbackend.domain.dtos.MaterialResponseDTO;
+import com.example.eventmanagerbackend.domain.entities.*;
 import com.example.eventmanagerbackend.infrastructure.exceptions.FestaNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.FestaMapper;
@@ -11,8 +11,10 @@ import com.example.eventmanagerbackend.infrastructure.repositories.FestaReposito
 import com.example.eventmanagerbackend.infrastructure.repositories.MaterialRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class FestaService {
@@ -28,18 +30,19 @@ public class FestaService {
     }
 
     public FestaResponseDTO createFesta(FestaRequestDTO festaRequestDTO) {
-        Material material = new Material();
-        material.setId(festaRequestDTO.idMaterial());
+        Material material = materialRepository.findById(festaRequestDTO.idMaterial()).orElseThrow(MaterialNotFoundException::new);
         Festa festa = festaMapper.toFesta(festaRequestDTO);
-        festa.setMateriais(material);
+        festa.setMaterial(material);
         Festa savedFesta = festaRepository.save(festa);
         return festaMapper.toFestaResponseDTO(savedFesta);
     }
 
     public FestaResponseDTO getFestaById(Long id) {
         Festa festa = festaRepository.findById(id).orElseThrow(FestaNotFoundException::new);
-        return new FestaResponseDTO(festa);
+        return getFestaResponseDTO(festa);
     }
+
+
 
     public FestaResponseDTO updateFesta(Long id, FestaRequestDTO festaRequestDTO) {
         Festa festa = parseFesta(id, festaRequestDTO);
@@ -56,21 +59,48 @@ public class FestaService {
 
     public List<FestaResponseDTO> getAllFestas() {
         List<Festa> festas = festaRepository.findAll();
-        return festas.stream()
-                .map(festaMapper::toFestaResponseDTO)
-                .toList();
+        return parseFestaResponseDTO(festas);
     }
 
+    private FestaResponseDTO getFestaResponseDTO(Festa festa) {
+        MaterialResponseDTO materialResponseDTO = parseMaterialResponseDTO(festa.getMaterial());
+        List<Long> garcomId = festa.getFestaGarcoms()
+                .stream()
+                .map(festaGarcom -> festaGarcom.getGarcom().getId())
+                .collect(Collectors.toList());
+        return new FestaResponseDTO(
+                festa.getId(),
+                festa.getLocal(),
+                festa.getNomeCliente(),
+                festa.getData(),
+                festa.getValorDiariaGarcom(),
+                materialResponseDTO,
+                garcomId
+        );
+    }
 
     private Festa parseFesta(Long id, FestaRequestDTO festaRequestDTO) {
         Festa festa = festaRepository.findById(id).orElseThrow(FestaNotFoundException::new);
-        if(!Objects.equals(festa.getMateriais().getId(), festaRequestDTO.idMaterial())) {
+        if(!Objects.equals(festa.getMaterial().getId(), festaRequestDTO.idMaterial())) {
             Material material = materialRepository.findById(festaRequestDTO.idMaterial()).orElseThrow(MaterialNotFoundException::new);
-            festa.setMateriais(material);
+            festa.setMaterial(material);
         }
         festa.setLocal(festaRequestDTO.local());
         festa.setData(festaRequestDTO.data());
         festa.setValorDiariaGarcom(festaRequestDTO.valorDiariaGarcom());
         return festa;
+    }
+
+    private List<FestaResponseDTO> parseFestaResponseDTO(List<Festa> festas) {
+        if (festas.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return festas.stream()
+                .map(this::getFestaResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    private MaterialResponseDTO parseMaterialResponseDTO(Material material) {
+        return new MaterialResponseDTO(material.getId(), material.getDescricao());
     }
 }
