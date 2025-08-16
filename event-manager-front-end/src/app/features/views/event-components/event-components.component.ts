@@ -6,10 +6,12 @@ import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormComponent } from "../../../core/components/form-group/form/form.component";
 import { ApiService } from '../../services/api.service';
-import { IRequestGarcom } from '../../../core/interface/event.interface';
+import { IRequestGarcom, IResponseGarcom, IResponseMaterial } from '../../../core/interface/event.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { OptionsService } from '../../services/options.service';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalUpdateGarcomComponent } from '../../../core/components/modais/modal-update-garcom/modal-update-garcom.component';
 
 
 
@@ -39,15 +41,21 @@ export class EventComponentsComponent implements OnInit{
     description: new FormControl<string | null>(null),
   });
 
+  public ListGarcoms: IResponseGarcom[] = [];
+  public ListMaterials: IResponseMaterial[] = [];
+  public page = 0;
+  public pageSize = 5;
+  public totalElements = 0;
+
   constructor(
     private readonly _service: ApiService,
-    private readonly _optionsService: OptionsService
+    private readonly _optionsService: OptionsService,
+    private readonly _dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-      this.formPrimary.controls.status.valueChanges.subscribe((value) => {
-        console.log(value);
-      })
+     this.getGarcoms();
+     this.getMaterials();
   }
 
   public get formGroupItensPrimary(): FormGroupArray{
@@ -100,9 +108,34 @@ export class EventComponentsComponent implements OnInit{
     this._service.postCreateGarcom(garcom).subscribe((res) => {
       console.log(res);
     });
-  
   }
 
-  
+  public getGarcoms() {
+    this._service.getGarcoms(this.page, this.pageSize).subscribe((response) => {
+      this.ListGarcoms = response.content;
+      this.totalElements = response.totalElements
+      this.pageSize = response.pageable.pageSize
+    });
+  }
+  public onChangePage(event: PageEvent) {
+    this.page = event.pageIndex;
+    this.getGarcoms();
+  }
+
+  public getMaterials() {
+    this._service.getMaterial().subscribe((response) => {
+      this.ListMaterials = response;
+    });
+  }
+
+  public editGarcom(id: number){
+    this._dialog.open(ModalUpdateGarcomComponent, {
+      width: '400px',
+      height: '400px',
+      data: {
+        id: id
+      },
+    });
+  }
 }
 

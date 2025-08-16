@@ -1,24 +1,21 @@
 <div class="page-layout">
   <app-sidebar></app-sidebar>
-  
+
   <div class="main-content">
     <div class="page-header">
       <h1 class="page-title">Cadastro de Garçons</h1>
     </div>
-    
+
     <div class="content-wrapper">
       <!-- seção de cadastro dos garçons -->
       <div class="section">
-        <app-form
-        [group]="formGroupItensPrimary"
-        [form]="formPrimary"
-        ></app-form>
+        <app-form [group]="formGroupItensPrimary" [form]="formPrimary"></app-form>
         <button type="submit" class="btn btn-primary" (click)="createGarcom()">Cadastrar</button>
-        
+
         <!-- lista de garçons -->
         <div class="waiters-section">
           <h3 class="subsection-title">Garçons Cadastrados</h3>
-          
+
           <div class="waiters-list">
             <div class="waiter-item">
               <div class="waiter-info">
@@ -40,77 +37,76 @@
                       Ações
                     </div>
                   </div>
+                  @for (item of ListGarcoms; track $index) {
                   <div class="table-row">
                     <div class="title">
-                    exemplo values          
+                      {{item.name}}
                     </div>
                     <div class="title">
-                    exemplo values          
+                      {{item.pixKey}}
                     </div>
                     <div class="title">
-                    exemplo values          
+                      {{item.phone}}
                     </div>
                     <div class="title">
-                    exemplo values          
+                      {{item.status}}
                     </div>
                     <div class="title">
-                      <button mat-button class="btn btn-primary btn-sm">
+                      <button mat-button class="btn btn-primary btn-sm" (click)="editGarcom(item.id)">
                         Editar garçom
                       </button>
                     </div>
                   </div>
+                  }
                 </div>
-                <mat-paginator [length]="100" [pageSize]="5"></mat-paginator>
-              </div>
-              <div class="waiter-actions">
-                
+                <mat-paginator 
+                [length]="totalElements" 
+                [pageSize]="pageSize"
+                (page)="onChangePage($event)"></mat-paginator>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <!-- seção de cadastro dos materiais -->
       <div class="section materials-section">
         <h2 class="section-title">Cadastro de Materiais</h2>
-        
-          <div class="form-group">
-            <app-form
-            [group]="formGroupItensSecondary"
-            [form]="formSecondary"
-            ></app-form>
-          </div>
-          
-        <button type="submit" class="btn btn-primary" >Cadastrar</button>
-        
+
+        <div class="form-group">
+          <app-form [group]="formGroupItensSecondary" [form]="formSecondary"></app-form>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+
         <!-- lista de materiais -->
         <div class="materials-list">
           <div class="material-item">
             <div class="table">
-                  <div class="table-header">
-                    <div class="title">
-                      Tipo de material
-                    </div>
-                    <div class="title">
-                      Ações
-                    </div>
-                  </div>
-                  <div class="table-row">
-                    <div class="title">
-                    exemplo values          
-                    </div>
-                    <div class="title">
-                      <button mat-button class="btn btn-primary btn-sm">
-                        Editar Material
-                      </button>
-                    </div>
-                  </div>
+              <div class="table-header">
+                <div class="title">
+                  Tipo de material
                 </div>
-                <mat-paginator [length]="100" [pageSize]="5"></mat-paginator>
+                <div class="title">
+                  Ações
+                </div>
+              </div>
+              @for (item of ListMaterials; track $index) {
+              <div class="table-row">
+                <div class="title">
+                  {{item.descricao}}
+                </div>
+                <div class="title">
+                  <button mat-button class="btn btn-primary btn-sm">
+                    Editar Material
+                  </button>
+                </div>
+              </div>
+              }
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-

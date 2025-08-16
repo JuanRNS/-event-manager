@@ -30,5 +30,38 @@ export interface IResponseGarcom{
   phone: string;
   pixKey: string;
   status: string;
-  festaGarcoms: number[];
+}
+
+export interface IResponseMaterial{
+  id: number;
+  descricao: string;
+}
+
+export interface IResponseListGarcom {
+  content: IResponseGarcom[];
+  pageable: IPageable;
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: any;
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+interface IPageable{
+  sort: IPageableSort;
+  offset: number;
+  pageSize: number;
+  pageNumber: number;
+  unpaged: boolean;
+  paged: boolean;
+}
+
+interface IPageableSort{
+  sorted: boolean;
+  unsorted: boolean;
+  empty: boolean;
 }
