@@ -1,9 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
-import com.example.eventmanagerbackend.infrastructure.exceptions.EmailExistsException;
-import com.example.eventmanagerbackend.infrastructure.exceptions.FestaNotFoundException;
-import com.example.eventmanagerbackend.infrastructure.exceptions.GarcomNotFoundException;
-import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
+import com.example.eventmanagerbackend.infrastructure.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,5 +33,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(festa.getMessage());
+    }
+
+    @ExceptionHandler(UserNameStringFirstException.class)
+    private ResponseEntity<String> userNameStringFirstException(UserNameStringFirstException user) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(user.getMessage());
     }
 }

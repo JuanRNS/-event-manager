@@ -7,6 +7,7 @@ import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.services.GarcomService;
 import org.apache.coyote.Response;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,8 @@ public class GarcomController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<List<GarcomResponseDTO>> getAllGarcoms(Pageable pageable) {
-        List<GarcomResponseDTO> garcomList = garcomService.getAllGarcoms(pageable);
+    public ResponseEntity<Page<GarcomResponseDTO>> getAllGarcoms(Pageable pageable) {
+        Page<GarcomResponseDTO> garcomList = garcomService.getAllGarcoms(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(garcomList);
@@ -69,5 +70,13 @@ public class GarcomController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(status);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Void> updateGarcom(@PathVariable Long id, @RequestBody GarcomRequestDTO garcom) {
+        garcomService.updateGarcom(id, garcom);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
 }

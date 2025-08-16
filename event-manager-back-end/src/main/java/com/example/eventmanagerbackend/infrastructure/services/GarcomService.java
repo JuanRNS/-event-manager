@@ -29,13 +29,15 @@ public class GarcomService {
         Garcom garcomCreated = garcomMapper.toGarcom(garcom);
         return garcomRepository.save(garcomCreated);
     }
+    public void updateGarcom(Long id, GarcomRequestDTO garcomUpdate) {
+        Garcom garcom = garcomRepository.findById(id).orElseThrow(GarcomNotFoundException::new);
+        updateGarcom(garcom, garcomUpdate);
+    }
 
-    public List<GarcomResponseDTO > getAllGarcoms(Pageable pageable) {
-        Page<Garcom> garcomPage = garcomRepository.findAll(pageable);
-        return garcomPage
-                .stream()
-                .map(garcomMapper::toGarcomResponseDTO)
-                .toList();
+    public Page<GarcomResponseDTO > getAllGarcoms(Pageable pageable) {
+        return garcomRepository
+                .findAll(pageable)
+                .map(garcomMapper::toGarcomResponseDTO);
     }
 
     public void deleteGarcom(Long id) {
@@ -62,5 +64,13 @@ public class GarcomService {
                 new StatusResponseDTO("ATIVO", "ATIVO"),
                 new StatusResponseDTO("INATIVO", "INATIVO")
         );
+    }
+
+    private void updateGarcom(Garcom garcom, GarcomRequestDTO garcomUpdate) {
+        garcom.setName(garcomUpdate.name());
+        garcom.setPhone(garcomUpdate.phone());
+        garcom.setStatus(garcomUpdate.status());
+        garcom.setPixKey(garcomUpdate.pixKey());
+        garcomRepository.save(garcom);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
 public record UserRequestDTO(
-    String username,
+    String userName,
     String email,
     String password
 ) {
