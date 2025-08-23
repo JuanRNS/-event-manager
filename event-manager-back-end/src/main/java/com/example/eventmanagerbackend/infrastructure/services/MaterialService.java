@@ -6,12 +6,9 @@ import com.example.eventmanagerbackend.domain.entities.Material;
 import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.MaterialMapper;
 import com.example.eventmanagerbackend.infrastructure.repositories.MaterialRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MaterialService {
@@ -31,19 +28,24 @@ public class MaterialService {
                 .toList();
     }
 
+    public MaterialResponseDTO getMaterialById(Long id) {
+        Material material = materialRepository.findById(id).orElseThrow(MaterialNotFoundException::new);
+        return materialMapper.toMaterialResponseDTO(material);
+    }
+
     public Material createMaterial(MaterialRequestDTO material) {
         if (material == null) {
             throw new MaterialNotFoundException();
         }
         Material newMaterial = new Material();
-        newMaterial.setDescricao(material.descricao());
+        newMaterial.setDescription(material.description());
         return materialRepository.save(newMaterial);
     }
 
-    public Material updateMaterial(Long id, MaterialRequestDTO materialRequest) {
+    public void updateMaterial(Long id, MaterialRequestDTO materialRequest) {
         Material material = materialRepository.findById(id).orElseThrow(MaterialNotFoundException::new);
-        material.setDescricao(materialRequest.descricao());
-        return materialRepository.save(material);
+        material.setDescription(materialRequest.description());
+        materialRepository.save(material);
     }
 
     public void deleteMaterial(Long id) {

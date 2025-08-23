@@ -5,6 +5,8 @@ import com.example.eventmanagerbackend.domain.dtos.FestaRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.FestaResponseDTO;
 import com.example.eventmanagerbackend.infrastructure.services.FestaGarcomService;
 import com.example.eventmanagerbackend.infrastructure.services.FestaService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +26,8 @@ public class FestaController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<List<FestaResponseDTO>> getAll() {
-        List<FestaResponseDTO> festaList = festaService.getAllFestas();
+    public ResponseEntity<Page<FestaResponseDTO>> getAll(Pageable pageable) {
+        Page<FestaResponseDTO> festaList = festaService.getAllFestas(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(festaList);

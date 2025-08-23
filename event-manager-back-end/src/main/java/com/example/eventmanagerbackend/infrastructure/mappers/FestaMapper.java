@@ -17,6 +17,7 @@ public interface FestaMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "festaGarcoms", ignore = true)
+    @Mapping(target = "nameClient", source = "nameClient")
     Festa toFesta(FestaRequestDTO festaRequestDTO);
     FestaResponseDTO toFestaResponseDTO(Festa festa);
 

@@ -6,6 +6,6 @@ import java.math.BigDecimal;
 
 public record FestaGarcomResponseDTO(
     FestaGarcomId id,
-    BigDecimal valorDiariaGarcom
+    BigDecimal valuePerDay
 ) {
 }

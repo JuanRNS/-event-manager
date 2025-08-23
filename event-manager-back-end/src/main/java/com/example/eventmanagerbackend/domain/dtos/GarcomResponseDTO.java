@@ -1,6 +1,6 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-import com.example.eventmanagerbackend.domain.enums.Status;
+import com.example.eventmanagerbackend.domain.enums.StatusGarcom;
 
 
 public record GarcomResponseDTO(
@@ -8,6 +8,6 @@ public record GarcomResponseDTO(
     String name,
     String pixKey,
     String phone,
-    Status status
+    StatusGarcom statusGarcom
 ) {
 }

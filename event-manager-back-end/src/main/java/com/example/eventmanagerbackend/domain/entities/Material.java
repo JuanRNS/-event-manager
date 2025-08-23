@@ -17,9 +17,9 @@ public class Material {
     private Long id;
     
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String descricao;
+    private String description;
     
-    public Material(String descricao) {
-        this.descricao = descricao;
+    public Material(String descreption) {
+        this.description = descreption;
     }
 }

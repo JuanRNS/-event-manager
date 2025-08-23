@@ -35,7 +35,7 @@ public class FestaGarcomService {
             festaGarcom.setId(festaGarcomId);
             festaGarcom.setFesta(festa);
             festaGarcom.setGarcom(garcom);
-            festaGarcom.setValorDiariaGarcom(festa.getValorDiariaGarcom());
+            festaGarcom.setValorDiariaGarcom(festa.getValuePerDay());
 
             festa.getFestaGarcoms().add(festaGarcom);
         }

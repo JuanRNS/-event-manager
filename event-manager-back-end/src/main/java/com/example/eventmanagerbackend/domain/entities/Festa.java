@@ -1,10 +1,13 @@
 package com.example.eventmanagerbackend.domain.entities;
 
+import com.example.eventmanagerbackend.domain.enums.StatusFesta;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,28 +26,25 @@ public class Festa {
     private Long id;
     
     @Column(nullable = false)
-    private String local;
+    private String location;
     
-    @Column(name = "nome_cliente", nullable = false)
-    private String nomeCliente;
+    @Column(name = "name_client", nullable = false)
+    private String nameClient;
     
     @Column(nullable = false)
-    private LocalDateTime data;
+    private LocalDateTime date;
     
-    @Column(name = "valor_diaria_garcom", nullable = false, precision = 10, scale = 2)
-    private BigDecimal valorDiariaGarcom;
+    @Column(name = "value_per_day", nullable = false, precision = 10, scale = 2)
+    private BigDecimal valuePerDay;
+    @Column(name = "status")
+    private StatusFesta status = StatusFesta.AGENDADA;
 
     @OneToMany(mappedBy = "festa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestaGarcom> festaGarcoms = new ArrayList<>();
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "material_id")
     private Material material;
 
-    public Festa(String nomeCliente, String local, LocalDateTime data, BigDecimal bigDecimal, Material material) {
-        this.local = local;
-        this.nomeCliente = nomeCliente;
-        this.data = data;
-        this.valorDiariaGarcom = bigDecimal;
-        this.material = material;
-    }
 }

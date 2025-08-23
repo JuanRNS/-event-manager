@@ -7,10 +7,10 @@ import java.util.List;
 
 public record FestaResponseDTO(
     Long id,
-    String local,
-    String nomeCliente,
-    LocalDateTime data,
-    BigDecimal valorDiariaGarcom,
+    String location,
+    String nameClient,
+    LocalDateTime date,
+    BigDecimal valuePerDay,
     MaterialResponseDTO material,
     List<Long> garcomIds
 ) {

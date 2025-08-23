@@ -9,6 +9,8 @@ import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoun
 import com.example.eventmanagerbackend.infrastructure.mappers.FestaMapper;
 import com.example.eventmanagerbackend.infrastructure.repositories.FestaRepository;
 import com.example.eventmanagerbackend.infrastructure.repositories.MaterialRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -42,8 +44,6 @@ public class FestaService {
         return getFestaResponseDTO(festa);
     }
 
-
-
     public FestaResponseDTO updateFesta(Long id, FestaRequestDTO festaRequestDTO) {
         Festa festa = parseFesta(id, festaRequestDTO);
         Festa updatedFesta = festaRepository.save(festa);
@@ -57,9 +57,18 @@ public class FestaService {
         festaRepository.deleteById(id);
     }
 
-    public List<FestaResponseDTO> getAllFestas() {
-        List<Festa> festas = festaRepository.findAll();
+    public Page<FestaResponseDTO> getAllFestas(Pageable pageable) {
+        Page<Festa> festas = festaRepository.findAll(pageable);
         return parseFestaResponseDTO(festas);
+    }
+
+    private Festa parseFesta(FestaRequestDTO festaRequestDTO) {
+        Festa festa = new Festa();
+        festa.setLocation(festaRequestDTO.location());
+        festa.setNameClient(festaRequestDTO.nameClient());
+        festa.setDate(festaRequestDTO.date());
+        festa.setValuePerDay(festaRequestDTO.valuePerDay());
+        return festa;
     }
 
     private FestaResponseDTO getFestaResponseDTO(Festa festa) {
@@ -70,10 +79,10 @@ public class FestaService {
                 .collect(Collectors.toList());
         return new FestaResponseDTO(
                 festa.getId(),
-                festa.getLocal(),
-                festa.getNomeCliente(),
-                festa.getData(),
-                festa.getValorDiariaGarcom(),
+                festa.getLocation(),
+                festa.getNameClient(),
+                festa.getDate(),
+                festa.getValuePerDay(),
                 materialResponseDTO,
                 garcomId
         );
@@ -85,22 +94,20 @@ public class FestaService {
             Material material = materialRepository.findById(festaRequestDTO.idMaterial()).orElseThrow(MaterialNotFoundException::new);
             festa.setMaterial(material);
         }
-        festa.setLocal(festaRequestDTO.local());
-        festa.setData(festaRequestDTO.data());
-        festa.setValorDiariaGarcom(festaRequestDTO.valorDiariaGarcom());
+        festa.setLocation(festaRequestDTO.location());
+        festa.setDate(festaRequestDTO.date());
+        festa.setValuePerDay(festaRequestDTO.valuePerDay());
         return festa;
     }
 
-    private List<FestaResponseDTO> parseFestaResponseDTO(List<Festa> festas) {
+    private Page<FestaResponseDTO> parseFestaResponseDTO(Page<Festa> festas) {
         if (festas.isEmpty()) {
-            return Collections.emptyList();
+            return Page.empty();
         }
-        return festas.stream()
-                .map(this::getFestaResponseDTO)
-                .collect(Collectors.toList());
+        return festas.map(this::getFestaResponseDTO);
     }
 
     private MaterialResponseDTO parseMaterialResponseDTO(Material material) {
-        return new MaterialResponseDTO(material.getId(), material.getDescricao());
+        return new MaterialResponseDTO(material.getId(), material.getDescription());
     }
 }

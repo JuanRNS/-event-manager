@@ -47,8 +47,9 @@ public class GarcomService {
         garcomRepository.deleteById(id);
     }
 
-    public Garcom getGarcomById(Long id) {
-        return garcomRepository.findById(id).orElseThrow(GarcomNotFoundException::new);
+    public GarcomResponseDTO getGarcomById(Long id) {
+        Garcom garcom = garcomRepository.findById(id).orElseThrow(GarcomNotFoundException::new);
+        return garcomMapper.toGarcomResponseDTO(garcom);
     }
 
     public List<GarcomOptionsResponseDTO> getOptions() {
@@ -69,7 +70,7 @@ public class GarcomService {
     private void updateGarcom(Garcom garcom, GarcomRequestDTO garcomUpdate) {
         garcom.setName(garcomUpdate.name());
         garcom.setPhone(garcomUpdate.phone());
-        garcom.setStatus(garcomUpdate.status());
+        garcom.setStatusGarcom(garcomUpdate.statusGarcom());
         garcom.setPixKey(garcomUpdate.pixKey());
         garcomRepository.save(garcom);
     }

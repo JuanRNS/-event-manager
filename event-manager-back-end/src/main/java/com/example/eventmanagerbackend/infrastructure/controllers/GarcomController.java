@@ -6,7 +6,6 @@ import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.services.GarcomService;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -57,8 +56,8 @@ public class GarcomController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Garcom> getGarcom(@PathVariable Long id) {
-        Garcom garcom = garcomService.getGarcomById(id);
+    public ResponseEntity<GarcomResponseDTO> getGarcom(@PathVariable Long id) {
+        GarcomResponseDTO garcom = garcomService.getGarcomById(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(garcom);
