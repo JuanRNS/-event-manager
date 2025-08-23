@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { FormGroupArray } from '../../../core/interface/form.interface';
@@ -13,11 +13,12 @@ import { IRequestLogin } from '../../../core/interface/login.interface';
   selector: 'app-login',
   standalone: true,
   imports: [
-    FormsModule, 
-    MatIconModule, 
+    FormsModule,
+    MatIconModule,
     FormComponent,
-    MatButtonModule
-  ],
+    MatButtonModule,
+    RouterLink
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

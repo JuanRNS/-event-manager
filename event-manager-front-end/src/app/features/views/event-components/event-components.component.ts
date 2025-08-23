@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SidebarComponent } from '../../../core/components/sidebar/sidebar.component';
 import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormComponent } from "../../../core/components/form-group/form/form.component";
 import { ApiService } from '../../services/api.service';
-import { IRequestGarcom, IResponseGarcom, IResponseMaterial } from '../../../core/interface/event.interface';
+import { IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseMaterial } from '../../../core/interface/event.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { OptionsService } from '../../services/options.service';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalUpdateGarcomComponent } from '../../../core/components/modais/modal-update-garcom/modal-update-garcom.component';
+import ModalUpdateMaterialComponent from '../../../core/components/modais/modal-update-material/modal-update-material.component';
 
 
 
@@ -21,7 +21,6 @@ import { ModalUpdateGarcomComponent } from '../../../core/components/modais/moda
   imports: [
     FormsModule, 
     CommonModule, 
-    SidebarComponent, 
     MatButtonModule,
     FormComponent,
     MatPaginatorModule
@@ -106,15 +105,16 @@ export class EventComponentsComponent implements OnInit{
     const garcom: IRequestGarcom = this.formPrimary.value as IRequestGarcom;
 
     this._service.postCreateGarcom(garcom).subscribe((res) => {
-      console.log(res);
+      this.getGarcoms();
+      this.formPrimary.reset();
     });
   }
 
   public getGarcoms() {
     this._service.getGarcoms(this.page, this.pageSize).subscribe((response) => {
       this.ListGarcoms = response.content;
-      this.totalElements = response.totalElements
-      this.pageSize = response.pageable.pageSize
+      this.totalElements = response.page.totalElements;
+      this.pageSize = response.page.size;
     });
   }
   public onChangePage(event: PageEvent) {
@@ -129,12 +129,52 @@ export class EventComponentsComponent implements OnInit{
   }
 
   public editGarcom(id: number){
-    this._dialog.open(ModalUpdateGarcomComponent, {
-      width: '400px',
-      height: '400px',
+    const dialogRef = this._dialog.open(ModalUpdateGarcomComponent, {
+      width: '600px',
+      height: '600px',
       data: {
         id: id
       },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getGarcoms();
+      }
+    });
+  }
+
+  public deleteGarcom(id: number) {
+    this._service.deleteGarcom(id).subscribe(() => {
+      this.getGarcoms();
+    });
+  }
+
+  public createMaterial() {
+    const material: IRequestMaterial = this.formSecondary.value as IRequestMaterial;
+    this._service.postCreateMaterial(material).subscribe(() => {
+      this.getMaterials();
+      this.formSecondary.reset();
+    });
+  }
+
+  public deleteMaterial(id: number) {
+    this._service.deleteMaterial(id).subscribe(() => {
+      this.getMaterials();
+    });
+  }
+
+  public editMaterial(id: number) {
+    const dialogRef = this._dialog.open(ModalUpdateMaterialComponent, {
+      width: '400px',
+      height: '300px',
+      data: {
+        id: id
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getMaterials();
+      }
     });
   }
 }

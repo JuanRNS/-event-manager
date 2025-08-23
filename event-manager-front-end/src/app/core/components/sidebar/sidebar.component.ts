@@ -11,5 +11,12 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class SidebarComponent {
 
+  constructor() { }
+
+
+  public logout() {
+    localStorage.removeItem('token');
+    window.location.reload();
+  }
 }
 

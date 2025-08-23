@@ -11,8 +11,8 @@ export abstract class HttpServiceAbstract {
     return this.sendRequest<T>(HttpEnum.GET, path);
   }
 
-  protected post<T>(path: string, body?: any, basicAuth?: string, responseType: 'json' | 'text' = 'json') {
-    return this.sendRequest<T>(HttpEnum.POST, path, body, undefined, basicAuth, responseType);
+  protected post<T>(path: string, body?: any, basicAuth?: string, responseType: 'json' | 'text' = 'json', register: boolean = false) {
+    return this.sendRequest<T>(HttpEnum.POST, path, body, undefined, basicAuth, responseType, register);
   }
 
   protected put<T>(path: string, body: any) {
@@ -34,8 +34,15 @@ export abstract class HttpServiceAbstract {
     body?: any,
     params?: { [param: string]: string | number | boolean },
     basicAuth?: string,
-    responseType: 'json' | 'text' = 'json'
+    responseType: 'json' | 'text' = 'json',
+    register: boolean = false
   ) {
+    if (register) {
+      return this._http.request<T>(method, `${this._baseUrl}${path}`, {
+        body,
+        responseType: responseType as any
+      });
+    }
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });

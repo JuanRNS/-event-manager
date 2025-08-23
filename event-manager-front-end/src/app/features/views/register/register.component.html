@@ -31,8 +31,8 @@
   <div class="login-form-section">
     <div class="login-header">
       <div class="login-options">
-        <span class="login-option">Ainda não tem uma conta?</span>
-        <a class="signup-link" routerLink="/register">Cadastre-se</a>
+        <span class="login-option">Já tem uma conta?</span>
+        <a class="signup-link" routerLink="/login">Login</a>
       </div>
     </div>
     <!-- login -->
@@ -60,7 +60,7 @@
       [group]="formGroupItens"
       [form]="formGroup"
       ></app-form>
-      <button mat-button class="btn btn-login" (click)="login()">
+      <button mat-button class="btn btn-login" (click)="register()">
         <mat-icon fontIcon="login"></mat-icon>
         Entrar
       </button>

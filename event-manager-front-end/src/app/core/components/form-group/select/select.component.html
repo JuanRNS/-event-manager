@@ -3,7 +3,7 @@
     <mat-select [formControlName]="formControl()" [required]="required()">
         <mat-option value="">Selecione</mat-option>
         @for (item of optionsSelect; track $index) {
-            <mat-option value="{{item.id}}">{{item.descricao}}</mat-option>
+            <mat-option value="{{item.id}}">{{item.description}}</mat-option>
         }
     </mat-select>
 </mat-form-field>
