@@ -27,6 +27,9 @@
                       Local da festa
                     </div>
                     <div class="title">
+                      Data da festa
+                    </div>
+                    <div class="title">
                       Valor diária 
                     </div>
                     <div class="title">
@@ -45,17 +48,26 @@
                       {{item.location}}
                     </div>
                     <div class="title">
+                      {{parseDate(item.date)}}
+                    </div>
+                    <div class="title">
                       {{item.valuePerDay}}
                     </div>
                     <div class="title">
-                      {{item.material.description}}
+                      {{item.material?.description}}
                     </div>
-                    <div class="title-buttons">
-                      <button mat-button class="btn btn-primary btn-sm" >
-                        Editar Festa
-                      </button>
-                      <button mat-button class="btn btn-secondary btn-sm" >
-                        Excluir
+                    <div class="title">
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="addGarcons(item.id)">Adicionar Garçons</button>
+                        <button mat-menu-item (click)="editParty(item.id)">Editar Festa</button>
+                        <button mat-menu-item (click)="deleteParty(item.id)">Apagar Festa</button>
+                        @if (item.garcomIds.length > 0) {
+                        <button mat-menu-item (click)="viewGarcons(item.id)">Visualizar Garçons</button>
+                        <button mat-menu-item (click)="removeGarcons(item.id)">Remover Garçons</button>
+                        }
+                      </mat-menu>
+                      <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon fontIcon="menu"></mat-icon>
                       </button>
                     </div>
                   </div>
@@ -69,16 +81,10 @@
                 ></mat-paginator>
               </div>
             </div>
-            <div class="party-actions">
-              <button class="btn btn-primary btn-sm">Adicionar Garçons</button>
-            </div>
           </div>
         </div>
         
         <div class="party-placeholder">
-          <div class="placeholder-box">
-            <p>Nenhuma festa cadastrada ainda</p>
-          </div>
         </div>
       </div>
     </div>

@@ -7,16 +7,24 @@ import { FormComponent } from '../../../core/components/form-group/form/form.com
 import { ApiService } from '../../services/api.service';
 import { IRequestParty, IResponseParty } from '../../../core/interface/party.interface';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from "@angular/material/button";
+import { MatDialog } from '@angular/material/dialog';
+import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal-update-festa/modal-update-festa.component';
 
 @Component({
   selector: 'app-party-registration',
   standalone: true,
   imports: [
-    FormsModule, 
-    CommonModule, 
+    FormsModule,
+    CommonModule,
     FormComponent,
-    MatPaginatorModule
-  ],
+    MatPaginatorModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule
+],
   templateUrl: './party-registration.component.html',
   styleUrl: './party-registration.component.scss',
 })
@@ -27,6 +35,7 @@ export class PartyRegistrationComponent implements OnInit{
     date: new FormControl<string | null>(null, [Validators.required]),
     idMaterial: new FormControl<number | null>(null, [Validators.required]),
     valuePerDay: new FormControl<number | null>(null, [Validators.required]),
+    numberOfPeople: new FormControl<string | null>(null, [Validators.required, Validators.min(1)]),
   });
 
   public listParty: IResponseParty[] = [];
@@ -36,6 +45,7 @@ export class PartyRegistrationComponent implements OnInit{
 
   constructor(
     private readonly _service: ApiService,
+    private readonly _dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -80,6 +90,13 @@ export class PartyRegistrationComponent implements OnInit{
         type: 'number',
         placeholder: 'Valor da festa',
       },
+      {
+        component: FormFieldEnum.INPUT,
+        label: 'Quantidade de Pessoas',
+        controlName: 'numberOfPeople',
+        placeholder: 'Quantidade de Pessoas',
+        type: 'text',
+      }
     ];
   }
 
@@ -88,7 +105,6 @@ export class PartyRegistrationComponent implements OnInit{
     this._service.getListParty(this.page, this.pageSize).subscribe((res) => {
       this.listParty = res.content;
       this.totalElements = res.page.totalElements;
-      console.log(this.listParty);
     });
   }
   public createParty(){
@@ -116,5 +132,33 @@ export class PartyRegistrationComponent implements OnInit{
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getListParty();
+  }
+
+  public editParty(id: number){
+    this._dialog.open(ModalUpdateFestaComponent,{
+      width: '500px',
+      height: '600px',
+      data: { partyId: id }
+    })
+  }
+
+  public deleteParty(id: number){
+    this._service.deleteParty(id).subscribe(() => {
+      this.getListParty();
+    });
+  }
+
+  public addGarcons(id: number){}
+
+  public viewGarcons(id: number){}
+
+  public removeGarcons(id: number){}
+
+  public parseDate(dateString: Date): string {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 }

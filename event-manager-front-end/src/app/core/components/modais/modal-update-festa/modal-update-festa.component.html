@@ -1,7 +1,7 @@
-<h2 mat-dialog-title>Atualize o Garcom</h2>
+<h2 mat-dialog-title>Atualizar Festa</h2>
 <mat-dialog-content>
     <app-form
-    [group]="formGroupItensPrimary"
+    [group]="formGroupItens"
     [form]="form"
     ></app-form>
     <div class="button">
@@ -15,9 +15,8 @@
         <button 
         mat-button
         class="btn btn-primary" 
-        (click)="updateGarcom()"
+        (click)="updateParty()"
         >
             Atualizar
         </button>
     </div>
-</mat-dialog-content>

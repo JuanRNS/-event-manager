@@ -4,7 +4,7 @@ import { environment } from '../../../environments/enviroments';
 import { HttpClient } from '@angular/common/http';
 import { IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseListGarcom, IResponseMaterial } from '../../core/interface/event.interface';
 import { IRequestUserRegister } from '../../core/interface/register.interface';
-import { IRequestParty, IResponseListParty } from '../../core/interface/party.interface';
+import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/interface/party.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -65,5 +65,13 @@ export class ApiService extends HttpServiceAbstract {
 
   public getListParty(page: number, size: number) {
     return this.get<IResponseListParty>(`festa/list?page=${page}&size=${size}`);
+  }
+
+  public deleteParty(id: number){
+    return this.delete(`festa/${id}`);
+  }
+
+  public getPartyById(id: number) {
+    return this.get<IResponseParty>(`festa/${id}`);
   }
 }

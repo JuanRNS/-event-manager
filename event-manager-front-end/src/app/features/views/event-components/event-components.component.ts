@@ -33,7 +33,7 @@ export class EventComponentsComponent implements OnInit{
     name: new FormControl<string | null>(null),
     pixKey: new FormControl<string | null>(null),
     phone: new FormControl<string | null>(null),
-    status: new FormControl<string | null>(null),
+    statusGarcom: new FormControl<string | null>(null),
   });
 
   public formSecondary = new FormGroup({
@@ -83,7 +83,7 @@ export class EventComponentsComponent implements OnInit{
       {
         component: FormFieldEnum.SELECT,
         label: 'Status',
-        controlName: 'status',
+        controlName: 'statusGarcom',
         type: 'select',
         options: this._optionsService.getOptionsStatus()
       }

@@ -25,7 +25,7 @@ export class ModalUpdateGarcomComponent implements OnInit {
     name: new FormControl<string | null>(null),
     pixKey: new FormControl<string | null>(null),
     phone: new FormControl<string | null>(null),
-    status: new FormControl<string | null>(null),
+    statusGarcom: new FormControl<string | null>(null),
   });
 
   constructor(
@@ -65,7 +65,7 @@ export class ModalUpdateGarcomComponent implements OnInit {
         {
           component: FormFieldEnum.SELECT,
           label: 'Status',
-          controlName: 'status',
+          controlName: 'statusGarcom',
           type: 'select',
           options: this._optionsService.getOptionsStatus()
         }

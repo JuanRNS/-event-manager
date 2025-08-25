@@ -6,7 +6,7 @@ export interface IRequestGarcom{
   name: string;
   phone: string;
   pixKey: string;
-  status: string;
+  statusGarcom: string;
 }
 
 export interface IResponseGarcom{
@@ -14,7 +14,7 @@ export interface IResponseGarcom{
   name: string;
   phone: string;
   pixKey: string;
-  status: string;
+  statusGarcom: string;
 }
 
 export interface IResponseMaterial{
