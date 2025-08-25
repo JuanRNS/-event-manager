@@ -108,6 +108,9 @@ public class FestaService {
     }
 
     private MaterialResponseDTO parseMaterialResponseDTO(Material material) {
+        if (material == null) {
+            return null;
+        }
         return new MaterialResponseDTO(material.getId(), material.getDescription());
     }
 }

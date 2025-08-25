@@ -1,4 +1,11 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public class PdfRequestDashboardDTO {
+import java.util.List;
+
+public record PdfRequestDashboardDTO(
+        String name,
+        String phone,
+        String pixKey,
+        List<PdfRequestDashboardFestaDTO> pdfRequestDashboardFesta
+) {
 }
