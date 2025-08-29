@@ -1,9 +1,7 @@
 package com.example.eventmanagerbackend.infrastructure.services;
 
-import com.example.eventmanagerbackend.domain.dtos.GarcomOptionsResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
-import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.*;
+import com.example.eventmanagerbackend.domain.entities.Festa;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.exceptions.GarcomNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.GarcomMapper;
@@ -12,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,10 +19,12 @@ public class GarcomService {
 
     private final GarcomMapper garcomMapper;
     private final GarcomRepository garcomRepository;
+    private final FestaGarcomService festaGarcomService;
 
-    public GarcomService(GarcomRepository garcomRepository, GarcomMapper garcomMapper) {
+    public GarcomService(GarcomRepository garcomRepository, GarcomMapper garcomMapper, FestaGarcomService festaGarcomService) {
         this.garcomRepository = garcomRepository;
         this.garcomMapper = garcomMapper;
+        this.festaGarcomService = festaGarcomService;
     }
 
     public Garcom createGarcom(GarcomRequestDTO garcom) {
@@ -65,6 +67,21 @@ public class GarcomService {
                 new StatusResponseDTO("ATIVO", "ATIVO"),
                 new StatusResponseDTO("INATIVO", "INATIVO")
         );
+    }
+
+    public List<GarcomResponseDashboardDTO> getGarcomDashboard(){
+        List<Garcom> garcomList = garcomRepository.findAll();
+        List<GarcomResponseDashboardDTO> garcomResponseDashboardDTOList = new ArrayList<>();
+        for (Garcom garcom : garcomList) {
+            List<Festa> festas = festaGarcomService.getFestaGarcomById(garcom.getId());
+            BigDecimal totalValue = festas.stream()
+                    .map(Festa::getValuePerDay)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            GarcomResponseDashboardDTO garcomResponseDashboardDTO =
+                    new GarcomResponseDashboardDTO(garcom.getId(), garcom.getName(), (long) festas.size(),  totalValue);
+            garcomResponseDashboardDTOList.add(garcomResponseDashboardDTO);
+        }
+        return garcomResponseDashboardDTOList;
     }
 
     private void updateGarcom(Garcom garcom, GarcomRequestDTO garcomUpdate) {

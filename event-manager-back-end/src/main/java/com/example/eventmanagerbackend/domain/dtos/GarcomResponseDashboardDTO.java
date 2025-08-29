@@ -1,4 +1,11 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public record GarcomResponseDashboardDTO() {
+import java.math.BigDecimal;
+
+public record GarcomResponseDashboardDTO(
+    Long id,
+    String name,
+    Long totalFestas,
+    BigDecimal valueTotal
+) {
 }

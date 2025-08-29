@@ -1,9 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
-import com.example.eventmanagerbackend.domain.dtos.GarcomOptionsResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
-import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.services.GarcomService;
 import org.springframework.data.domain.Page;
@@ -77,5 +74,13 @@ public class GarcomController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();
+    }
+
+    @GetMapping("list/dashboard")
+    public ResponseEntity<List<GarcomResponseDashboardDTO>> getGarcomDashboard() {
+        List<GarcomResponseDashboardDTO> garcomList = garcomService.getGarcomDashboard();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(garcomList);
     }
 }
