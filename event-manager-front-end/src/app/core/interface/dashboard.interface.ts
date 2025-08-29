@@ -1,7 +1,7 @@
 
-export interface DashboardWaiter {
+export interface IResponseDashboard {
   id: number;
   name: string;
-  weeklyParties: number;
-  totalEarnings: number;
+  totalFestas: number;
+  valueTotal: number;
 }

@@ -27,6 +27,10 @@ export abstract class HttpServiceAbstract {
     return this.sendRequest<T>(HttpEnum.PATCH, path, body);
   }
 
+  protected fileDownload<T>(path: string){
+    return this.sendRequest<T>(HttpEnum.POST, path, undefined, undefined, undefined, 'blob', true);
+  }
+
 
   private sendRequest<T>(
     method: HttpEnum,
@@ -34,8 +38,9 @@ export abstract class HttpServiceAbstract {
     body?: any,
     params?: { [param: string]: string | number | boolean },
     basicAuth?: string,
-    responseType: 'json' | 'text' = 'json',
-    register: boolean = false
+    responseType: 'json' | 'text' | 'blob' = 'json',
+    register: boolean = false,
+    isFile: boolean = false
   ) {
     if (register) {
       return this._http.request<T>(method, `${this._baseUrl}${path}`, {
@@ -46,6 +51,9 @@ export abstract class HttpServiceAbstract {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
+    if(isFile){
+      headers = headers.delete('Content-Type');
+    }
     if(basicAuth) {
       headers = headers.set('Authorization', `Basic ${basicAuth}`);
     }else{

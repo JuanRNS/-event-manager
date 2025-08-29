@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseListGarcom, IResponseMaterial } from '../../core/interface/event.interface';
 import { IRequestUserRegister } from '../../core/interface/register.interface';
 import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/interface/party.interface';
+import { IResponseDashboard } from '../../core/interface/dashboard.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -73,5 +74,13 @@ export class ApiService extends HttpServiceAbstract {
 
   public getPartyById(id: number) {
     return this.get<IResponseParty>(`festa/${id}`);
+  }
+
+  public getListDashboard(){
+    return this.get<IResponseDashboard[]>(`garcom/list/dashboard`);
+  }
+
+  public getFileDownload(id: number){
+    return this.fileDownload<string>(`pdf/generate/garcom/${id}`);
   }
 }
