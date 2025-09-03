@@ -42,6 +42,7 @@ export class ModalUpdateFestaComponent implements OnInit {
         controlName: 'location',
         type: 'text',
         placeholder: 'Local da festa',
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
@@ -49,6 +50,7 @@ export class ModalUpdateFestaComponent implements OnInit {
         controlName: 'nameClient',
         type: 'text',
         placeholder: 'Nome do cliente',
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
@@ -56,6 +58,7 @@ export class ModalUpdateFestaComponent implements OnInit {
         controlName: 'date',
         type: 'date',
         placeholder: 'Data da festa',
+        size: '6',
       },
       {
         component: FormFieldEnum.SELECT,
@@ -63,7 +66,8 @@ export class ModalUpdateFestaComponent implements OnInit {
         controlName: 'idMaterial',
         type: 'text',
         placeholder: 'ID do material',
-        options: this._service.getMaterial()
+        options: this._service.getMaterial(),
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
@@ -71,6 +75,7 @@ export class ModalUpdateFestaComponent implements OnInit {
         controlName: 'valuePerDay',
         type: 'number',
         placeholder: 'Valor por dia',
+        size: '12',
       },
     ];
   }

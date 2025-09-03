@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>Adicionar Garçom</h2>
+<mat-dialog-content>
+    <app-form
+        [group]="formGroupItens"
+        [form]="form"
+    ></app-form>
+    <div class="table">
+        <div class="table-header">
+            <div class="title">
+                Nome
+            </div>
+            <div class="title">
+                Contato
+            </div>
+            <div class="title">
+                Ações
+            </div>
+        </div>
+        @for (item of listGarcom; track $index) {
+            <div class="table-row">
+                <div class="title">
+                    {{item.name}}
+                </div>
+                <div class="title">
+                    {{item.phone}}
+                </div>
+                <div class="title">
+                    @if (this.listGarcomAdd.includes(item.id)) {
+                        <button mat-icon-button (click)="removeGarcom(item.id)">
+                            <mat-icon fontIcon="close"></mat-icon>
+                        </button>
+                    }@else {
+                        <button mat-icon-button (click)="addGarcom(item.id)">
+                            <mat-icon fontIcon="add"></mat-icon>
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <mat-paginator
+        [length]="totalElements"
+        [pageSize]="pageSize"
+        (page)="onPageChange($event)"
+        hidePageSize="true"
+    ></mat-paginator>
+
+    <div class="footer-button">
+        @if (isSubmit) {
+            <button mat-button class="btn btn-primary" (click)="submit()">
+                Salvar
+            </button>
+        }@else {
+            <button mat-button class="btn btn-secondary" (click)="submit()">
+                Fechar
+            </button>
+        }
+    </div>
+
+</mat-dialog-content>

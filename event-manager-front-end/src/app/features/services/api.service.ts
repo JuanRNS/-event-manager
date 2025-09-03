@@ -5,7 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseListGarcom, IResponseMaterial } from '../../core/interface/event.interface';
 import { IRequestUserRegister } from '../../core/interface/register.interface';
 import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/interface/party.interface';
-import { IResponseDashboard } from '../../core/interface/dashboard.interface';
+import { IResponseDashboardContent } from '../../core/interface/dashboard.interface';
+import { IRequestAddGarcomParty, IResponseModalAddGarcom } from '../../core/interface/modal-add-garcom.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -76,11 +77,23 @@ export class ApiService extends HttpServiceAbstract {
     return this.get<IResponseParty>(`festa/${id}`);
   }
 
-  public getListDashboard(){
-    return this.get<IResponseDashboard[]>(`garcom/list/dashboard`);
+  public getListDashboard(page: number, size: number) {
+    return this.get<IResponseDashboardContent>(`garcom/list/dashboard?page=${page}&size=${size}`);
   }
 
   public getFileDownload(id: number){
     return this.fileDownload<string>(`pdf/generate/garcom/${id}`);
+  }
+
+  public getListAddGarcom(page: number, size: number) {
+    return this.get<IResponseModalAddGarcom>(`garcom/list/add?page=${page}&size=${size}`);
+  }
+
+  public postAddGarcomParty(request: IRequestAddGarcomParty){
+    return this.post(`festa/adicionar-garcom`, request);
+  }
+
+  public getGarcomIdsByFestaId(festaId: number) {
+    return this.get<number[]>(`garcom/list/festa/${festaId}`);
   }
 }

@@ -1,20 +1,24 @@
 <form>
+  <div class="row">
     @for (item of group(); track $index) {
+      <div class="col-{{item.size}}">
         @if (isInput(item)) {
-            <app-input
-                [form]="form()"
-                [type]="item.type"
-                [label]="item.label"
-                [formControl]="item.controlName"
-                [placeholder]="item.placeholder"
-            ></app-input>
-        }@else if (isSeleect(item)) {
-            <app-select
-                [form]="form()"
-                [label]="item.label"
-                [formControl]="item.controlName"
-                [options]="item.options ?? []"
-            ></app-select>
+          <app-input
+            [form]="form()"
+            [type]="item.type"
+            [label]="item.label"
+            [formControl]="item.controlName"
+            [placeholder]="item.placeholder"
+          ></app-input>
+        } @else if (isSeleect(item)) {
+          <app-select
+            [form]="form()"
+            [label]="item.label"
+            [formControl]="item.controlName"
+            [options]="item.options ?? []"
+          ></app-select>
         }
+      </div>
     }
+  </div>
 </form>

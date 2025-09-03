@@ -4,10 +4,11 @@ export interface IResponseParty{
   id: number;
   location: string;
   nameClient: string;
-  date: Date;
+  date: string;
   material: IResponseMaterial;
   garcomIds: number[];
   valuePerDay: number;
+  numberOfPeople: number;
 }
 
 export interface IRequestParty{
@@ -16,6 +17,7 @@ export interface IRequestParty{
   date: string;
   idMaterial: number;
   valuePerDay: number;
+  numberOfPeople: number;
 }
 
 export interface IResponseListParty{

@@ -4,25 +4,39 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { IResponseDashboard } from '../../../core/interface/dashboard.interface';
 import { ApiService } from '../../services/api.service';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    MatIconModule,
+    MatPaginatorModule,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit{
   public listDashboard: IResponseDashboard [] = [];
+  public page = 0;
+  public pageSize = 3;
+  public totalElements = 0;
 
   constructor(
     private readonly _service: ApiService,
   ) { }
 
   ngOnInit(): void {
-    this._service.getListDashboard().subscribe({
+    this.getListDashboard();
+  }
+
+  public getListDashboard() {
+    this._service.getListDashboard(this.page, this.pageSize).subscribe({
       next: (res) => {
-        this.listDashboard = res;
+        this.listDashboard = res.content;
+        this.totalElements = res.page.totalElements;
       },
       error: (err) => {
         console.error('Erro ao carregar o dashboard', err);
@@ -50,6 +64,12 @@ export class DashboardComponent implements OnInit{
         console.error('Erro ao gerar o relatório', err);
       },
     });
+  }
+
+  public onPageChange(event: PageEvent) {
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getListDashboard();
   }
 }
 

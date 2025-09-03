@@ -27,7 +27,6 @@ export class UserService extends HttpServiceAbstract {
     if(!token) return false;
 
     const payload = JSON.parse(atob(token.split('.')[1]));
-    console.log('esotu aqui');
     return payload.exp * 1000 > Date.now();
   }
 }

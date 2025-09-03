@@ -71,24 +71,28 @@ export class RegisterComponent {
         label: 'Email',
         controlName: 'email',
         type: 'email',
+        size: '12',
       },
       {
         component: FormFieldEnum.INPUT,
         label: 'Username',
         controlName: 'userName',
         type: 'text',
+        size: '12',
       },
       {
         component: FormFieldEnum.INPUT,
         label: 'Password',
         controlName: 'password',
         type: 'password',
+        size: '12',
       },
       {
         component: FormFieldEnum.INPUT,
         label: 'Confirm Password',
         controlName: 'confirmPassword',
         type: 'password',
+        size: '12',
       },
     ]
   }

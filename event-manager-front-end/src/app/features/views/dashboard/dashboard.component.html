@@ -41,7 +41,12 @@
           </div>
         </div>
       }
-
+      <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      (page)="onPageChange($event)"
+      hidePageSize
+      ></mat-paginator>
       <div class="summary-section">
         <div class="summary-grid">
           <div class="summary-card">

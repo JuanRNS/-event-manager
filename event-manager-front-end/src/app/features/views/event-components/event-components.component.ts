@@ -64,28 +64,32 @@ export class EventComponentsComponent implements OnInit{
         label: 'Nome',
         controlName: 'name',
         type: 'text',
-        placeholder: 'Digite seu nome'
+        placeholder: 'Digite seu nome',
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
         label: 'Chave Pix',
         controlName: 'pixKey',
         type: 'text',
-        placeholder: 'Digite sua chave pix'
+        placeholder: 'Digite sua chave pix',
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
         label: 'Telefone',
         controlName: 'phone',
         type: 'text',
-        placeholder: 'Digite seu telefone'
+        placeholder: 'Digite seu telefone',
+        size: '6',
       },
       {
         component: FormFieldEnum.SELECT,
         label: 'Status',
         controlName: 'statusGarcom',
         type: 'select',
-        options: this._optionsService.getOptionsStatus()
+        options: this._optionsService.getOptionsStatus(),
+        size: '6',
       }
     ]
   }
@@ -97,6 +101,7 @@ export class EventComponentsComponent implements OnInit{
         label: 'Descrição do Material',
         controlName: 'description',
         type: 'text',
+        size: '12',
       }
     ]
   }

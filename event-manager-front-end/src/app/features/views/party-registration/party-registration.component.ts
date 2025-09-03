@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from '@angular/material/dialog';
 import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal-update-festa/modal-update-festa.component';
+import { ModalAddGarcomComponent } from '../../../core/components/modais/modal-add-garcom/modal-add-garcom.component';
 
 @Component({
   selector: 'app-party-registration',
@@ -23,19 +24,22 @@ import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal
     MatPaginatorModule,
     MatMenuModule,
     MatIconModule,
-    MatButtonModule
-],
+    MatButtonModule,
+  ],
   templateUrl: './party-registration.component.html',
   styleUrl: './party-registration.component.scss',
 })
-export class PartyRegistrationComponent implements OnInit{
+export class PartyRegistrationComponent implements OnInit {
   public form = new FormGroup({
     location: new FormControl<string | null>(null, [Validators.required]),
     nameClient: new FormControl<string | null>(null, [Validators.required]),
     date: new FormControl<string | null>(null, [Validators.required]),
     idMaterial: new FormControl<number | null>(null, [Validators.required]),
     valuePerDay: new FormControl<number | null>(null, [Validators.required]),
-    numberOfPeople: new FormControl<string | null>(null, [Validators.required, Validators.min(1)]),
+    numberOfPeople: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.min(1),
+    ]),
   });
 
   public listParty: IResponseParty[] = [];
@@ -45,7 +49,7 @@ export class PartyRegistrationComponent implements OnInit{
 
   constructor(
     private readonly _service: ApiService,
-    private readonly _dialog: MatDialog,
+    private readonly _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +64,7 @@ export class PartyRegistrationComponent implements OnInit{
         controlName: 'location',
         type: 'text',
         placeholder: 'Local da festa',
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
@@ -67,6 +72,7 @@ export class PartyRegistrationComponent implements OnInit{
         controlName: 'nameClient',
         type: 'text',
         placeholder: 'Nome do cliente',
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
@@ -74,6 +80,7 @@ export class PartyRegistrationComponent implements OnInit{
         controlName: 'date',
         type: 'date',
         placeholder: 'Data da festa',
+        size: '6',
       },
       {
         component: FormFieldEnum.SELECT,
@@ -82,6 +89,7 @@ export class PartyRegistrationComponent implements OnInit{
         type: 'text',
         placeholder: 'Material usado',
         options: this._service.getMaterial(),
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
@@ -89,6 +97,7 @@ export class PartyRegistrationComponent implements OnInit{
         controlName: 'valuePerDay',
         type: 'number',
         placeholder: 'Valor da festa',
+        size: '6',
       },
       {
         component: FormFieldEnum.INPUT,
@@ -96,19 +105,22 @@ export class PartyRegistrationComponent implements OnInit{
         controlName: 'numberOfPeople',
         placeholder: 'Quantidade de Pessoas',
         type: 'text',
-      }
+        size: '6',
+      },
     ];
   }
 
-
-  public getListParty(){
+  public getListParty() {
     this._service.getListParty(this.page, this.pageSize).subscribe((res) => {
-      this.listParty = res.content;
+      this.listParty = res.content.map((party) => ({
+        ...party,
+        date: this.parseDate(new Date(party.date)),
+      }));
       this.totalElements = res.page.totalElements;
     });
   }
-  public createParty(){
-    if(this.form.invalid){
+  public createParty() {
+    if (this.form.invalid) {
       this.form.markAllAsDirty();
       this.form.updateValueAndValidity();
       this.form.markAllAsTouched();
@@ -117,13 +129,15 @@ export class PartyRegistrationComponent implements OnInit{
     const data: IRequestParty = {
       location: this.form.controls.location.value as string,
       nameClient: this.form.controls.nameClient.value as string,
-      date: new Date(this.form.controls.date.value as string).toISOString().substring(0, 19),
+      date: new Date(this.form.controls.date.value as string)
+        .toISOString()
+        .substring(0, 19),
       idMaterial: Number(this.form.controls.idMaterial.value),
-      valuePerDay: Number(this.form.controls.valuePerDay.value)
-    }
-    
+      valuePerDay: Number(this.form.controls.valuePerDay.value),
+      numberOfPeople: Number(this.form.controls.numberOfPeople.value),
+    };
+
     this._service.postRegisterParty(data).subscribe((res) => {
-      console.log(res);
       this.getListParty();
     });
   }
@@ -134,30 +148,38 @@ export class PartyRegistrationComponent implements OnInit{
     this.getListParty();
   }
 
-  public editParty(id: number){
-    this._dialog.open(ModalUpdateFestaComponent,{
+  public editParty(id: number) {
+    this._dialog.open(ModalUpdateFestaComponent, {
       width: '500px',
       height: '600px',
-      data: { partyId: id }
-    })
+      data: { partyId: id },
+    });
   }
 
-  public deleteParty(id: number){
+  public deleteParty(id: number) {
     this._service.deleteParty(id).subscribe(() => {
       this.getListParty();
     });
   }
 
-  public addGarcons(id: number){}
+  public addGarcons(id: number) {
+    this._dialog.open(ModalAddGarcomComponent,{
+      height: '70vh',
+      width: '90vw',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: { partyId: id },
+    })
+  }
 
-  public viewGarcons(id: number){}
+  public viewGarcons(id: number) {}
 
-  public removeGarcons(id: number){}
+  public removeGarcons(id: number) {}
 
   public parseDate(dateString: Date): string {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }

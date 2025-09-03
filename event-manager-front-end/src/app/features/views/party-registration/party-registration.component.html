@@ -30,6 +30,9 @@
                       Data da festa
                     </div>
                     <div class="title">
+                      Número de pessoas
+                    </div>
+                    <div class="title">
                       Valor diária 
                     </div>
                     <div class="title">
@@ -48,13 +51,16 @@
                       {{item.location}}
                     </div>
                     <div class="title">
-                      {{parseDate(item.date)}}
+                      {{item.date}}
+                    </div>
+                    <div class="title">
+                      {{item.numberOfPeople}}
                     </div>
                     <div class="title">
                       {{item.valuePerDay}}
                     </div>
                     <div class="title">
-                      {{item.material?.description}}
+                      {{item.material.description}}
                     </div>
                     <div class="title">
                       <mat-menu #menu="matMenu">
@@ -63,7 +69,6 @@
                         <button mat-menu-item (click)="deleteParty(item.id)">Apagar Festa</button>
                         @if (item.garcomIds.length > 0) {
                         <button mat-menu-item (click)="viewGarcons(item.id)">Visualizar Garçons</button>
-                        <button mat-menu-item (click)="removeGarcons(item.id)">Remover Garçons</button>
                         }
                       </mat-menu>
                       <button mat-icon-button [matMenuTriggerFor]="menu">

@@ -1,3 +1,10 @@
 mat-dialog-content{
     padding-top: 16px !important;
 }
+
+.button{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    gap: 12px;
+}

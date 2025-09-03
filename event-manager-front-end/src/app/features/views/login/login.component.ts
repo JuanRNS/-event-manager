@@ -61,12 +61,14 @@ export class LoginComponent {
         label: 'Username',
         controlName: 'userName',
         type: 'email',
+        size: '12',
       },
       {
         component: FormFieldEnum.INPUT,
         label: 'Password',
         controlName: 'password',
         type: 'password',
+        size: '12',
       }
     ]
   }
