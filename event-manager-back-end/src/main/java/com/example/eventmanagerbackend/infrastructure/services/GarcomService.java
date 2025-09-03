@@ -6,11 +6,17 @@ import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.exceptions.GarcomNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.GarcomMapper;
 import com.example.eventmanagerbackend.infrastructure.repositories.GarcomRepository;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,19 +75,30 @@ public class GarcomService {
         );
     }
 
-    public List<GarcomResponseDashboardDTO> getGarcomDashboard(){
-        List<Garcom> garcomList = garcomRepository.findAll();
-        List<GarcomResponseDashboardDTO> garcomResponseDashboardDTOList = new ArrayList<>();
-        for (Garcom garcom : garcomList) {
+    public Page<GarcomResponseDashboardDTO> getGarcomDashboard(Pageable pageable) {
+        Page<Garcom> garcomPage = garcomRepository.findAll(pageable);
+
+        return garcomPage.map(garcom -> {
             List<Festa> festas = festaGarcomService.getFestaGarcomById(garcom.getId());
+            festas.removeIf(festa -> !initialWeek(festa.getDate()));
+
             BigDecimal totalValue = festas.stream()
                     .map(Festa::getValuePerDay)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
-            GarcomResponseDashboardDTO garcomResponseDashboardDTO =
-                    new GarcomResponseDashboardDTO(garcom.getId(), garcom.getName(), (long) festas.size(),  totalValue);
-            garcomResponseDashboardDTOList.add(garcomResponseDashboardDTO);
-        }
-        return garcomResponseDashboardDTOList;
+
+            return new GarcomResponseDashboardDTO(
+                    garcom.getId(),
+                    garcom.getName(),
+                    (long) festas.size(),
+                    totalValue
+            );
+        });
+    }
+
+
+    public Page<GarcomAddResponseDTO> getGarcomAddResponseDTO(Pageable pageable) {
+        return garcomRepository.findAll(pageable)
+                .map(garcomMapper::toGarcomAddResponseDTO);
     }
 
     private void updateGarcom(Garcom garcom, GarcomRequestDTO garcomUpdate) {
@@ -90,5 +107,15 @@ public class GarcomService {
         garcom.setStatusGarcom(garcomUpdate.statusGarcom());
         garcom.setPixKey(garcomUpdate.pixKey());
         garcomRepository.save(garcom);
+    }
+
+    private boolean initialWeek(LocalDateTime todayDate){
+        LocalDate todayDateParty = todayDate.toLocalDate();
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate lastMonday = monday.minusWeeks(1);
+        LocalDate lastSunday = lastMonday.plusDays(6);
+
+        return !todayDateParty.isBefore(lastMonday) && !todayDateParty.isAfter(lastSunday);
     }
 }

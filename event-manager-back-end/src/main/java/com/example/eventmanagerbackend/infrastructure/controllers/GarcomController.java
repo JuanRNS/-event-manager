@@ -2,7 +2,9 @@ package com.example.eventmanagerbackend.infrastructure.controllers;
 
 import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
+import com.example.eventmanagerbackend.infrastructure.services.FestaGarcomService;
 import com.example.eventmanagerbackend.infrastructure.services.GarcomService;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,11 @@ import java.util.List;
 public class GarcomController {
 
     private final GarcomService garcomService;
+    private final FestaGarcomService festaGarcomService;
 
-    public GarcomController(GarcomService garcomService) {
+    public GarcomController(GarcomService garcomService, FestaGarcomService festaGarcomService) {
         this.garcomService = garcomService;
+        this.festaGarcomService = festaGarcomService;
     }
 
     @GetMapping("options")
@@ -77,10 +81,24 @@ public class GarcomController {
     }
 
     @GetMapping("list/dashboard")
-    public ResponseEntity<List<GarcomResponseDashboardDTO>> getGarcomDashboard() {
-        List<GarcomResponseDashboardDTO> garcomList = garcomService.getGarcomDashboard();
+    public ResponseEntity<Page<GarcomResponseDashboardDTO>> getGarcomDashboard(Pageable pageable) {
+        Page<GarcomResponseDashboardDTO> garcomList = garcomService.getGarcomDashboard(pageable);
+        return ResponseEntity.ok(garcomList);
+    }
+
+    @GetMapping("list/add")
+    public ResponseEntity<Page<GarcomAddResponseDTO>> getGarcomAdd(Pageable pageable) {
+        Page<GarcomAddResponseDTO> garcomList = garcomService.getGarcomAddResponseDTO(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(garcomList);
     }
+    @GetMapping("list/festa/{id}")
+    public ResponseEntity<List<Long>> getGarcomIdsByFestaId(@PathVariable Long id) {
+        List<Long> garcomIds = festaGarcomService.getGarcomIdsByFestaId(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(garcomIds);
+    }
+
 }

@@ -1,4 +1,11 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public class GarcomAddResponseDTO {
+import com.example.eventmanagerbackend.domain.enums.StatusGarcom;
+
+public record GarcomAddResponseDTO(
+    Long id,
+    String name,
+    String phone,
+    StatusGarcom statusGarcom
+) {
 }

@@ -12,6 +12,7 @@ public record FestaResponseDTO(
     LocalDateTime date,
     BigDecimal valuePerDay,
     MaterialResponseDTO material,
-    List<Long> garcomIds
+    List<Long> garcomIds,
+    Long numberOfPeople
 ) {
 }

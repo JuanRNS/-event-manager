@@ -39,6 +39,9 @@ public class Festa {
     @Column(name = "status")
     private StatusFesta status = StatusFesta.AGENDADA;
 
+    @Column(name = "number_of_people", nullable = false)
+    private Long numberOfPeople;
+
     @OneToMany(mappedBy = "festa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestaGarcom> festaGarcoms = new ArrayList<>();
 

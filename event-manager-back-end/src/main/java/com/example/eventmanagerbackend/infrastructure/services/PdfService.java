@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class PdfService {
         this.festaGarcomService = festaGarcomService;
     }
 
-    public byte[] generatePDF(Long id) throws ParseException {
+    public byte[] generatePDF(Long id) {
         PdfRequestDashboardDTO dashboardDTO = dashboardDTO(id);
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage();
@@ -78,6 +78,7 @@ public class PdfService {
     private PdfRequestDashboardDTO dashboardDTO(Long id){
         GarcomResponseDTO garcom = garcomService.getGarcomById(id);
         List<Festa> festas = festaGarcomService.getFestaGarcomById(id);
+        festas.removeIf(festa -> !initialWeek(festa.getDate()));
         List<PdfRequestDashboardFestaDTO> festasDTO = festas.stream().map(f ->
                 new PdfRequestDashboardFestaDTO(
                         f.getNameClient(),
@@ -95,6 +96,15 @@ public class PdfService {
         );
     }
 
+    private boolean initialWeek(LocalDateTime todayDate){
+        LocalDate todayDateParty = todayDate.toLocalDate();
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate lastMonday = monday.minusWeeks(1);
+        LocalDate lastSunday = lastMonday.plusDays(6);
+
+        return !todayDateParty.isBefore(lastMonday) && !todayDateParty.isAfter(lastSunday);
+    }
     private void writeText(PDPageContentStream cs, PDFont font, int fontSize, float x, float y, String text) throws IOException {
         cs.beginText();
         cs.setFont(font, fontSize);

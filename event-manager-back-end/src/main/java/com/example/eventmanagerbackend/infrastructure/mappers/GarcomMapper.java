@@ -1,5 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.mappers;
 
+import com.example.eventmanagerbackend.domain.dtos.GarcomAddResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.GarcomOptionsResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
@@ -15,6 +16,6 @@ public interface GarcomMapper {
     GarcomRequestDTO toGarcomDTO(Garcom garcom);
     @Mapping(target = "description", source = "name")
     GarcomOptionsResponseDTO toGarcomOptionsResponseDTO(Garcom garcom);
-
     GarcomResponseDTO toGarcomResponseDTO(Garcom garcom);
+    GarcomAddResponseDTO toGarcomAddResponseDTO(Garcom garcom);
 }

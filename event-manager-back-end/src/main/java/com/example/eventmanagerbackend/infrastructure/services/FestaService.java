@@ -3,6 +3,7 @@ package com.example.eventmanagerbackend.infrastructure.services;
 import com.example.eventmanagerbackend.domain.dtos.FestaRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.FestaResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.MaterialResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
 import com.example.eventmanagerbackend.domain.entities.*;
 import com.example.eventmanagerbackend.infrastructure.exceptions.FestaNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
@@ -33,7 +34,7 @@ public class FestaService {
 
     public FestaResponseDTO createFesta(FestaRequestDTO festaRequestDTO) {
         Material material = materialRepository.findById(festaRequestDTO.idMaterial()).orElseThrow(MaterialNotFoundException::new);
-        Festa festa = festaMapper.toFesta(festaRequestDTO);
+        Festa festa = parseFesta(festaRequestDTO);
         festa.setMaterial(material);
         Festa savedFesta = festaRepository.save(festa);
         return festaMapper.toFestaResponseDTO(savedFesta);
@@ -62,12 +63,21 @@ public class FestaService {
         return parseFestaResponseDTO(festas);
     }
 
+    public List<StatusResponseDTO> getStatus() {
+       return List.of(
+               new StatusResponseDTO("REALIZADA", "REALIZADA"),
+               new StatusResponseDTO("CANCELADA", "CANCELADA"),
+               new StatusResponseDTO("AGENDADA", "AGENDADA")
+       );
+    }
+
     private Festa parseFesta(FestaRequestDTO festaRequestDTO) {
         Festa festa = new Festa();
         festa.setLocation(festaRequestDTO.location());
         festa.setNameClient(festaRequestDTO.nameClient());
         festa.setDate(festaRequestDTO.date());
         festa.setValuePerDay(festaRequestDTO.valuePerDay());
+        festa.setNumberOfPeople(festaRequestDTO.numberOfPeople());
         return festa;
     }
 
@@ -84,7 +94,8 @@ public class FestaService {
                 festa.getDate(),
                 festa.getValuePerDay(),
                 materialResponseDTO,
-                garcomId
+                garcomId,
+                festa.getNumberOfPeople()
         );
     }
 

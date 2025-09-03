@@ -27,6 +27,8 @@ public class FestaGarcomService {
 
     public void addGarcomToFesta(Long festaId, List<Long> garcomIds) {
         Festa festa = festaRepository.findById(festaId).orElseThrow(FestaNotFoundException::new);
+
+        festa.getFestaGarcoms().clear();
         for (Long garcomId : garcomIds) {
             FestaGarcom festaGarcom = new FestaGarcom();
             Garcom garcom = garcomRepository.findById(garcomId).orElseThrow();
@@ -47,5 +49,10 @@ public class FestaGarcomService {
 
     public List<Festa> getFestaGarcomById(Long id) {
         return festaGarcomRepository.findFestasByGarcomId(id);
+    }
+
+    public List<Long> getGarcomIdsByFestaId(Long id) {
+        Festa festa = festaRepository.findById(id).orElseThrow(FestaNotFoundException::new);
+        return festa.getFestaGarcoms().stream().map(FestaGarcom::getGarcom).map(Garcom::getId).toList();
     }
 }
