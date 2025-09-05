@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalViewGarcomComponent } from './modal-view-garcom.component';
+import { ModalViewPartyComponent } from './modal-view-party.component';
 
-describe('ModalViewGarcomComponent', () => {
-  let component: ModalViewGarcomComponent;
-  let fixture: ComponentFixture<ModalViewGarcomComponent>;
+describe('ModalViewPartyComponent', () => {
+  let component: ModalViewPartyComponent;
+  let fixture: ComponentFixture<ModalViewPartyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalViewGarcomComponent]
+      imports: [ModalViewPartyComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModalViewGarcomComponent);
+    fixture = TestBed.createComponent(ModalViewPartyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

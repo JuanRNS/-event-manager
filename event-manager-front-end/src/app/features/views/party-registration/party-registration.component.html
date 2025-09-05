@@ -68,7 +68,7 @@
                         <button mat-menu-item (click)="editParty(item.id)">Editar Festa</button>
                         <button mat-menu-item (click)="deleteParty(item.id)">Apagar Festa</button>
                         @if (item.garcomIds.length > 0) {
-                        <button mat-menu-item (click)="viewGarcons(item.id)">Visualizar Garçons</button>
+                        <button mat-menu-item (click)="viewParty(item.id)">Visualizar Festa</button>
                         }
                       </mat-menu>
                       <button mat-icon-button [matMenuTriggerFor]="menu">

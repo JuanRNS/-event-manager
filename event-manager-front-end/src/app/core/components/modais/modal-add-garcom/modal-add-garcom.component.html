@@ -27,11 +27,11 @@
                 <div class="title">
                     @if (this.listGarcomAdd.includes(item.id)) {
                         <button mat-icon-button (click)="removeGarcom(item.id)">
-                            <mat-icon fontIcon="close"></mat-icon>
+                            <mat-icon fontIcon="close" class="close"></mat-icon>
                         </button>
                     }@else {
                         <button mat-icon-button (click)="addGarcom(item.id)">
-                            <mat-icon fontIcon="add"></mat-icon>
+                            <mat-icon fontIcon="add" class="add"></mat-icon>
                         </button>
                     }
                 </div>

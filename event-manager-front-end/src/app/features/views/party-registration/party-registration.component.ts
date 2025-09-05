@@ -13,6 +13,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from '@angular/material/dialog';
 import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal-update-festa/modal-update-festa.component';
 import { ModalAddGarcomComponent } from '../../../core/components/modais/modal-add-garcom/modal-add-garcom.component';
+import { ModalViewPartyComponent } from '../../../core/components/modais/modal-view-party/modal-view-party.component';
 
 @Component({
   selector: 'app-party-registration',
@@ -172,7 +173,15 @@ export class PartyRegistrationComponent implements OnInit {
     })
   }
 
-  public viewGarcons(id: number) {}
+  public viewParty(id: number) {
+    this._dialog.open(ModalViewPartyComponent, {
+      height: '70vh',
+      width: '90vw',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: { id: id },
+    });
+  }
 
   public removeGarcons(id: number) {}
 

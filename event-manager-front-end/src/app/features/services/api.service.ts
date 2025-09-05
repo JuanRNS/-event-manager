@@ -96,4 +96,8 @@ export class ApiService extends HttpServiceAbstract {
   public getGarcomIdsByFestaId(festaId: number) {
     return this.get<number[]>(`garcom/list/festa/${festaId}`);
   }
+
+  public getFestaGarcomById(festaId: number) {
+    return this.get<IResponseListGarcom>(`festa/view/${festaId}`);
+  }
 }
