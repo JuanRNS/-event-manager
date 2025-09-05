@@ -1,9 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
-import com.example.eventmanagerbackend.domain.dtos.FestaGarcomRequestDTO;
-import com.example.eventmanagerbackend.domain.dtos.FestaRequestDTO;
-import com.example.eventmanagerbackend.domain.dtos.FestaResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.infrastructure.services.FestaGarcomService;
 import com.example.eventmanagerbackend.infrastructure.services.FestaService;
 import org.springframework.data.domain.Page;
@@ -77,5 +74,11 @@ public class FestaController {
     @GetMapping("status")
     public ResponseEntity<List<StatusResponseDTO>> getStatus() {
         return ResponseEntity.ok(festaService.getStatus());
+    }
+
+    @GetMapping("view/{id}")
+    public ResponseEntity<FestaGarcomViewDTO> getFestaGarcomById(@PathVariable Long id) {
+        FestaGarcomViewDTO festaGarcomViewDTO = festaService.getFestaGarcomById(id);
+        return ResponseEntity.ok(festaGarcomViewDTO);
     }
 }

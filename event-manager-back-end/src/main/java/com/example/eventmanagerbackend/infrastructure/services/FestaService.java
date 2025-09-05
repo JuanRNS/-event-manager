@@ -1,9 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.services;
 
-import com.example.eventmanagerbackend.domain.dtos.FestaRequestDTO;
-import com.example.eventmanagerbackend.domain.dtos.FestaResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.MaterialResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.*;
 import com.example.eventmanagerbackend.infrastructure.exceptions.FestaNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
@@ -14,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,11 +22,12 @@ public class FestaService {
     private final FestaRepository festaRepository;
     private final MaterialRepository materialRepository;
     private final FestaMapper festaMapper;
-
-    public FestaService(FestaRepository festaRepository, FestaMapper festaMapper, MaterialRepository materialRepository) {
+    private final GarcomService garcomService;
+    public FestaService(FestaRepository festaRepository, FestaMapper festaMapper, MaterialRepository materialRepository, GarcomService garcomService) {
         this.festaRepository = festaRepository;
         this.festaMapper = festaMapper;
         this.materialRepository = materialRepository;
+        this.garcomService = garcomService;
     }
 
     public FestaResponseDTO createFesta(FestaRequestDTO festaRequestDTO) {
@@ -69,6 +67,29 @@ public class FestaService {
                new StatusResponseDTO("CANCELADA", "CANCELADA"),
                new StatusResponseDTO("AGENDADA", "AGENDADA")
        );
+    }
+
+    public FestaGarcomViewDTO getFestaGarcomById(Long idParty) {
+        Festa festa = festaRepository.findById(idParty).orElseThrow(FestaNotFoundException::new);
+        List<Long> garcomId = festa.getFestaGarcoms()
+                .stream()
+                .map(festaGarcom -> festaGarcom.getGarcom().getId())
+                .toList();
+        List<GarcomResponseDTO> garcomList = new ArrayList<>();
+        for (Long id : garcomId) {
+            GarcomResponseDTO garcom = garcomService.getGarcomById(id);
+            garcomList.add(garcom);
+        }
+        return new FestaGarcomViewDTO(
+                festa.getId(),
+                festa.getLocation(),
+                festa.getNameClient(),
+                festa.getDate(),
+                festa.getValuePerDay(),
+                festa.getMaterial(),
+                festa.getNumberOfPeople(),
+                garcomList
+        );
     }
 
     private Festa parseFesta(FestaRequestDTO festaRequestDTO) {
