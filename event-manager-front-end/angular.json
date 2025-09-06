@@ -28,6 +28,11 @@
                 "glob": "**/*",
                 "input": "public",
                 "output": "/"
+              },
+              {              
+                "glob": "vercel.json", 
+                "input": ".", 
+                "output": "/" 
               }
             ],
             "styles": [
