@@ -23,13 +23,21 @@ public class FestaController {
         this.festaGarcomService = festaGarcomService;
     }
 
+    @GetMapping("list/status")
+    public ResponseEntity<Page<FestaResponseDTO>> getAllFestasByStatus(Pageable pageable) {
+        Page<FestaResponseDTO> festaList = festaService.getAllFestasByStatus(pageable);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(festaList);
+    }
     @GetMapping("list")
-    public ResponseEntity<Page<FestaResponseDTO>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<FestaResponseDTO>> getAllFestas(Pageable pageable) {
         Page<FestaResponseDTO> festaList = festaService.getAllFestas(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(festaList);
     }
+
 
     @PostMapping("create")
     public ResponseEntity<FestaResponseDTO> createFesta(@RequestBody FestaRequestDTO festa) {

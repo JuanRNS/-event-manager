@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -21,7 +20,7 @@ public class FestaScheduler {
     }
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void deleteFestas() {
+    public void updateFestas() {
         LocalDate now = LocalDate.now();
         List<Festa> festas = festaRepository.findAllByStatus(StatusFesta.AGENDADA);
 

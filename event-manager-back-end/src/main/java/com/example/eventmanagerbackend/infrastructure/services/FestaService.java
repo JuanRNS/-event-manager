@@ -2,6 +2,7 @@ package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.*;
+import com.example.eventmanagerbackend.domain.enums.StatusFesta;
 import com.example.eventmanagerbackend.infrastructure.exceptions.FestaNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.FestaMapper;
@@ -56,6 +57,11 @@ public class FestaService {
         festaRepository.deleteById(id);
     }
 
+    public Page<FestaResponseDTO> getAllFestasByStatus(Pageable pageable) {
+        Page<Festa> festas = festaRepository.findAllByStatus(StatusFesta.AGENDADA, pageable);
+        return parseFestaResponseDTO(festas);
+    }
+
     public Page<FestaResponseDTO> getAllFestas(Pageable pageable) {
         Page<Festa> festas = festaRepository.findAll(pageable);
         return parseFestaResponseDTO(festas);
@@ -88,7 +94,8 @@ public class FestaService {
                 festa.getValuePerDay(),
                 festa.getMaterial(),
                 festa.getNumberOfPeople(),
-                garcomList
+                garcomList,
+                festa.getStatus()
         );
     }
 
@@ -116,7 +123,8 @@ public class FestaService {
                 festa.getValuePerDay(),
                 materialResponseDTO,
                 garcomId,
-                festa.getNumberOfPeople()
+                festa.getNumberOfPeople(),
+                festa.getStatus()
         );
     }
 

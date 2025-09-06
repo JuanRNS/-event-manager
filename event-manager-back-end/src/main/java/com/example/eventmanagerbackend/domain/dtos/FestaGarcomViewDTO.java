@@ -1,6 +1,7 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
 import com.example.eventmanagerbackend.domain.entities.Material;
+import com.example.eventmanagerbackend.domain.enums.StatusFesta;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public record FestaGarcomViewDTO(
         BigDecimal valuePerDay,
         Material material,
         Long numberOfPeople,
-        List<GarcomResponseDTO> garcoms
+        List<GarcomResponseDTO> garcoms,
+        StatusFesta status
 ) {
 }
