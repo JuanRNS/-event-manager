@@ -38,7 +38,7 @@
             "styles": [
               "src/styles.scss"
             ],
-          "outputPath": "dist/party-house-system"
+          "outputPath": "dist/"
           },
           "configurations": {
             "production": {
