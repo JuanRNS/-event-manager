@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    api: 'https://event-manager-production-0b0c.up.railway.app/',
+    api: 'https://event-manager-production-bc44.up.railway.app',
 };
