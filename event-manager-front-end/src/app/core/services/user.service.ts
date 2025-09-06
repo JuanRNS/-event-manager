@@ -14,7 +14,7 @@ export class UserService extends HttpServiceAbstract {
   }
 
   public userLogin(user: IRequestLogin) {
-    const basicAuth = btoa(`${user.username}:${user.password}`);
+    const basicAuth = btoa(`${user.username.replace(/\s+/g, '')}:${user.password}`);
     return this.post<string>('user/login', null, basicAuth, 'text');
   }
 
