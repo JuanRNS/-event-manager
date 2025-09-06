@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpServiceAbstract } from '../abstract/http.abstract';
-import { environment } from '../../../environments/enviroments';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IRequestLogin, IRequestRegister } from '../interface/login.interface';
 
