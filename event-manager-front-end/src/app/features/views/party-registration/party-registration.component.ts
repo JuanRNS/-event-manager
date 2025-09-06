@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal-update-festa/modal-update-festa.component';
 import { ModalAddGarcomComponent } from '../../../core/components/modais/modal-add-garcom/modal-add-garcom.component';
 import { ModalViewPartyComponent } from '../../../core/components/modais/modal-view-party/modal-view-party.component';
+import { ParseDateUtil } from '../../../core/utils/parse-date.util';
 
 @Component({
   selector: 'app-party-registration',
@@ -112,10 +113,10 @@ export class PartyRegistrationComponent implements OnInit {
   }
 
   public getListParty() {
-    this._service.getListParty(this.page, this.pageSize).subscribe((res) => {
+    this._service.getListPartyStatus(this.page, this.pageSize).subscribe((res) => {
       this.listParty = res.content.map((party) => ({
         ...party,
-        date: this.parseDate(new Date(party.date)),
+        date: ParseDateUtil.parseDate(party.date),
       }));
       this.totalElements = res.page.totalElements;
     });
@@ -176,20 +177,11 @@ export class PartyRegistrationComponent implements OnInit {
   public viewParty(id: number) {
     this._dialog.open(ModalViewPartyComponent, {
       height: '70vh',
-      width: '90vw',
+      width: '70vw',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { id: id },
     });
   }
 
-  public removeGarcons(id: number) {}
-
-  public parseDate(dateString: Date): string {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
 }

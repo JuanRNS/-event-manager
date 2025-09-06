@@ -7,6 +7,7 @@ import { IRequestUserRegister } from '../../core/interface/register.interface';
 import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/interface/party.interface';
 import { IResponseDashboardContent } from '../../core/interface/dashboard.interface';
 import { IRequestAddGarcomParty, IResponseModalAddGarcom } from '../../core/interface/modal-add-garcom.interface';
+import { IResponseModalViewParty } from '../../core/interface/modal-view-party.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -65,6 +66,10 @@ export class ApiService extends HttpServiceAbstract {
     return this.post<any>(`festa/create`, party, undefined, 'json', true);
   }
 
+  public getListPartyStatus(page: number, size: number) {
+    return this.get<IResponseListParty>(`festa/list/status?page=${page}&size=${size}`);
+  }
+
   public getListParty(page: number, size: number) {
     return this.get<IResponseListParty>(`festa/list?page=${page}&size=${size}`);
   }
@@ -98,6 +103,6 @@ export class ApiService extends HttpServiceAbstract {
   }
 
   public getFestaGarcomById(festaId: number) {
-    return this.get<IResponseListGarcom>(`festa/view/${festaId}`);
+    return this.get<IResponseModalViewParty>(`festa/view/${festaId}`);
   }
 }

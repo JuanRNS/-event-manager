@@ -2,18 +2,12 @@
   
   <div class="main-content">
     <div class="page-header">
-      <h1 class="page-title">Lançamento de Trabalhos</h1>
+      <h1 class="page-title">Lista de Festas</h1>
     </div>
     
-    <div class="content-wrapper">
-      <app-form
-      [group]="formGroupItens"
-      [form]="form"
-      ></app-form>
-      <button type="submit" class="btn btn-primary" (click)="createParty()">Lançar Trabalho</button>
-      
+    <div class="content-wrapper">      
       <div class="parties-section">
-        <h2 class="section-title">Festas Agendadas</h2>
+        <h2 class="section-title">Festas Cadastradas</h2>
         
         <div class="parties-list">
           <div class="party-item">
@@ -39,6 +33,9 @@
                       Material
                     </div>
                     <div class="title">
+                      Status
+                    </div>
+                    <div class="title">
                       Ações
                     </div>
                   </div>
@@ -61,6 +58,9 @@
                     </div>
                     <div class="title">
                       {{item.material.description}}
+                    </div>
+                    <div class="title">
+                      {{item.status}}
                     </div>
                     <div class="title">
                       <mat-menu #menu="matMenu">

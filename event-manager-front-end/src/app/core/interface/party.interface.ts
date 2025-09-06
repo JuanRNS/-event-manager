@@ -9,6 +9,7 @@ export interface IResponseParty{
   garcomIds: number[];
   valuePerDay: number;
   numberOfPeople: number;
+  status: string;
 }
 
 export interface IRequestParty{

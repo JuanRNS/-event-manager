@@ -25,6 +25,7 @@ import { FormComponent } from "../../form-group/form/form.component";
 })
 export class ModalAddGarcomComponent implements OnInit {
   public listGarcom: IResponseListAddGarcom[] = [];
+  public listGarcomOriginal: IResponseListAddGarcom[] = [];
   public listGarcomAdd: number[] = [];
   public form = new FormGroup({
     search: new FormControl<string | null>(null),
@@ -43,6 +44,14 @@ export class ModalAddGarcomComponent implements OnInit {
   ngOnInit(): void {
     this.getGarcomIdsByFestaId();
     this.getListGarcom();
+
+      this.form.controls.search.valueChanges.subscribe(value => {
+        if (!value) {
+          this.listGarcom = [...this.listGarcomOriginal];
+          return;
+        }
+        this.listGarcom= this.listGarcom.filter(garcom => garcom.name.toLowerCase().includes(value.toLowerCase()));
+      })
   }
 
   public get formGroupItens(): FormGroupArray{
@@ -62,6 +71,7 @@ export class ModalAddGarcomComponent implements OnInit {
     this._service.getListAddGarcom(this.page, this.pageSize).subscribe({
       next: (res) => {
         this.listGarcom = res.content.filter(garcom => garcom.statusGarcom === 'ATIVO');
+        this.listGarcomOriginal = res.content.filter(garcom => garcom.statusGarcom === 'ATIVO');
         this.totalElements = res.page.totalElements;
       },
       error: (err) => {
