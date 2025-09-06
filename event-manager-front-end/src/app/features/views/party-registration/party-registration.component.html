@@ -1,5 +1,4 @@
 <div class="page-layout">
-  <app-sidebar></app-sidebar>
   
   <div class="main-content">
     <div class="page-header">
@@ -7,82 +6,92 @@
     </div>
     
     <div class="content-wrapper">
-      <form class="party-form">
-        <div class="form-row">
-          <div class="form-group">
-            <input 
-              type="text" 
-              class="form-control" 
-              placeholder="Local da festa"
-              name="location"
-              required>
-          </div>
-          
-          <div class="form-group">
-            <input 
-              type="text" 
-              class="form-control" 
-              placeholder="Nome do cliente"
-              name="clientName"
-              required>
-          </div>
-          
-          <div class="form-group">
-            <input 
-              type="text" 
-              class="form-control" 
-              placeholder="Endereço"
-              name="address"
-              required>
-          </div>
-        </div>
-        
-        <div class="form-row">
-          <div class="form-group">
-            <input 
-              type="text" 
-              class="form-control" 
-              placeholder="Material usado"
-              name="materials"
-              required>
-          </div>
-          
-          <div class="form-group">
-            <input 
-              type="number" 
-              class="form-control" 
-              placeholder="Valor da festa"
-              name="value"
-              required>
-          </div>
-        </div>
-        
-        <button type="submit" class="btn btn-primary">Lançar Trabalho</button>
-      </form>
+      <app-form
+      [group]="formGroupItens"
+      [form]="form"
+      ></app-form>
+      <button type="submit" class="btn btn-primary" (click)="createParty()">Lançar Trabalho</button>
       
       <div class="parties-section">
-        <h2 class="section-title">Festas cadastradas</h2>
+        <h2 class="section-title">Festas Agendadas</h2>
         
         <div class="parties-list">
           <div class="party-item">
             <div class="party-info">
-              <span class="party-details">]
-                <!-- ajustar valores -->
-              </span>
-            </div>
-            <div class="party-actions">
-              <button class="btn btn-primary btn-sm">Adicionar Garçons</button>
+               <div class="table">
+                  <div class="table-header">
+                    <div class="title">
+                      Nome Do cliente
+                    </div>
+                    <div class="title">
+                      Local da festa
+                    </div>
+                    <div class="title">
+                      Data da festa
+                    </div>
+                    <div class="title">
+                      Número de pessoas
+                    </div>
+                    <div class="title">
+                      Valor diária 
+                    </div>
+                    <div class="title">
+                      Material
+                    </div>
+                    <div class="title">
+                      Ações
+                    </div>
+                  </div>
+                  @for (item of listParty; track $index) {
+                  <div class="table-row">
+                    <div class="title">
+                      {{item.nameClient}}
+                    </div>
+                    <div class="title">
+                      {{item.location}}
+                    </div>
+                    <div class="title">
+                      {{item.date}}
+                    </div>
+                    <div class="title">
+                      {{item.numberOfPeople}}
+                    </div>
+                    <div class="title">
+                      {{item.valuePerDay}}
+                    </div>
+                    <div class="title">
+                      {{item.material.description}}
+                    </div>
+                    <div class="title">
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="addGarcons(item.id)">Adicionar Garçons</button>
+                        <button mat-menu-item (click)="editParty(item.id)">Editar Festa</button>
+                        <button mat-menu-item (click)="deleteParty(item.id)">Apagar Festa</button>
+                        @if (item.garcomIds.length > 0) {
+                        <button mat-menu-item (click)="viewParty(item.id)">Visualizar Festa</button>
+                        }
+                      </mat-menu>
+                      <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon fontIcon="menu"></mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  }
+                </div>
+                <mat-paginator 
+                [length]="totalElements" 
+                [pageSize]="pageSize"
+                (page)="onChangePage($event)"
+                hidePageSize
+                ></mat-paginator>
+              </div>
             </div>
           </div>
         </div>
         
         <div class="party-placeholder">
-          <div class="placeholder-box">
-            <p>Nenhuma festa cadastrada ainda</p>
-          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 

@@ -194,10 +194,15 @@
     background-color: var(--primary-color);
     color: var(--white);
     
-    .title{
+    .title, .title-buttons{
       font-size: 16px;
       text-align: center;
-      width: 250px;
+      width: 20%;
+    }
+
+    .title-buttons{
+      display: flex;
+      gap: 12px;
     }
   }
   .table-row{

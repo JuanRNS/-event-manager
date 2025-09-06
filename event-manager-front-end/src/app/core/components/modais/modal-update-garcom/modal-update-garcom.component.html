@@ -1,1 +1,23 @@
-<p>modal-update-garcom works!</p>
+<h2 mat-dialog-title>Atualize o Garcom</h2>
+<mat-dialog-content>
+    <app-form
+    [group]="formGroupItensPrimary"
+    [form]="form"
+    ></app-form>
+    <div class="button">
+        <button 
+        mat-button
+        mat-dialog-close
+        class="btn btn-secondary"
+        >
+            Fechar
+        </button>
+        <button 
+        mat-button
+        class="btn btn-primary" 
+        (click)="updateGarcom()"
+        >
+            Atualizar
+        </button>
+    </div>
+</mat-dialog-content>

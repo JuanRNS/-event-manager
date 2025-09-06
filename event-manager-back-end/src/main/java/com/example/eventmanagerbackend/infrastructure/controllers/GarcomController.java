@@ -1,10 +1,8 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
-import com.example.eventmanagerbackend.domain.dtos.GarcomOptionsResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
-import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
-import com.example.eventmanagerbackend.domain.dtos.StatusResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
+import com.example.eventmanagerbackend.infrastructure.services.FestaGarcomService;
 import com.example.eventmanagerbackend.infrastructure.services.GarcomService;
 import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
@@ -20,9 +18,11 @@ import java.util.List;
 public class GarcomController {
 
     private final GarcomService garcomService;
+    private final FestaGarcomService festaGarcomService;
 
-    public GarcomController(GarcomService garcomService) {
+    public GarcomController(GarcomService garcomService, FestaGarcomService festaGarcomService) {
         this.garcomService = garcomService;
+        this.festaGarcomService = festaGarcomService;
     }
 
     @GetMapping("options")
@@ -57,8 +57,8 @@ public class GarcomController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Garcom> getGarcom(@PathVariable Long id) {
-        Garcom garcom = garcomService.getGarcomById(id);
+    public ResponseEntity<GarcomResponseDTO> getGarcom(@PathVariable Long id) {
+        GarcomResponseDTO garcom = garcomService.getGarcomById(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(garcom);
@@ -79,4 +79,26 @@ public class GarcomController {
                 .status(HttpStatus.OK)
                 .build();
     }
+
+    @GetMapping("list/dashboard")
+    public ResponseEntity<Page<GarcomResponseDashboardDTO>> getGarcomDashboard(Pageable pageable) {
+        Page<GarcomResponseDashboardDTO> garcomList = garcomService.getGarcomDashboard(pageable);
+        return ResponseEntity.ok(garcomList);
+    }
+
+    @GetMapping("list/add")
+    public ResponseEntity<Page<GarcomAddResponseDTO>> getGarcomAdd(Pageable pageable) {
+        Page<GarcomAddResponseDTO> garcomList = garcomService.getGarcomAddResponseDTO(pageable);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(garcomList);
+    }
+    @GetMapping("list/festa/{id}")
+    public ResponseEntity<List<Long>> getGarcomIdsByFestaId(@PathVariable Long id) {
+        List<Long> garcomIds = festaGarcomService.getGarcomIdsByFestaId(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(garcomIds);
+    }
+
 }

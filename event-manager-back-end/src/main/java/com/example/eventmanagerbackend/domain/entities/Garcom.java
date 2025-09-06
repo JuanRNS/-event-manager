@@ -1,8 +1,6 @@
 package com.example.eventmanagerbackend.domain.entities;
 
-import com.example.eventmanagerbackend.domain.dtos.GarcomRequestDTO;
-import com.example.eventmanagerbackend.domain.enums.Status;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.example.eventmanagerbackend.domain.enums.StatusGarcom;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +31,7 @@ public class Garcom {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status = Status.ATIVO;
+    private StatusGarcom statusGarcom = StatusGarcom.ATIVO;
 
     @OneToMany(mappedBy = "garcom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FestaGarcom> festaGarcoms = new ArrayList<>();

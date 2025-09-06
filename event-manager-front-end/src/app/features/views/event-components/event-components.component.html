@@ -1,5 +1,4 @@
 <div class="page-layout">
-  <app-sidebar></app-sidebar>
 
   <div class="main-content">
     <div class="page-header">
@@ -9,7 +8,11 @@
     <div class="content-wrapper">
       <!-- seção de cadastro dos garçons -->
       <div class="section">
-        <app-form [group]="formGroupItensPrimary" [form]="formPrimary"></app-form>
+        <app-form 
+        [group]="formGroupItensPrimary" 
+        [form]="formPrimary"
+        >
+      </app-form>
         <button type="submit" class="btn btn-primary" (click)="createGarcom()">Cadastrar</button>
 
         <!-- lista de garçons -->
@@ -49,11 +52,14 @@
                       {{item.phone}}
                     </div>
                     <div class="title">
-                      {{item.status}}
+                      {{item.statusGarcom}}
                     </div>
-                    <div class="title">
+                    <div class="title-buttons">
                       <button mat-button class="btn btn-primary btn-sm" (click)="editGarcom(item.id)">
                         Editar garçom
+                      </button>
+                      <button mat-button class="btn btn-secondary btn-sm" (click)="deleteGarcom(item.id)">
+                        Excluir
                       </button>
                     </div>
                   </div>
@@ -62,7 +68,9 @@
                 <mat-paginator 
                 [length]="totalElements" 
                 [pageSize]="pageSize"
-                (page)="onChangePage($event)"></mat-paginator>
+                (page)="onChangePage($event)"
+                hidePageSize
+                ></mat-paginator>
               </div>
             </div>
           </div>
@@ -74,10 +82,20 @@
         <h2 class="section-title">Cadastro de Materiais</h2>
 
         <div class="form-group">
-          <app-form [group]="formGroupItensSecondary" [form]="formSecondary"></app-form>
+          <app-form 
+          [group]="formGroupItensSecondary" 
+          [form]="formSecondary"
+          >
+        </app-form>
         </div>
 
-        <button type="submit" class="btn btn-primary">Cadastrar</button>
+        <button 
+        type="submit" 
+        class="btn btn-primary"
+        (click)="createMaterial()"
+        >
+          Cadastrar
+        </button>
 
         <!-- lista de materiais -->
         <div class="materials-list">
@@ -94,11 +112,14 @@
               @for (item of ListMaterials; track $index) {
               <div class="table-row">
                 <div class="title">
-                  {{item.descricao}}
+                  {{item.description}}
                 </div>
-                <div class="title">
-                  <button mat-button class="btn btn-primary btn-sm">
+                <div class="title-buttons">
+                  <button mat-button class="btn btn-primary btn-sm" (click)="editMaterial(item.id)">
                     Editar Material
+                  </button>
+                  <button mat-button class="btn btn-secondary btn-sm" (click)="deleteMaterial(item.id)">
+                    Excluir
                   </button>
                 </div>
               </div>

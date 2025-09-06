@@ -1,10 +1,10 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
-import com.example.eventmanagerbackend.domain.dtos.FestaGarcomRequestDTO;
-import com.example.eventmanagerbackend.domain.dtos.FestaRequestDTO;
-import com.example.eventmanagerbackend.domain.dtos.FestaResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.infrastructure.services.FestaGarcomService;
 import com.example.eventmanagerbackend.infrastructure.services.FestaService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +23,21 @@ public class FestaController {
         this.festaGarcomService = festaGarcomService;
     }
 
-    @GetMapping("list")
-    public ResponseEntity<List<FestaResponseDTO>> getAll() {
-        List<FestaResponseDTO> festaList = festaService.getAllFestas();
+    @GetMapping("list/status")
+    public ResponseEntity<Page<FestaResponseDTO>> getAllFestasByStatus(Pageable pageable) {
+        Page<FestaResponseDTO> festaList = festaService.getAllFestasByStatus(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(festaList);
     }
+    @GetMapping("list")
+    public ResponseEntity<Page<FestaResponseDTO>> getAllFestas(Pageable pageable) {
+        Page<FestaResponseDTO> festaList = festaService.getAllFestas(pageable);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(festaList);
+    }
+
 
     @PostMapping("create")
     public ResponseEntity<FestaResponseDTO> createFesta(@RequestBody FestaRequestDTO festa) {
@@ -69,5 +77,16 @@ public class FestaController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
+    }
+
+    @GetMapping("status")
+    public ResponseEntity<List<StatusResponseDTO>> getStatus() {
+        return ResponseEntity.ok(festaService.getStatus());
+    }
+
+    @GetMapping("view/{id}")
+    public ResponseEntity<FestaGarcomViewDTO> getFestaGarcomById(@PathVariable Long id) {
+        FestaGarcomViewDTO festaGarcomViewDTO = festaService.getFestaGarcomById(id);
+        return ResponseEntity.ok(festaGarcomViewDTO);
     }
 }

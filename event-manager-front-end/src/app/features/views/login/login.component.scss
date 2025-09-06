@@ -87,6 +87,7 @@
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .login-form-container {
@@ -217,8 +218,8 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
+  display: flex !important;
+  justify-content: center !important;
   align-items: center;
   gap: 8px;
 }

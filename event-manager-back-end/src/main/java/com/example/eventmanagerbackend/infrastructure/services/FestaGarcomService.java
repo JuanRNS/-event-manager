@@ -5,6 +5,7 @@ import com.example.eventmanagerbackend.domain.entities.FestaGarcom;
 import com.example.eventmanagerbackend.domain.entities.FestaGarcomId;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.exceptions.FestaNotFoundException;
+import com.example.eventmanagerbackend.infrastructure.repositories.FestaGarcomRepository;
 import com.example.eventmanagerbackend.infrastructure.repositories.FestaRepository;
 import com.example.eventmanagerbackend.infrastructure.repositories.GarcomRepository;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,18 @@ public class FestaGarcomService {
 
     private final FestaRepository festaRepository;
     private final GarcomRepository garcomRepository;
+    private final FestaGarcomRepository festaGarcomRepository;
 
-    public FestaGarcomService(FestaRepository festaRepository, GarcomRepository garcomRepository) {
+    public FestaGarcomService(FestaRepository festaRepository, GarcomRepository garcomRepository, FestaGarcomRepository festaGarcomRepository) {
         this.festaRepository = festaRepository;
         this.garcomRepository = garcomRepository;
+        this.festaGarcomRepository = festaGarcomRepository;
     }
 
     public void addGarcomToFesta(Long festaId, List<Long> garcomIds) {
         Festa festa = festaRepository.findById(festaId).orElseThrow(FestaNotFoundException::new);
+
+        festa.getFestaGarcoms().clear();
         for (Long garcomId : garcomIds) {
             FestaGarcom festaGarcom = new FestaGarcom();
             Garcom garcom = garcomRepository.findById(garcomId).orElseThrow();
@@ -35,11 +40,19 @@ public class FestaGarcomService {
             festaGarcom.setId(festaGarcomId);
             festaGarcom.setFesta(festa);
             festaGarcom.setGarcom(garcom);
-            festaGarcom.setValorDiariaGarcom(festa.getValorDiariaGarcom());
+            festaGarcom.setValorDiariaGarcom(festa.getValuePerDay());
 
             festa.getFestaGarcoms().add(festaGarcom);
         }
         festaRepository.save(festa);
+    }
 
+    public List<Festa> getFestaGarcomById(Long id) {
+        return festaGarcomRepository.findFestasByGarcomId(id);
+    }
+
+    public List<Long> getGarcomIdsByFestaId(Long id) {
+        Festa festa = festaRepository.findById(id).orElseThrow(FestaNotFoundException::new);
+        return festa.getFestaGarcoms().stream().map(FestaGarcom::getGarcom).map(Garcom::getId).toList();
     }
 }

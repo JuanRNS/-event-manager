@@ -21,7 +21,7 @@ public class JwtService {
 
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
-        long exp = 4000L;
+        long exp = 7200;
 
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

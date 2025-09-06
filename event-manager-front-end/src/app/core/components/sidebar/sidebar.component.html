@@ -1,8 +1,7 @@
 <div class="sidebar">
   <div class="sidebar-header">
     <h2 class="sidebar-title">
-      <mat-icon class="header-icon">celebration</mat-icon>
-      Party House
+      Gerenciador de Recepções
     </h2>
   </div>
   
@@ -10,37 +9,43 @@
     <ul>
       <li>
         <a routerLink="/dashboard" routerLinkActive="active">
-          <mat-icon class="icon">dashboard</mat-icon>
-          Dashboard
+          <mat-icon class="icon" fontIcon="dashboard"></mat-icon>
+          Relatórios
         </a>
       </li>
       <li>
         <a routerLink="/party-registration" routerLinkActive="active">
-          <mat-icon class="icon">work</mat-icon>
-          Trabalhos
+          <mat-icon class="icon" fontIcon="work"></mat-icon>
+          Festas Pendentes
         </a>
       </li>
       <li>
         <a routerLink="/event-components" routerLinkActive="active">
-          <mat-icon class="icon">group</mat-icon>
-          Cadastro
+          <mat-icon class="icon" fontIcon="group"></mat-icon>
+          Cadastro Garçons e Materiais
         </a>
       </li>
-      <li>
+       <li>
+        <a routerLink="/party-all-list" routerLinkActive="active">
+          <mat-icon class="icon" fontIcon="work"></mat-icon>
+          Festas
+        </a>
+      </li>
+      <!-- <li>
         <a href="#" class="nav-link">
-          <mat-icon class="icon">assignment</mat-icon>
+          <mat-icon class="icon" fontIcon="assessment"></mat-icon>
           Relatórios
         </a>
       </li>
       <li>
         <a href="#" class="nav-link">
-          <mat-icon class="icon">trending_up</mat-icon>
+          <mat-icon class="icon" fontIcon="trending_up"></mat-icon>
           Histórico
         </a>
-      </li>
+      </li> -->
       <li>
-        <a routerLink="/login" class="nav-link">
-          <mat-icon class="icon">exit_to_app</mat-icon>
+        <a class="nav-link" (click)="logout()">
+          <mat-icon class="icon" fontIcon="exit_to_app"></mat-icon>
           Sair
         </a>
       </li>

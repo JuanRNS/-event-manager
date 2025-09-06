@@ -1,6 +1,4 @@
 <div class="page-layout">
-  <!-- Sidebar substituída por componente -->
-  <app-sidebar></app-sidebar>
 
   <div class="main-content">
     <div class="page-header">
@@ -12,35 +10,43 @@
     </div>
 
     <div class="content-wrapper">
-      <!-- cards dos garçons -->
+      @for (item of listDashboard; track $index) {
       <div class="waiters-grid">
         <div class="waiter-card">
-          <div class="waiter-header">
-            <h3 class="waiter-name">
-              <mat-icon class="waiter-icon" fontIcon="person"></mat-icon>
-              Garçom:
-            </h3>
-          </div>
-          <div class="waiter-stats">
-            <div class="stat-item">
-              <span class="stat-label">
-                <mat-icon class="stat-icon" fontIcon="event"></mat-icon>
-                Festas na semana:
-              </span>
-              <span class="stat-value"></span>
+            <div class="waiter-header">
+              <h3 class="waiter-name">
+                <mat-icon class="waiter-icon" fontIcon="person"></mat-icon>
+                Garçom: {{ item.name}}
+              </h3>
             </div>
-            <div class="stat-item">
-              <span class="stat-label">
-                <mat-icon class="stat-icon" fontIcon="attach_money"></mat-icon>
-                Total a receber:
-              </span>
-              <span class="stat-value"></span>
+            <div class="waiter-stats">
+              <div class="stat-item">
+                <span class="stat-label">
+                  <mat-icon class="stat-icon" fontIcon="event"></mat-icon>
+                  Festas na semana: {{ item.totalFestas}}
+                </span>
+                <span class="stat-value"></span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">
+                  <mat-icon class="stat-icon" fontIcon="attach_money"></mat-icon>
+                  Total a receber: R${{item.valueTotal}}
+                </span>
+                <button class="btn btn-primary" (click)="downloadReport(item.id, item.name)">
+                Imprimir Relatório
+                <mat-icon fontIcon="description"></mat-icon>
+              </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- resumo -->
+      }
+      <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      (page)="onPageChange($event)"
+      hidePageSize
+      ></mat-paginator>
       <div class="summary-section">
         <div class="summary-grid">
           <div class="summary-card">

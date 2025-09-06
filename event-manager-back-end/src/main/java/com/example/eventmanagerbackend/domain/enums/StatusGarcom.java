@@ -1,6 +1,6 @@
 package com.example.eventmanagerbackend.domain.enums;
 
-public enum Status {
+public enum StatusGarcom {
     ATIVO,
     INATIVO
 }
