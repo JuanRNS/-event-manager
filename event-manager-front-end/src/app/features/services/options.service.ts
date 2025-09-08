@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpServiceAbstract } from '../../core/abstract/http.abstract';
-import { environment } from '../../../environments/enviroments';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IOptions } from '../../core/interface/form.interface';
 
