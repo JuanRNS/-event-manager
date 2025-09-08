@@ -215,18 +215,23 @@
   .main-content {
     margin-left: 0;
     padding: 20px;
+    width: 100%;
   }
   
   .dashboard-sidebar {
     width: 100%;
     position: relative;
     min-height: auto;
+    top: 0;
+    left: 0;
+    z-index: 1000;
   }
   
   .sidebar-nav {
     display: flex;
     overflow-x: auto;
     padding: 10px;
+    justify-content: space-around;
   }
   
   .sidebar-nav ul {
