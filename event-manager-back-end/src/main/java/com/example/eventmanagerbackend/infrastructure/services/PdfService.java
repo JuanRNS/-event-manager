@@ -35,8 +35,8 @@ public class PdfService {
         this.festaGarcomService = festaGarcomService;
     }
 
-    public byte[] generatePDF(Long id) {
-        PdfRequestDashboardDTO dashboardDTO = dashboardDTO(id);
+    public byte[] generatePDF(Long id, LocalDate fromDate, LocalDate toDate) {
+        PdfRequestDashboardDTO dashboardDTO = dashboardDTO(id, fromDate, toDate);
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage();
             document.addPage(page);
@@ -75,10 +75,14 @@ public class PdfService {
         }
     }
 
-    private PdfRequestDashboardDTO dashboardDTO(Long id){
+    private PdfRequestDashboardDTO dashboardDTO(Long id, LocalDate fromDate, LocalDate toDate) {
         GarcomResponseDTO garcom = garcomService.getGarcomById(id);
         List<Festa> festas = festaGarcomService.getFestaGarcomById(id);
-        festas.removeIf(festa -> !initialWeek(festa.getDate()));
+        if (fromDate != null && toDate != null) {
+            festas.removeIf(festa -> !verifyFromDateAndToDate(festa.getDate(), fromDate, toDate));
+        }else{
+            festas.removeIf(festa -> !initialWeek(festa.getDate()));
+        }
         List<PdfRequestDashboardFestaDTO> festasDTO = festas.stream().map(f ->
                 new PdfRequestDashboardFestaDTO(
                         f.getNameClient(),
@@ -105,6 +109,11 @@ public class PdfService {
 
         return !todayDateParty.isBefore(lastMonday) && !todayDateParty.isAfter(lastSunday);
     }
+    private boolean verifyFromDateAndToDate(LocalDateTime partyDate,LocalDate fromDate, LocalDate toDate) {
+        LocalDate partyDateParty = partyDate.toLocalDate();
+        return !partyDateParty.isBefore(fromDate) && !partyDateParty.isAfter(toDate);
+    }
+
     private void writeText(PDPageContentStream cs, PDFont font, int fontSize, float x, float y, String text) throws IOException {
         cs.beginText();
         cs.setFont(font, fontSize);

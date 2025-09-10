@@ -56,11 +56,9 @@ public class FestaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<FestaResponseDTO> updateFesta(@PathVariable Long id, FestaRequestDTO festa) {
-        FestaResponseDTO updatedFesta = festaService.updateFesta(id, festa);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(updatedFesta);
+    public ResponseEntity<Void> updateFesta(@PathVariable Long id, @RequestBody FestaUpdateRequestDTO festa) {
+        festaService.updateFesta(id, festa);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("{id}")

@@ -4,13 +4,13 @@ import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.services.FestaGarcomService;
 import com.example.eventmanagerbackend.infrastructure.services.GarcomService;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -99,6 +99,16 @@ public class GarcomController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(garcomIds);
+    }
+
+    @GetMapping("list/dashboard/date")
+    public ResponseEntity<Page<GarcomResponseDashboardDTO>> getGarcomDashboardByFestaId(
+            Pageable pageable,
+            @RequestParam LocalDate fromDate,
+            @RequestParam LocalDate toDate
+    ) {
+        Page<GarcomResponseDashboardDTO> garcomList = garcomService.getGarcomDashboardByDate(pageable, fromDate, toDate);
+        return ResponseEntity.ok(garcomList);
     }
 
 }

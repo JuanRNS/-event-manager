@@ -8,6 +8,7 @@ import { FormComponent } from "../../../core/components/form-group/form/form.com
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../../../core/services/user.service';
 import { IRequestLogin } from '../../../core/interface/login.interface';
+import { MaskEnum } from '../../../core/enums/maskEnum';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,6 @@ export class LoginComponent {
   ) {}
 
   public login(){
-    console.log('Estou aqui', this.formGroup.value);
     if(this.formGroup.invalid){
       this.formGroup.markAllAsDirty();
       this.formGroup.updateValueAndValidity();
@@ -62,6 +62,7 @@ export class LoginComponent {
         controlName: 'userName',
         type: 'email',
         size: '12',
+        mask: MaskEnum.NOME
       },
       {
         component: FormFieldEnum.INPUT,
