@@ -12,6 +12,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalUpdateGarcomComponent } from '../../../core/components/modais/modal-update-garcom/modal-update-garcom.component';
 import ModalUpdateMaterialComponent from '../../../core/components/modais/modal-update-material/modal-update-material.component';
+import { MaskEnum } from '../../../core/enums/maskEnum';
 
 
 
@@ -66,6 +67,8 @@ export class EventComponentsComponent implements OnInit{
         type: 'text',
         placeholder: 'Digite seu nome',
         size: '6',
+        maxlength: 50,
+        mask: MaskEnum.NOME
       },
       {
         component: FormFieldEnum.INPUT,
@@ -74,6 +77,8 @@ export class EventComponentsComponent implements OnInit{
         type: 'text',
         placeholder: 'Digite sua chave pix',
         size: '6',
+        mask: MaskEnum.PIX,
+        maxlength: 17
       },
       {
         component: FormFieldEnum.INPUT,
@@ -82,13 +87,15 @@ export class EventComponentsComponent implements OnInit{
         type: 'text',
         placeholder: 'Digite seu telefone',
         size: '6',
+        mask: MaskEnum.PHONE,
+        maxlength: 15
       },
       {
         component: FormFieldEnum.SELECT,
         label: 'Status',
         controlName: 'statusGarcom',
         type: 'select',
-        options: this._optionsService.getOptionsStatus(),
+        options: this._optionsService.getOptionsStatusGarcom(),
         size: '6',
       }
     ]

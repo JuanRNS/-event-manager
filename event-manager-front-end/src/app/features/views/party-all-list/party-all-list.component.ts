@@ -10,11 +10,15 @@ import { ApiService } from '../../services/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ParseDateUtil } from '../../../core/utils/parse-date.util';
 import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal-update-festa/modal-update-festa.component';
+import { FormComponent } from "../../../core/components/form-group/form/form.component";
+import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
+import { FormGroupArray } from '../../../core/interface/form.interface';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-party-all-list',
   standalone: true,
-  imports: [MatPaginatorModule, MatIconModule, MatButtonModule, MatMenuModule],
+  imports: [MatPaginatorModule, MatIconModule, MatButtonModule, MatMenuModule, FormComponent],
   templateUrl: './party-all-list.component.html',
   styleUrl: './party-all-list.component.scss',
 })
@@ -24,6 +28,11 @@ export class PartyAllListComponent implements OnInit{
   public pageSize = 5;
   public totalElements = 0;
 
+  public form = new FormGroup({
+    location: new FormControl<string | null>(null),
+    date: new FormControl<string | null>(null),
+  });
+
   constructor(
     private readonly _service: ApiService,
     private readonly _dialog: MatDialog
@@ -31,6 +40,25 @@ export class PartyAllListComponent implements OnInit{
 
   ngOnInit(): void {
     this.getListParty();
+  }
+
+  public get formGroupItens(): FormGroupArray {
+    return [
+      {
+        component: FormFieldEnum.INPUT,
+        label: 'Local',
+        controlName: 'location',
+        type: 'text',
+        size: '12',
+      },
+      {
+        component: FormFieldEnum.INPUT,
+        label: 'Data',
+        controlName: 'date',
+        type: 'date',
+        size: '12',
+      },
+    ];
   }
 
   public getListParty() {
@@ -55,7 +83,7 @@ export class PartyAllListComponent implements OnInit{
       width: '90vw',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: { partyId: id },
+      data: { id: id },
     });
   }
 
@@ -70,10 +98,15 @@ export class PartyAllListComponent implements OnInit{
   }
 
   public editParty(id: number) {
-    this._dialog.open(ModalUpdateFestaComponent, {
+    const dialogRef = this._dialog.open(ModalUpdateFestaComponent, {
       width: '500px',
       height: '600px',
-      data: { partyId: id },
+      data: { id: id },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getListParty();
+      }
     });
   }
   

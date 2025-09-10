@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpServiceAbstract } from '../../core/abstract/http.abstract';
-import { environment } from '../../../environments/enviroments';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IOptions } from '../../core/interface/form.interface';
 
@@ -12,11 +12,15 @@ export class OptionsService extends HttpServiceAbstract {
     super(environment.api, http);
   }
 
-  public getOptionsStatus() {
+  public getOptionsStatusGarcom() {
     return this.get<IOptions[]>(`garcom/status`);
   }
   
   public getOptionsGarcom() {
     return this.get<IOptions[]>(`garcom/list/options`);
+  }
+
+  public getOptionsStatusFesta() {
+    return this.get<IOptions[]>(`festa/status`);
   }
 }
