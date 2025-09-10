@@ -44,10 +44,9 @@ public class FestaService {
         return getFestaResponseDTO(festa);
     }
 
-    public FestaResponseDTO updateFesta(Long id, FestaRequestDTO festaRequestDTO) {
-        Festa festa = parseFesta(id, festaRequestDTO);
-        Festa updatedFesta = festaRepository.save(festa);
-        return festaMapper.toFestaResponseDTO(updatedFesta);
+    public void updateFesta(Long id, FestaUpdateRequestDTO festaRequestDTO) {
+        Festa festa = parseUpdateFesta(id, festaRequestDTO);
+        festaRepository.save(festa);
     }
 
     public void deleteFesta(Long id) {
@@ -128,7 +127,7 @@ public class FestaService {
         );
     }
 
-    private Festa parseFesta(Long id, FestaRequestDTO festaRequestDTO) {
+    private Festa parseUpdateFesta(Long id, FestaUpdateRequestDTO festaRequestDTO) {
         Festa festa = festaRepository.findById(id).orElseThrow(FestaNotFoundException::new);
         if(!Objects.equals(festa.getMaterial().getId(), festaRequestDTO.idMaterial())) {
             Material material = materialRepository.findById(festaRequestDTO.idMaterial()).orElseThrow(MaterialNotFoundException::new);
@@ -137,6 +136,9 @@ public class FestaService {
         festa.setLocation(festaRequestDTO.location());
         festa.setDate(festaRequestDTO.date());
         festa.setValuePerDay(festaRequestDTO.valuePerDay());
+        festa.setNameClient(festaRequestDTO.nameClient());
+        festa.setNumberOfPeople(festaRequestDTO.numberOfPeople());
+        festa.setStatus(festaRequestDTO.status());
         return festa;
     }
 

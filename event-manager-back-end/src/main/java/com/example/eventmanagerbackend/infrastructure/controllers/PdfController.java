@@ -1,14 +1,13 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
-import com.example.eventmanagerbackend.domain.dtos.PdfRequestDashboardDTO;
 import com.example.eventmanagerbackend.infrastructure.services.PdfService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pdf")
@@ -21,8 +20,16 @@ public class PdfController {
     }
 
     @PostMapping("/generate/garcom/{id}")
-    public ResponseEntity<byte[]> generatePDF(@PathVariable Long id) throws Exception {
-        byte[] pdf = pdfService.generatePDF(id);
+    public ResponseEntity<byte[]> generatePDF(
+            @PathVariable Long id,
+            @RequestParam(required = false) Optional<LocalDate> fromDate,
+            @RequestParam(required = false) Optional<LocalDate> toDate
+    ) throws Exception {
+        byte[] pdf = pdfService.generatePDF(
+                id,
+                fromDate.orElse(null),
+                toDate.orElse(null)
+        );
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=garcom_" + id + ".pdf")
