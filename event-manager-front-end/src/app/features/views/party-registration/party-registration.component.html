@@ -21,19 +21,19 @@
                <div class="table">
                   <div class="table-header">
                     <div class="title">
-                      Nome Do cliente
+                      Cliente
                     </div>
                     <div class="title">
-                      Local da festa
+                      Local
                     </div>
                     <div class="title">
-                      Data da festa
+                      Data
                     </div>
                     <div class="title">
-                      Número de pessoas
+                      Nº de pessoas
                     </div>
                     <div class="title">
-                      Valor diária 
+                      Valor
                     </div>
                     <div class="title">
                       Material
@@ -59,9 +59,15 @@
                     <div class="title">
                       {{item.valuePerDay}}
                     </div>
-                    <div class="title">
-                      {{item.material.description}}
-                    </div>
+                    @if (item.material) {
+                      <div class="title">
+                        {{item.material.description}}
+                      </div>
+                    }@else {
+                      <div class="title">
+                        -
+                      </div>
+                    }
                     <div class="title">
                       <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="addGarcons(item.id)">Adicionar Garçons</button>

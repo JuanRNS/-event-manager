@@ -3,7 +3,6 @@ package com.example.eventmanagerbackend.infrastructure.controllers;
 import com.example.eventmanagerbackend.domain.dtos.MaterialRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.MaterialResponseDTO;
 import com.example.eventmanagerbackend.domain.entities.Material;
-import com.example.eventmanagerbackend.infrastructure.mappers.MaterialMapper;
 import com.example.eventmanagerbackend.infrastructure.services.MaterialService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

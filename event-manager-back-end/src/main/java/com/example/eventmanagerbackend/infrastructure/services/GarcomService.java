@@ -6,7 +6,6 @@ import com.example.eventmanagerbackend.domain.entities.Garcom;
 import com.example.eventmanagerbackend.infrastructure.exceptions.GarcomNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.GarcomMapper;
 import com.example.eventmanagerbackend.infrastructure.repositories.GarcomRepository;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,9 +14,7 @@ import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -85,6 +82,30 @@ public class GarcomService {
             BigDecimal totalValue = festas.stream()
                     .map(Festa::getValuePerDay)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            return new GarcomResponseDashboardDTO(
+                    garcom.getId(),
+                    garcom.getName(),
+                    (long) festas.size(),
+                    totalValue
+            );
+        });
+    }
+    public Page<GarcomResponseDashboardDTO> getGarcomDashboardByDate(Pageable pageable, LocalDate fromDate, LocalDate toDate) {
+        Page<Garcom> garcomPage = garcomRepository.findAll(pageable);
+
+        return garcomPage.map(garcom -> {
+            List<Festa> festas = festaGarcomService.getFestaGarcomById(garcom.getId());
+
+            BigDecimal totalValue = festas.stream()
+                    .filter(festa -> {
+                        LocalDate date = festa.getDate().toLocalDate();
+                        return (date.isEqual(fromDate) || date.isAfter(fromDate))
+                                && (date.isEqual(toDate) || date.isBefore(toDate));
+                    })
+                    .map(Festa::getValuePerDay)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
 
             return new GarcomResponseDashboardDTO(
                     garcom.getId(),
