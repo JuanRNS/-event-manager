@@ -3,6 +3,8 @@ import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angula
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MaskEnum } from '../../../enums/maskEnum';
+import { MaskDirective } from "../../../directives/mask.directive";
 
 @Component({
   selector: 'app-input',
@@ -11,8 +13,9 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
-    FormsModule
-  ],
+    FormsModule,
+    MaskDirective
+],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
@@ -31,6 +34,8 @@ export class InputComponent {
   public formControl = input.required<string>();
   public form = input.required<FormGroup>();
   public size = input<string>();
+  public mask = input<MaskEnum>();
+  public maxlength = input<number>();
 
   public required(): boolean{
     return this.form().get(this.formControl())?.hasValidator(Validators.required) ?? false;

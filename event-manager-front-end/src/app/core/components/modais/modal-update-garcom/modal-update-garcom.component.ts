@@ -8,6 +8,7 @@ import { FormGroupArray } from '../../../interface/form.interface';
 import { ApiService } from '../../../../features/services/api.service';
 import { IRequestGarcom } from '../../../interface/event.interface';
 import { MatButtonModule } from '@angular/material/button';
+import { MaskEnum } from '../../../enums/maskEnum';
 
 @Component({
   selector: 'app-modal-update-garcom',
@@ -48,6 +49,8 @@ export class ModalUpdateGarcomComponent implements OnInit {
           type: 'text',
           placeholder: 'Digite seu nome',
           size: '6',
+          mask: MaskEnum.NOME,
+          maxlength: 50
         },
         {
           component: FormFieldEnum.INPUT,
@@ -56,6 +59,8 @@ export class ModalUpdateGarcomComponent implements OnInit {
           type: 'text',
           placeholder: 'Digite sua chave pix',
           size: '6',
+          mask: MaskEnum.PIX,
+          maxlength: 17
         },
         {
           component: FormFieldEnum.INPUT,
@@ -64,13 +69,15 @@ export class ModalUpdateGarcomComponent implements OnInit {
           type: 'text',
           placeholder: 'Digite seu telefone',
           size: '6',
+          mask: MaskEnum.PHONE,
+          maxlength: 15
         },
         {
           component: FormFieldEnum.SELECT,
           label: 'Status',
           controlName: 'statusGarcom',
           type: 'select',
-          options: this._optionsService.getOptionsStatus(),
+          options: this._optionsService.getOptionsStatusGarcom(),
           size: '6',
         }
       ]
