@@ -99,7 +99,6 @@ export class ModalAddGarcomComponent implements OnInit {
       this.isSubmit = true;
       const index = this.listGarcomAdd.indexOf(id);
       this.listGarcomAdd.splice(index, 1);
-      console.log(this.listGarcomAdd);
   }
 
   public onPageChange(event: PageEvent){
