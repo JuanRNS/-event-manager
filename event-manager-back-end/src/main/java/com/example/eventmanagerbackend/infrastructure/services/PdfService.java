@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -40,37 +41,42 @@ public class PdfService {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage();
             document.addPage(page);
+            try (InputStream inputStream = PdfService.class.getResourceAsStream("/relatorioPagamento.png")) {
+                if (inputStream == null) {
+                    throw new IOException("Não foi possível carregar o arquivo");
+                }
+                PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, inputStream.readAllBytes(), "relatorio");
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                PDFont font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
+                contentStream.drawImage(pdImage, 0, 0,
+                        page.getMediaBox().getWidth(),
+                        page.getMediaBox().getHeight());
+                writeText(contentStream, font, 16, 291, 682, initialWeek());
+                writeText(contentStream, font, 16, 150, 627, dashboardDTO.name());
+                writeText(contentStream, font, 16, 134, 602, formatPhone(dashboardDTO.phone()));
+                writeText(contentStream, font, 16, 140, 577, dashboardDTO.pixKey());
+                int yTable = 475;
+                BigDecimal totalValue = BigDecimal.ZERO;
+                String[] aligns = {"left", "center", "right"};
+                for (int i = 0; i < dashboardDTO.pdfRequestDashboardFesta().size(); i++) {
+                    List<String> values = new ArrayList<>();
+                    values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).date());
+                    values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).location());
+                    values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).valuePerDay().toString());
 
-            PDImageXObject pdImage = PDImageXObject.createFromFile("src/main/resources/relatorioPagamento.png", document);
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-            PDFont font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
-            contentStream.drawImage(pdImage, 0, 0,
-                    page.getMediaBox().getWidth(),
-                    page.getMediaBox().getHeight());
-            writeText(contentStream, font, 16, 291, 682, initialWeek());
-            writeText(contentStream, font, 16, 150, 627, dashboardDTO.name());
-            writeText(contentStream, font, 16, 134, 602, formatPhone(dashboardDTO.phone()));
-            writeText(contentStream, font, 16, 140, 577, dashboardDTO.pixKey());
-            int yTable = 475;
-            BigDecimal totalValue = BigDecimal.ZERO;
-            String[] aligns = {"left", "center", "right"};
-            for (int i = 0; i < dashboardDTO.pdfRequestDashboardFesta().size(); i++) {
-                List<String> values = new ArrayList<>();
-                values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).date());
-                values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).location());
-                values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).valuePerDay().toString());
+                    writeRow(contentStream, font, 16, yTable, values, aligns);
+                    yTable -= 23;
+                    totalValue = totalValue.add(dashboardDTO.pdfRequestDashboardFesta().get(i).valuePerDay());
+                }
+                writeText(contentStream, font, 16, 500, 228, totalValue.toString());
+                contentStream.close();
 
-                writeRow(contentStream, font, 16, yTable,values, aligns);
-                yTable -= 23;
-                totalValue = totalValue.add(dashboardDTO.pdfRequestDashboardFesta().get(i).valuePerDay());
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                document.save(out);
+                return out.toByteArray();
             }
-            writeText(contentStream, font, 16, 500, 228, totalValue.toString());
-            contentStream.close();
 
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            document.save(out);
-            return out.toByteArray();
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

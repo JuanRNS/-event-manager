@@ -179,7 +179,7 @@ export class PartyRegistrationComponent implements OnInit {
       width: '90vw',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: { partyId: id },
+      data: { id: id },
     })
   }
 
