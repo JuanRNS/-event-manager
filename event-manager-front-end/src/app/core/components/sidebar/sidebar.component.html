@@ -1,10 +1,17 @@
-<div class="sidebar">
+<mat-toolbar color="primary" class="mobile-toolbar">
+  <button mat-icon-button (click)="toggleSidebar()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Gerenciador de Recepções</span>
+</mat-toolbar>
+
+<div class="sidebar" [class.sidebar-open]="isSidebarOpen">
   <div class="sidebar-header">
     <h2 class="sidebar-title">
       Gerenciador de Recepções
     </h2>
   </div>
-  
+
   <nav class="sidebar-nav">
     <ul>
       <li>
@@ -31,24 +38,12 @@
           Cadastro Equipe e Materiais
         </a>
       </li>
-       <li>
+      <li>
         <a routerLink="/party-all-list" routerLinkActive="active">
           <mat-icon class="icon" fontIcon="work"></mat-icon>
           Festas
         </a>
       </li>
-      <!-- <li>
-        <a href="#" class="nav-link">
-          <mat-icon class="icon" fontIcon="assessment"></mat-icon>
-          Relatórios
-        </a>
-      </li>
-      <li>
-        <a href="#" class="nav-link">
-          <mat-icon class="icon" fontIcon="trending_up"></mat-icon>
-          Histórico
-        </a>
-      </li> -->
       <li>
         <a class="nav-link" (click)="logout()">
           <mat-icon class="icon" fontIcon="exit_to_app"></mat-icon>
@@ -58,4 +53,3 @@
     </ul>
   </nav>
 </div>
-
