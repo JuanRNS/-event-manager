@@ -38,6 +38,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/views/party-all-list/party-all-list.component').then((m) => m.PartyAllListComponent),
     canActivate: [authGuard]
   },
+  {
+    path: 'dashboard-date',
+    loadComponent: () => import('./features/views/dashboard-date/dashboard-date.component').then((m) => m.DashboardDateComponent),
+    canActivate: [authGuard]
+  },
   { 
     path: '**', 
     redirectTo: '/login' 

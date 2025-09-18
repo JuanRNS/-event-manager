@@ -242,14 +242,13 @@
 }
 
 /* Responsividade */
-@media (max-width: 768px) {
+@media (max-width: 990px) {
   .login-container {
     flex-direction: column;
   }
   
   .login-sidebar {
-    padding: 20px;
-    min-height: 200px;
+    display: none;
   }
   
   .login-sidebar-title {

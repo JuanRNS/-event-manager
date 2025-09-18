@@ -8,6 +8,7 @@ import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/in
 import { IResponseDashboardContent } from '../../core/interface/dashboard.interface';
 import { IRequestAddGarcomParty, IResponseModalAddGarcom } from '../../core/interface/modal-add-garcom.interface';
 import { IResponseModalViewParty } from '../../core/interface/modal-view-party.interface';
+import { IRequestUpdateFesta } from '../../core/interface/modal-update-festa.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -66,6 +67,10 @@ export class ApiService extends HttpServiceAbstract {
     return this.post<any>(`festa/create`, party, undefined, 'json', true);
   }
 
+  public putUpdateParty(id: number,party: IRequestUpdateFesta){
+    return this.put(`festa/${id}`, party);
+  }
+
   public getListPartyStatus(page: number, size: number) {
     return this.get<IResponseListParty>(`festa/list/status?page=${page}&size=${size}`);
   }
@@ -86,8 +91,9 @@ export class ApiService extends HttpServiceAbstract {
     return this.get<IResponseDashboardContent>(`garcom/list/dashboard?page=${page}&size=${size}`);
   }
 
-  public getFileDownload(id: number){
-    return this.fileDownload<string>(`pdf/generate/garcom/${id}`);
+  public getFileDownload(id: number, from?: string, to?: string) {
+    if(!from || !to) return this.fileDownload<string>(`pdf/generate/garcom/${id}`);
+    return this.fileDownload<string>(`pdf/generate/garcom/${id}?fromDate=${from}&toDate=${to}`);
   }
 
   public getListAddGarcom(page: number, size: number) {
@@ -104,5 +110,9 @@ export class ApiService extends HttpServiceAbstract {
 
   public getFestaGarcomById(festaId: number) {
     return this.get<IResponseModalViewParty>(`festa/view/${festaId}`);
+  }
+
+  public getDashboardFromTo(from: string, to: string) {
+    return this.get<IResponseDashboardContent>(`garcom/list/dashboard/date?fromDate=${from}&toDate=${to}`);
   }
 }

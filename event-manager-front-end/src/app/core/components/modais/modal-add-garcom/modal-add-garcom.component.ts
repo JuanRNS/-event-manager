@@ -38,7 +38,7 @@ export class ModalAddGarcomComponent implements OnInit {
   constructor(
     private readonly _service: ApiService,
     private readonly _dialogRef: MatDialogRef<ModalAddGarcomComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { partyId: number },
+    @Inject(MAT_DIALOG_DATA) public data: { id: number },
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +80,7 @@ export class ModalAddGarcomComponent implements OnInit {
     });
   }
   public getGarcomIdsByFestaId(){
-    this._service.getGarcomIdsByFestaId(this.data.partyId).subscribe({
+    this._service.getGarcomIdsByFestaId(this.data.id).subscribe({
       next: (res) => {
         this.listGarcomAdd = res;
       },
@@ -99,7 +99,6 @@ export class ModalAddGarcomComponent implements OnInit {
       this.isSubmit = true;
       const index = this.listGarcomAdd.indexOf(id);
       this.listGarcomAdd.splice(index, 1);
-      console.log(this.listGarcomAdd);
   }
 
   public onPageChange(event: PageEvent){
@@ -113,12 +112,8 @@ export class ModalAddGarcomComponent implements OnInit {
       this._dialogRef.close();
       return;
     }
-    if(this.listGarcomAdd.length === 0){
-      this._dialogRef.close();
-      return;
-    }
     this._service.postAddGarcomParty({
-      festaId: this.data.partyId,
+      festaId: this.data.id,
       garcomIds: this.listGarcomAdd
     }).subscribe({
       next: (res) => {

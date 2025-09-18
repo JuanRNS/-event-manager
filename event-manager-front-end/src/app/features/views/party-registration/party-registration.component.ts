@@ -15,6 +15,7 @@ import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal
 import { ModalAddGarcomComponent } from '../../../core/components/modais/modal-add-garcom/modal-add-garcom.component';
 import { ModalViewPartyComponent } from '../../../core/components/modais/modal-view-party/modal-view-party.component';
 import { ParseDateUtil } from '../../../core/utils/parse-date.util';
+import { MaskEnum } from '../../../core/enums/maskEnum';
 
 @Component({
   selector: 'app-party-registration',
@@ -62,19 +63,21 @@ export class PartyRegistrationComponent implements OnInit {
     return [
       {
         component: FormFieldEnum.INPUT,
+        label: 'Cliente',
+        controlName: 'nameClient',
+        type: 'text',
+        placeholder: 'Nome do cliente',
+        size: '6',
+        mask: MaskEnum.NOME
+      },
+      {
+        component: FormFieldEnum.INPUT,
         label: 'Local da festa',
         controlName: 'location',
         type: 'text',
         placeholder: 'Local da festa',
         size: '6',
-      },
-      {
-        component: FormFieldEnum.INPUT,
-        label: 'Nome do cliente',
-        controlName: 'nameClient',
-        type: 'text',
-        placeholder: 'Nome do cliente',
-        size: '6',
+        mask: MaskEnum.NOME
       },
       {
         component: FormFieldEnum.INPUT,
@@ -95,9 +98,9 @@ export class PartyRegistrationComponent implements OnInit {
       },
       {
         component: FormFieldEnum.INPUT,
-        label: 'Valor da festa',
+        label: 'Diária',
         controlName: 'valuePerDay',
-        type: 'number',
+        type: 'text',
         placeholder: 'Valor da festa',
         size: '6',
       },
@@ -142,6 +145,7 @@ export class PartyRegistrationComponent implements OnInit {
     this._service.postRegisterParty(data).subscribe((res) => {
       this.getListParty();
     });
+    this.form.reset();
   }
 
   public onChangePage(event: PageEvent) {
@@ -151,10 +155,15 @@ export class PartyRegistrationComponent implements OnInit {
   }
 
   public editParty(id: number) {
-    this._dialog.open(ModalUpdateFestaComponent, {
+    const dialogRef = this._dialog.open(ModalUpdateFestaComponent, {
       width: '500px',
       height: '600px',
-      data: { partyId: id },
+      data: { id: id },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getListParty();
+      }
     });
   }
 
@@ -170,7 +179,7 @@ export class PartyRegistrationComponent implements OnInit {
       width: '90vw',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: { partyId: id },
+      data: { id: id },
     })
   }
 

@@ -6,6 +6,8 @@
     [placeholder]="placeholder() ?? label()" 
     [formControlName]="formControl()"
     [required]="required()"
+    [appMask]="mask()"
+    [maxlength]="maxlength() ?? null"
     >
     @if (form().get(formControl())?.hasError('required')) {
         <mat-error>
