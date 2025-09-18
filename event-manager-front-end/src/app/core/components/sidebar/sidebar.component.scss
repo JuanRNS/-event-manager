@@ -7,7 +7,6 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 1000;
 }
 
 .nav-link{
@@ -99,7 +98,7 @@
 }
 
 /* Responsividade */
-@media (max-width: 768px) {
+@media (max-width: 990px) {
 .mobile-toolbar {
     display: flex;
     justify-content: start;
@@ -107,16 +106,26 @@
     padding: 0 16px;
   }
   .sidebar {
-    display: none;
-    position: absolute;
+    visibility: hidden;
+    opacity: 0;
     top: 56px; 
     left: 0;
-    width: 100%;
-    z-index: 1100;
+    width: 50%;
+    z-index: 1000;
+    transform: translateX(-50%);
+    transition: 0.5s ease;
   }
 
   .sidebar.sidebar-open {
-    display: block;
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    transition-delay: 0s;
+    width: 50%;
+
+    .sidebar-header{
+      display: none;
+    }
   }
 
   .sidebar-nav {

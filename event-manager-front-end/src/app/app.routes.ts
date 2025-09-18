@@ -21,27 +21,27 @@ export const routes: Routes = [
   { 
     path: 'dashboard', 
     loadComponent: () => import('./features/views/dashboard/dashboard.component').then((m) => m.DashboardComponent),
-    canActivate: []
+    canActivate: [authGuard]
   },
   { 
     path: 'party-registration', 
     loadComponent: () => import('./features/views/party-registration/party-registration.component').then((m) => m.PartyRegistrationComponent),
-    canActivate: []
+    canActivate: [authGuard]
   },
   { 
     path: 'event-components', 
     loadComponent: () => import('./features/views/event-components/event-components.component').then((m) => m.EventComponentsComponent),
-    canActivate: []
+    canActivate: [authGuard]
   },
   { 
     path: 'party-all-list', 
     loadComponent: () => import('./features/views/party-all-list/party-all-list.component').then((m) => m.PartyAllListComponent),
-    canActivate: []
+    canActivate: [authGuard]
   },
   {
     path: 'dashboard-date',
     loadComponent: () => import('./features/views/dashboard-date/dashboard-date.component').then((m) => m.DashboardDateComponent),
-    canActivate: []
+    canActivate: [authGuard]
   },
   { 
     path: '**', 
