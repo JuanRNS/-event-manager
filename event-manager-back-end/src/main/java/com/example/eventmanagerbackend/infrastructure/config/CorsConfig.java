@@ -11,10 +11,8 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4200")
-                .allowedOrigins("https://event-manager-production-0b0c.up.railway.app/")
-                .allowedHeaders("*")
                 .allowedOrigins("*")
+                .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
     }
 
