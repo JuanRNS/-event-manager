@@ -13,8 +13,6 @@ public interface GarcomMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "festaGarcoms", ignore = true)
     Garcom toGarcom(GarcomRequestDTO garcomRequestDTO);
-    GarcomRequestDTO toGarcomDTO(Garcom garcom);
-    @Mapping(target = "description", source = "name")
     GarcomOptionsResponseDTO toGarcomOptionsResponseDTO(Garcom garcom);
     GarcomResponseDTO toGarcomResponseDTO(Garcom garcom);
     GarcomAddResponseDTO toGarcomAddResponseDTO(Garcom garcom);

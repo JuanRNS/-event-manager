@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("garcom")
+@RequestMapping("/api/garcom")
 public class GarcomController {
 
     private final GarcomService garcomService;
@@ -109,6 +109,14 @@ public class GarcomController {
     ) {
         Page<GarcomResponseDashboardDTO> garcomList = garcomService.getGarcomDashboardByDate(pageable, fromDate, toDate);
         return ResponseEntity.ok(garcomList);
+    }
+
+    @GetMapping("list/garcom/festas/{id}")
+    public ResponseEntity<GarcomFestasDTO> getGarcomFestas(@PathVariable Long id, Pageable pageable) {
+        GarcomFestasDTO garcomList = garcomService.getGarcomFestas(id, pageable);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(garcomList);
     }
 
 }

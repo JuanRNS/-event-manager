@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/pdf")
+@RequestMapping("/api/pdf")
 public class PdfController {
 
     private final PdfService pdfService;

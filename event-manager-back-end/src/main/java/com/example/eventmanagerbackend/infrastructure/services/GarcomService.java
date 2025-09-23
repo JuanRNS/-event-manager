@@ -15,7 +15,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GarcomService {
@@ -120,6 +122,40 @@ public class GarcomService {
     public Page<GarcomAddResponseDTO> getGarcomAddResponseDTO(Pageable pageable) {
         return garcomRepository.findAll(pageable)
                 .map(garcomMapper::toGarcomAddResponseDTO);
+    }
+
+    public GarcomFestasDTO getGarcomFestas(Long id, Pageable pageable) {
+        Optional<Garcom> garcom = garcomRepository.findById(id);
+        if (garcom.isEmpty()) {
+            throw new GarcomNotFoundException();
+        }
+        List<Festa> garcomFestas = festaGarcomService.getFestaGarcomById(id);
+        List<FestasByGarcomIdDTO> festas = getFestasByGarcomIdDTOS(garcomFestas);
+
+        return new GarcomFestasDTO(
+                garcom.get().getName(),
+                garcom.get().getPhone(),
+                garcom.get().getPixKey(),
+                festas
+        );
+    }
+
+
+    private static List<FestasByGarcomIdDTO> getFestasByGarcomIdDTOS(List<Festa> garcomFestas) {
+        List<FestasByGarcomIdDTO> festas = new ArrayList<>();
+        for (Festa festa : garcomFestas) {
+            festas.add(
+                    new FestasByGarcomIdDTO(
+                            festa.getLocation(),
+                            festa.getNameClient(),
+                            festa.getDate(),
+                            festa.getValuePerDay(),
+                            festa.getStatus(),
+                            festa.getNumberOfPeople()
+                    )
+            );
+        }
+        return festas;
     }
 
     private void updateGarcom(Garcom garcom, GarcomRequestDTO garcomUpdate) {

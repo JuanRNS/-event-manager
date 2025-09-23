@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("festa")
+@RequestMapping("/api/festa")
 public class FestaController {
 
     private final FestaService festaService;

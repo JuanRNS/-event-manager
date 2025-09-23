@@ -11,7 +11,9 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://event-manager-alpha-lake.vercel.app")
+                .allowedOrigins(
+                        "https://event-manager-alpha-lake.vercel.app",
+                        "http://localhost:4200")
                 .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS");
     }
