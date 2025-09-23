@@ -189,6 +189,7 @@ export class PartyRegistrationComponent implements OnInit {
       width: '70vw',
       maxWidth: '100vw',
       maxHeight: '100vh',
+      autoFocus: false,
       data: { id: id },
     });
   }

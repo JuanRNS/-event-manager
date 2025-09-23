@@ -13,6 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalUpdateGarcomComponent } from '../../../core/components/modais/modal-update-garcom/modal-update-garcom.component';
 import ModalUpdateMaterialComponent from '../../../core/components/modais/modal-update-material/modal-update-material.component';
 import { MaskEnum } from '../../../core/enums/maskEnum';
+import { MatMenuModule } from "@angular/material/menu";
+import { MatIconModule } from '@angular/material/icon';
+import { ModalViewPartyWaiterComponent } from '../../../core/components/modais/modal-view-party-waiter/modal-view-party-waiter.component';
 
 
 
@@ -20,12 +23,14 @@ import { MaskEnum } from '../../../core/enums/maskEnum';
   selector: 'app-event-components',
   standalone: true,
   imports: [
-    FormsModule, 
-    CommonModule, 
+    FormsModule,
+    CommonModule,
     MatButtonModule,
     FormComponent,
-    MatPaginatorModule
-  ],
+    MatPaginatorModule,
+    MatMenuModule,
+    MatIconModule
+],
   templateUrl: './event-components.component.html',
   styleUrl: './event-components.component.scss'
 })
@@ -144,6 +149,24 @@ export class EventComponentsComponent implements OnInit{
     const dialogRef = this._dialog.open(ModalUpdateGarcomComponent, {
       width: '600px',
       height: '600px',
+      data: {
+        id: id
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getGarcoms();
+      }
+    });
+  }
+
+  public viewFestas(id: number){
+    const dialogRef = this._dialog.open(ModalViewPartyWaiterComponent, {
+      width: '60vw',
+      height: '70vh',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      autoFocus: false,
       data: {
         id: id
       },

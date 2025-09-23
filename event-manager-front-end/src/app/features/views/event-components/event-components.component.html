@@ -54,17 +54,18 @@
                     <div class="title">
                       {{item.statusGarcom}}
                     </div>
-                    <div class="title-buttons">
-                      <button mat-button class="btn btn-primary btn-sm" (click)="editGarcom(item.id)">
-                        Editar
+                    <div class="title">
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editGarcom(item.id)">Editar Garçom</button>
+                        <button mat-menu-item (click)="deleteGarcom(item.id)">Excluir Garçom</button>
+                        <button mat-menu-item (click)="viewFestas(item.id)">Visualizar Garçom</button>
+                      </mat-menu>
+                      <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon fontIcon="menu"></mat-icon>
                       </button>
-                      <button mat-button class="btn btn-secondary btn-sm" (click)="deleteGarcom(item.id)">
-                        Excluir
-                      </button>
-                    </div>
+                    </div>  
                   </div>
-                  }
-                </div>
+                }
                 <mat-paginator 
                 [length]="totalElements" 
                 [pageSize]="pageSize"

@@ -9,6 +9,7 @@ import { IResponseDashboardContent } from '../../core/interface/dashboard.interf
 import { IRequestAddGarcomParty, IResponseModalAddGarcom } from '../../core/interface/modal-add-garcom.interface';
 import { IResponseModalViewParty } from '../../core/interface/modal-view-party.interface';
 import { IRequestUpdateFesta } from '../../core/interface/modal-update-festa.interface';
+import { IResponseModalViewPartyWaiter } from '../../core/interface/modal-view-party-waiter.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -114,5 +115,9 @@ export class ApiService extends HttpServiceAbstract {
 
   public getDashboardFromTo(from: string, to: string) {
     return this.get<IResponseDashboardContent>(`garcom/list/dashboard/date?fromDate=${from}&toDate=${to}`);
+  }
+
+  public getPartiesByWaiterId(id: number) {
+    return this.get<IResponseModalViewPartyWaiter>(`garcom/list/garcom/festas/${id}`);
   }
 }

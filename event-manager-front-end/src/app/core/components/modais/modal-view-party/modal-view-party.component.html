@@ -1,29 +1,36 @@
-<h2 mat-dialog-title>
-  🎉 Festa {{ listViewParty.location }}
-</h2>
+
+<div class="header">
+  <h2 mat-dialog-title>
+    <mat-icon fontIcon="celebration"></mat-icon> Festa {{ listViewParty ? listViewParty.nameClient : '' }}
+  </h2>
+  <button mat-icon-button class="close-button">
+    <mat-icon fontIcon="close" mat-dialog-close></mat-icon>
+  </button>
+</div>
+
 
 <mat-dialog-content>
   <div class="row mb-3">
     <div class="col-6 mb-2">
       <span class="label">Cliente:</span>
-      <span class="value">{{ listViewParty.nameClient }}</span>
+      <span class="value">{{ listViewParty ? listViewParty.nameClient : '' }}</span>
     </div>
     <div class="col-6 mb-2">
       <span class="label">Data:</span>
-      <span class="value">{{ listViewParty.date }}</span>
+      <span class="value">{{ listViewParty ? listViewParty.date : '' }}</span>
     </div>
     <div class="col-6 mb-2">
       <span class="label">Material:</span>
-      <span class="value">{{ listViewParty.material.description }}</span>
+      <span class="value">{{ listViewParty ? listViewParty.material.description : '' }}</span>
     </div>
     <div class="col-6 mb-2">
       <span class="label">Número de Pessoas:</span>
-      <span class="value">{{ listViewParty.numberOfPeople }}</span>
+      <span class="value">{{ listViewParty ? listViewParty.numberOfPeople : '' }}</span>
     </div>
     <div class="col-6 mb-2">
       <span class="label">Status:</span>
       <span class="value">
-        {{ listViewParty.status }}
+        {{ listViewParty ? listViewParty.status : '' }}
       </span>
     </div>
   </div>
@@ -40,7 +47,7 @@
       <div class="title">Status</div>
     </div>
 
-    @for (garcom of listViewParty.garcoms; track $index) {
+    @for (garcom of listViewParty ? listViewParty.garcoms : []; track $index) {
       <div class="table-row">
         <div class="title">{{ garcom.name }}</div>
         <div class="title">{{ garcom.phone }}</div>

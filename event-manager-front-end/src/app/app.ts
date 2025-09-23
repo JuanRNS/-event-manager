@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from "./core/components/sidebar/sidebar.component";
 
@@ -9,7 +9,7 @@ import { SidebarComponent } from "./core/components/sidebar/sidebar.component";
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('Balloons Recepções');
+  public title = 'Party Manager';
 
   constructor(
     private readonly _route: Router

@@ -8,26 +8,14 @@
 }
 
 .value {
-  font-size: 14px;
   font-weight: 500;
   color: #222;
 }
 
-.status {
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
+span {
+  font-size: 16px;
   font-weight: 500;
-}
-
-.status-ATIVO {
-  background-color: #c8e6c9;
-  color: #2e7d32;
-}
-
-.status-INATIVO {
-  background-color: #ffcdd2;
-  color: #c62828;
+  color: #222;
 }
 
 .table{
