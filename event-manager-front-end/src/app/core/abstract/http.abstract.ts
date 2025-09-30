@@ -28,7 +28,7 @@ export abstract class HttpServiceAbstract {
   }
 
   protected fileDownload<T>(path: string){
-    return this.sendRequest<T>(HttpEnum.POST, path, undefined, undefined, undefined, 'blob', true);
+    return this.sendRequest<T>(HttpEnum.POST, path, null, undefined, undefined, 'blob', false, true);
   }
 
 
@@ -48,19 +48,14 @@ export abstract class HttpServiceAbstract {
         responseType: responseType as any
       });
     }
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    if(isFile){
-      headers = headers.delete('Content-Type');
+    let headers = isFile ? new HttpHeaders() : new HttpHeaders({'Content-Type': 'application/json'});
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
     }
     if(basicAuth) {
       headers = headers.set('Authorization', `Basic ${basicAuth}`);
-    }else{
-      const token = localStorage.getItem('token');
-      if (token) {
-        headers = headers.set('Authorization', `Bearer ${token}`);
-    }
     }
 
     const httpParams = new HttpParams({
@@ -68,10 +63,10 @@ export abstract class HttpServiceAbstract {
     });
 
     return this._http.request<T>(method, `${this._baseUrl}${path}`, {
-      body,
-      headers,
+      body: body,
+      headers: headers,
       params: httpParams,
-      responseType: responseType as any
+      responseType: responseType as any,
     });
   }
 }
