@@ -37,6 +37,7 @@ public class SecurityConfig {
     public SecurityFilterChain loginSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/user/login")
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
@@ -51,8 +52,8 @@ public class SecurityConfig {
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated()
                 )
