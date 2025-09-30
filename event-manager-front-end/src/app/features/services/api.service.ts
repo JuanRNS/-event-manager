@@ -61,11 +61,11 @@ export class ApiService extends HttpServiceAbstract {
   }
 
   public postRegisterUser(user: IRequestUserRegister){
-    return this.post<any>(`user/register`, user, undefined, 'json', true);
+    return this.post<any>(`user/register`, user, undefined, 'json');
   }
 
   public postRegisterParty(party: IRequestParty){
-    return this.post<any>(`festa/create`, party, undefined, 'json', true);
+    return this.post<any>(`festa/create`, party, undefined, 'json');
   }
 
   public putUpdateParty(id: number,party: IRequestUpdateFesta){
