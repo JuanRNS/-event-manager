@@ -37,7 +37,6 @@ public class SecurityConfig {
     public SecurityFilterChain loginSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/user/login")
-                .securityMatcher("/api/user/register")
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
