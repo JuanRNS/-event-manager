@@ -174,14 +174,19 @@ export class PartyRegistrationComponent implements OnInit {
   }
 
   public addGarcons(id: number) {
-    this._dialog.open(ModalAddGarcomComponent,{
+    const modalRef = this._dialog.open(ModalAddGarcomComponent,{
       height: '70vh',
       width: '90vw',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { id: id },
     })
-  }
+    modalRef.afterClosed().subscribe((result) => {
+      if(result) {
+        this.getListParty();
+      }
+    })
+  };
 
   public viewParty(id: number) {
     this._dialog.open(ModalViewPartyComponent, {
