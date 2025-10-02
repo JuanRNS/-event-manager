@@ -68,6 +68,11 @@
                         -
                       </div>
                     }
+                    @if (item.garcomIds.length > 0) {
+                      <div class="title">
+                        Quantidade de garçons escalados: {{item.garcomIds.length}}
+                      </div>
+                    }
                     <div class="title">
                       <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="addGarcons(item.id)">Adicionar Garçons</button>
