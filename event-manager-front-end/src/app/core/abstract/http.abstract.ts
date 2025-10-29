@@ -11,8 +11,8 @@ export abstract class HttpServiceAbstract {
     return this.sendRequest<T>(HttpEnum.GET, path);
   }
 
-  protected post<T>(path: string, body?: any, basicAuth?: string, responseType: 'json' | 'text' = 'json') {
-    return this.sendRequest<T>(HttpEnum.POST, path, body, undefined, basicAuth, responseType);
+  protected post<T>(path: string, body?: any, responseType: 'json' | 'text' = 'json') {
+    return this.sendRequest<T>(HttpEnum.POST, path, body, undefined, responseType);
   }
 
   protected put<T>(path: string, body: any) {
@@ -28,7 +28,7 @@ export abstract class HttpServiceAbstract {
   }
 
   protected fileDownload<T>(path: string){
-    return this.sendRequest<T>(HttpEnum.POST, path, null, undefined, undefined, 'blob', true);
+    return this.sendRequest<T>(HttpEnum.POST, path, null, undefined, 'blob', true);
   }
 
 
@@ -37,7 +37,6 @@ export abstract class HttpServiceAbstract {
     path: string,
     body?: any,
     params?: { [param: string]: string | number | boolean },
-    basicAuth?: string,
     responseType: 'json' | 'text' | 'blob' = 'json',
     isFile: boolean = false
   ) {
@@ -46,9 +45,6 @@ export abstract class HttpServiceAbstract {
     const token = localStorage.getItem('token');
     if (token) {
       headers = headers.set('Authorization', `Bearer ${token}`);
-    }
-    if(basicAuth) {
-      headers = headers.set('Authorization', `Basic ${basicAuth}`);
     }
 
     const httpParams = new HttpParams({

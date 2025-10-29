@@ -8,7 +8,6 @@ public record FestaRequestDTO(
         String nameClient,
         String location,
         LocalDateTime date,
-        BigDecimal valuePerDay,
         Long idMaterial,
         Long numberOfPeople
 ) {

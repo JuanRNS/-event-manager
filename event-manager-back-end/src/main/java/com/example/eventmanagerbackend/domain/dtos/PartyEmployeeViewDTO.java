@@ -1,5 +1,7 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
+import com.example.eventmanagerbackend.domain.entities.EmployeePartiesValues;
+import com.example.eventmanagerbackend.domain.entities.EmployeeType;
 import com.example.eventmanagerbackend.domain.entities.Material;
 import com.example.eventmanagerbackend.domain.enums.StatusFesta;
 
@@ -12,10 +14,10 @@ public record FestaGarcomViewDTO(
         String location,
         String nameClient,
         LocalDateTime date,
-        BigDecimal valuePerDay,
+        List<EmployeePartiesValues> values,
         Material material,
         Long numberOfPeople,
-        List<GarcomResponseDTO> garcoms,
+        List<EmployeeResponseDTO> garcoms,
         StatusFesta status
 ) {
 }

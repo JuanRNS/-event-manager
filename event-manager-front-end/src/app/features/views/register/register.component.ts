@@ -8,6 +8,8 @@ import { FormGroupArray } from '../../../core/interface/form.interface';
 import { ApiService } from '../../services/api.service';
 import { IRequestUserRegister } from '../../../core/interface/register.interface';
 import { Router, RouterLink } from '@angular/router';
+import { MaskEnum } from '../../../core/enums/maskEnum';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +33,8 @@ export class RegisterComponent {
 
   constructor(
     private readonly _service: ApiService,
-    private readonly _router: Router
+    private readonly _router: Router,
+    private readonly _toast: ToastService
   ) { }
 
   public register(){
@@ -58,8 +61,8 @@ export class RegisterComponent {
       next: (response) => {
         this._router.navigate(['login']);
       },
-      error(err) {
-        console.log(err);
+      error: (err) => {
+        this._toast.error(err.error.message || 'Erro ao registrar o usuário.');
       },
     });
   }
@@ -79,6 +82,7 @@ export class RegisterComponent {
         controlName: 'userName',
         type: 'text',
         size: '12',
+        mask: MaskEnum.NOME
       },
       {
         component: FormFieldEnum.INPUT,

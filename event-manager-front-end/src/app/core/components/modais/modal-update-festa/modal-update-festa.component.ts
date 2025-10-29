@@ -7,6 +7,7 @@ import { FormComponent } from '../../form-group/form/form.component';
 import { ApiService } from '../../../../features/services/api.service';
 import { OptionsService } from '../../../../features/services/options.service';
 import { IRequestUpdateFesta } from '../../../interface/modal-update-festa.interface';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-modal-update-festa',
@@ -31,6 +32,7 @@ export class ModalUpdateFestaComponent implements OnInit {
 
   constructor(
     private readonly _service: ApiService,
+    private readonly _toast: ToastService,
     private readonly _optionsService: OptionsService,
     private readonly _dialogRef: MatDialogRef<ModalUpdateFestaComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { id: number }
@@ -137,7 +139,7 @@ export class ModalUpdateFestaComponent implements OnInit {
         this._dialogRef.close(true);
       },
       error: (err) => {
-        console.log(err);
+        this._toast.error(err.error.message || 'Erro ao atualizar a festa.');
       }
     });
   }

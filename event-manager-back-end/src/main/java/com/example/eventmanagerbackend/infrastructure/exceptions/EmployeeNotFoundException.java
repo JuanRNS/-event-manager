@@ -6,6 +6,6 @@ public class GarcomNotFoundException extends RuntimeException {
     }
 
     public GarcomNotFoundException() {
-        super("Garcom não encontrado");
+        super("Employee não encontrado");
     }
 }

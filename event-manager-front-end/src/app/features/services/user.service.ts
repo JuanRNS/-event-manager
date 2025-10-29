@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpServiceAbstract } from '../abstract/http.abstract';
+
 import { environment } from './../../../environments/environment'
 import { HttpClient } from '@angular/common/http';
-import { IRequestLogin, IRequestRegister } from '../interface/login.interface';
+import { HttpServiceAbstract } from '../../core/abstract/http.abstract';
+import { IRequestLogin, IRequestRegister } from '../../core/interface/login.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,7 @@ export class UserService extends HttpServiceAbstract {
   }
 
   public userLogin(user: IRequestLogin) {
-    const basicAuth = btoa(`${user.username.replace(/\s+/g, '')}:${user.password}`);
-    return this.post<string>('user/login', null, basicAuth, 'text');
+    return this.post<string>('user/login', user, 'text');
   }
 
   public userRegister(user: IRequestRegister) {

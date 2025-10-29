@@ -1,0 +1,29 @@
+.flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+mat-icon{
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    display: none;
+    margin-right: 1rem;
+}
+
+span{
+    font-size: 16px;
+}
+
+.toast-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.toast{
+    padding: 1em 2em;
+    border-radius: 4px;
+}

@@ -1,6 +1,7 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
 
+import com.example.eventmanagerbackend.domain.entities.EmployeePartiesValues;
 import com.example.eventmanagerbackend.domain.enums.StatusFesta;
 
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ public record FestaResponseDTO(
     String location,
     String nameClient,
     LocalDateTime date,
-    BigDecimal valuePerDay,
+    List<EmployeePartiesValues> values,
     MaterialResponseDTO material,
     List<Long> garcomIds,
     Long numberOfPeople,

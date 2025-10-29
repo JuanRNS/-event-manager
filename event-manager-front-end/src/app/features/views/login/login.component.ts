@@ -6,9 +6,10 @@ import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormComponent } from "../../../core/components/form-group/form/form.component";
 import { MatButtonModule } from '@angular/material/button';
-import { UserService } from '../../../core/services/user.service';
+import { UserService } from '../../services/user.service';
 import { IRequestLogin } from '../../../core/interface/login.interface';
 import { MaskEnum } from '../../../core/enums/maskEnum';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,8 @@ export class LoginComponent {
 
   constructor(
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly _toast: ToastService
   ) {}
 
   public login(){
@@ -47,9 +49,15 @@ export class LoginComponent {
       password: this.formGroup.controls.password.value as string
     }
 
-    this.userService.userLogin(form).subscribe((res) => {
-      localStorage.setItem('token', res);
-      this.router.navigate(['dashboard']);
+    this.userService.userLogin(form).subscribe({
+      next:(value) => {
+          localStorage.setItem('token', value);
+          this.router.navigate(['dashboard']);
+      },
+      error: (err) => {
+        const error = JSON.parse(err.error);
+        this._toast.error(error.message);
+      }
     })
   }
 
@@ -60,7 +68,7 @@ export class LoginComponent {
         component: FormFieldEnum.INPUT,
         label: 'Username',
         controlName: 'userName',
-        type: 'email',
+        type: 'text',
         size: '12',
         mask: MaskEnum.NOME
       },
