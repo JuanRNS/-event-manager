@@ -1,4 +1,6 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public record EmployeeTypeRequestDTO() {
+public record EmployeeTypeRequestDTO(
+        String type
+) {
 }

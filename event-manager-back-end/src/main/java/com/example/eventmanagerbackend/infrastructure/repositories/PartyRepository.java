@@ -1,6 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.repositories;
 
-import com.example.eventmanagerbackend.domain.entities.Festa;
+import com.example.eventmanagerbackend.domain.entities.Party;
 import com.example.eventmanagerbackend.domain.enums.StatusFesta;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FestaRepository extends JpaRepository<Festa, Long> {
+public interface PartyRepository extends JpaRepository<Party, Long> {
 
-    List<Festa> findAllByStatus(StatusFesta statusFesta);
+    List<Party> findAllByStatus(StatusFesta statusFesta);
 
-    Page<Festa> findAllByStatus(StatusFesta statusFesta, Pageable pageable);
+    Page<Party> findAllByStatus(StatusFesta statusFesta, Pageable pageable);
 }

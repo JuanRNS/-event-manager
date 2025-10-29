@@ -1,4 +1,7 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public record UserLoginRequestDTO() {
+public record UserLoginRequestDTO(
+        String username,
+        String password
+) {
 }

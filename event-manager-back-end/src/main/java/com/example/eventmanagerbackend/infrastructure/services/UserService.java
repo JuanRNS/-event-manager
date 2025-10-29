@@ -3,8 +3,11 @@ package com.example.eventmanagerbackend.infrastructure.services;
 import com.example.eventmanagerbackend.domain.dtos.UserRequestDTO;
 import com.example.eventmanagerbackend.domain.entities.User;
 import com.example.eventmanagerbackend.infrastructure.exceptions.EmailExistsException;
+import com.example.eventmanagerbackend.infrastructure.exceptions.UserNameExistsException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.UserNameStringFirstException;
+import com.example.eventmanagerbackend.infrastructure.exceptions.UserNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.repositories.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +31,19 @@ public class UserService {
         if (validateEmail(user.email())) {
             throw new EmailExistsException();
         }
+        if (validateName(user.userName())) {
+            throw new UserNameExistsException();
+        }
         User createdUser = parseUser(user);
         return userRepository.save(createdUser);
     }
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public User getUser(Authentication authentication) {
+        return userRepository.findByUserName(authentication.getName()).orElseThrow(UserNotFoundException::new);
     }
 
     private User parseUser(UserRequestDTO user) {
@@ -50,5 +60,9 @@ public class UserService {
 
     private boolean validateEmail(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    private boolean validateName(String userName) {
+        return userRepository.findByUserName(userName).isPresent();
     }
 }

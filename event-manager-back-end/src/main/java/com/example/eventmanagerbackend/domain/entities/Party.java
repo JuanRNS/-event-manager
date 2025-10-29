@@ -1,7 +1,6 @@
 package com.example.eventmanagerbackend.domain.entities;
 
 import com.example.eventmanagerbackend.domain.enums.StatusFesta;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "festas")
+@Table(name = "parties")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Festa {
+public class Party {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,21 +32,31 @@ public class Festa {
     
     @Column(nullable = false)
     private LocalDateTime date;
-    
-    @Column(name = "value_per_day", nullable = false, precision = 10, scale = 2)
-    private BigDecimal valuePerDay;
+
     @Column(name = "status")
     private StatusFesta status = StatusFesta.AGENDADA;
 
     @Column(name = "number_of_people", nullable = false)
     private Long numberOfPeople;
 
-    @OneToMany(mappedBy = "festa", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FestaGarcom> festaGarcoms = new ArrayList<>();
+    @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EmployeePartiesValues> values;
+
+    @ManyToMany
+    @JoinTable(
+            name = "party_employee",
+            joinColumns = @JoinColumn(name = "party_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
+    )
+    private List<Employee> partyEmployees = new ArrayList<>();
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "material_id")
     private Material material;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

@@ -1,11 +1,11 @@
 package com.example.eventmanagerbackend.infrastructure.exceptions;
 
-public class GarcomNotFoundException extends RuntimeException {
-    public GarcomNotFoundException(String message) {
+public class EmployeeNotFoundException extends RuntimeException {
+    public EmployeeNotFoundException(String message) {
         super(message);
     }
 
-    public GarcomNotFoundException() {
-        super("Employee não encontrado");
+    public EmployeeNotFoundException() {
+        super("Funcionário não encontrado");
     }
 }

@@ -1,8 +1,7 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
 import com.example.eventmanagerbackend.domain.dtos.*;
-import com.example.eventmanagerbackend.infrastructure.services.FestaGarcomService;
-import com.example.eventmanagerbackend.infrastructure.services.FestaService;
+import com.example.eventmanagerbackend.infrastructure.services.PartyService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,26 +12,24 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/festa")
-public class FestaController {
+public class PartyController {
 
-    private final FestaService festaService;
-    private final FestaGarcomService festaGarcomService;
+    private final PartyService partyService;
 
-    public FestaController(FestaService festaService, FestaGarcomService festaGarcomService) {
-        this.festaService = festaService;
-        this.festaGarcomService = festaGarcomService;
+    public PartyController(PartyService partyService) {
+        this.partyService = partyService;
     }
 
     @GetMapping("list/status")
-    public ResponseEntity<Page<FestaResponseDTO>> getAllFestasByStatus(Pageable pageable) {
-        Page<FestaResponseDTO> festaList = festaService.getAllFestasByStatus(pageable);
+    public ResponseEntity<Page<PartyResponseDTO>> getAllFestasByStatus(Pageable pageable) {
+        Page<PartyResponseDTO> festaList = partyService.getAllFestasByStatus(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(festaList);
     }
     @GetMapping("list")
-    public ResponseEntity<Page<FestaResponseDTO>> getAllFestas(Pageable pageable) {
-        Page<FestaResponseDTO> festaList = festaService.getAllFestas(pageable);
+    public ResponseEntity<Page<PartyResponseDTO>> getAllFestas(Pageable pageable) {
+        Page<PartyResponseDTO> festaList = partyService.getAllFestas(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(festaList);
@@ -40,8 +37,8 @@ public class FestaController {
 
 
     @PostMapping("create")
-    public ResponseEntity<FestaResponseDTO> createFesta(@RequestBody FestaRequestDTO festa) {
-        FestaResponseDTO createdFesta = festaService.createFesta(festa);
+    public ResponseEntity<PartyResponseDTO> createFesta(@RequestBody PartyRequestDTO festa) {
+        PartyResponseDTO createdFesta = partyService.createFesta(festa);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createdFesta);
@@ -49,42 +46,42 @@ public class FestaController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteFesta(@PathVariable Long id) {
-        festaService.deleteFesta(id);
+        partyService.deleteFesta(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateFesta(@PathVariable Long id, @RequestBody FestaUpdateRequestDTO festa) {
-        festaService.updateFesta(id, festa);
+    public ResponseEntity<Void> updateFesta(@PathVariable Long id, @RequestBody PartyUpdateRequestDTO festa) {
+        partyService.updateFesta(id, festa);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<FestaResponseDTO> getFesta(@PathVariable Long id) {
-        FestaResponseDTO festa = festaService.getFestaById(id);
+    public ResponseEntity<PartyResponseDTO> getFesta(@PathVariable Long id) {
+        PartyResponseDTO festa = partyService.getFestaById(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(festa);
     }
 
-    @PostMapping("adicionar-garcom")
-    public ResponseEntity<Void> addGarcom(@RequestBody FestaGarcomRequestDTO festaGarcom) {
-        festaGarcomService.addGarcomToFesta(festaGarcom.festaId(), festaGarcom.garcomIds());
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .build();
-    }
+//    @PostMapping("adicionar-garcom")
+//    public ResponseEntity<Void> addGarcom(@RequestBody PartyEmployeeRequestDTO festaGarcom) {
+//        partyEmployeeService.addGarcomToFesta(festaGarcom.festaId(), festaGarcom.garcomIds());
+//        return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .build();
+//    }
 
     @GetMapping("status")
     public ResponseEntity<List<StatusResponseDTO>> getStatus() {
-        return ResponseEntity.ok(festaService.getStatus());
+        return ResponseEntity.ok(partyService.getStatus());
     }
 
     @GetMapping("view/{id}")
-    public ResponseEntity<FestaGarcomViewDTO> getFestaGarcomById(@PathVariable Long id) {
-        FestaGarcomViewDTO festaGarcomViewDTO = festaService.getFestaGarcomById(id);
-        return ResponseEntity.ok(festaGarcomViewDTO);
+    public ResponseEntity<PartyEmployeeViewDTO> getFestaGarcomById(@PathVariable Long id) {
+        PartyEmployeeViewDTO partyEmployeeViewDTO = partyService.getFestaGarcomById(id);
+        return ResponseEntity.ok(partyEmployeeViewDTO);
     }
 }

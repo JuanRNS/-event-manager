@@ -1,15 +1,18 @@
 package com.example.eventmanagerbackend.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-public class employeeType {
+public class EmployeeType {
 
     @Id
     private Long id;
 
     private String type;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

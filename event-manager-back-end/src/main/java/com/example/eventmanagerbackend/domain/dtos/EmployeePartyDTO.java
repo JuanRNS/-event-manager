@@ -2,10 +2,10 @@ package com.example.eventmanagerbackend.domain.dtos;
 
 import java.util.List;
 
-public record GarcomFestasDTO(
+public record EmployeePartyDTO(
         String name,
         String phone,
         String pixKey,
-        List<FestasByGarcomIdDTO> parties
+        List<PartyByEmployeeIdDTO> parties
 ) {
 }

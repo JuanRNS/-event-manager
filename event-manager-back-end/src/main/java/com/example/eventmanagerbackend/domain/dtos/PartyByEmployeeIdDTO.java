@@ -5,7 +5,7 @@ import com.example.eventmanagerbackend.domain.enums.StatusFesta;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record FestasByGarcomIdDTO(
+public record PartyByEmployeeIdDTO(
         String location,
         String nameClient,
         LocalDateTime date,

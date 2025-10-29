@@ -1,15 +1,13 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
 import com.example.eventmanagerbackend.domain.entities.EmployeePartiesValues;
-import com.example.eventmanagerbackend.domain.entities.EmployeeType;
 import com.example.eventmanagerbackend.domain.entities.Material;
 import com.example.eventmanagerbackend.domain.enums.StatusFesta;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record FestaGarcomViewDTO(
+public record PartyEmployeeViewDTO(
         Long id,
         String location,
         String nameClient,

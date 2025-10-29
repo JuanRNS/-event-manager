@@ -1,9 +1,10 @@
 package com.example.eventmanagerbackend.infrastructure.services;
 
-import com.example.eventmanagerbackend.domain.dtos.GarcomResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.EmployeeResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.PdfRequestDashboardDTO;
 import com.example.eventmanagerbackend.domain.dtos.PdfRequestDashboardFestaDTO;
-import com.example.eventmanagerbackend.domain.entities.Festa;
+import com.example.eventmanagerbackend.domain.entities.EmployeePartiesValues;
+import com.example.eventmanagerbackend.domain.entities.Party;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -28,12 +29,10 @@ import java.util.List;
 @Service
 public class PdfService {
 
-    private final GarcomService garcomService;
-    private final FestaGarcomService festaGarcomService;
+    private final EmployeeService employeeService;
 
-    public PdfService(GarcomService garcomService, FestaGarcomService festaGarcomService) {
-        this.garcomService = garcomService;
-        this.festaGarcomService = festaGarcomService;
+    public PdfService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     public byte[] generatePDF(Long id, LocalDate fromDate, LocalDate toDate) {
@@ -82,27 +81,31 @@ public class PdfService {
     }
 
     private PdfRequestDashboardDTO dashboardDTO(Long id, LocalDate fromDate, LocalDate toDate) {
-        GarcomResponseDTO garcom = garcomService.getGarcomById(id);
-        List<Festa> festas = festaGarcomService.getFestaGarcomById(id);
+        EmployeeResponseDTO employee = employeeService.getEmployeeById(id);
+        List<Party> parties = employee.parties();
         if (fromDate != null && toDate != null) {
-            festas.removeIf(festa -> !verifyFromDateAndToDate(festa.getDate(), fromDate, toDate));
+            parties.removeIf(party -> !verifyFromDateAndToDate(party.getDate(), fromDate, toDate));
         }else{
-            festas.removeIf(festa -> !initialWeek(festa.getDate()));
+            parties.removeIf(party -> !initialWeek(party.getDate()));
         }
-        List<PdfRequestDashboardFestaDTO> festasDTO = festas.stream().map(f ->
+        List<PdfRequestDashboardFestaDTO> partyDTO = parties.stream().map(p ->
                 new PdfRequestDashboardFestaDTO(
-                        f.getNameClient(),
-                        f.getLocation(),
-                        f.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                        f.getValuePerDay()
+                        p.getNameClient(),
+                        p.getLocation(),
+                        p.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        p.getValues()
+                                .stream()
+                                .filter(value -> value.getEmployeeType() == employee.employeeType())
+                                .map(EmployeePartiesValues::getValue)
+                                .reduce(BigDecimal.ZERO, BigDecimal::add)
                 )
         ).toList();
 
         return new PdfRequestDashboardDTO(
-                garcom.name(),
-                garcom.phone(),
-                garcom.pixKey(),
-                festasDTO
+                employee.name(),
+                employee.phone(),
+                employee.pixKey(),
+                partyDTO
         );
     }
 

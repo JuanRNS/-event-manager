@@ -1,10 +1,10 @@
 package com.example.eventmanagerbackend.infrastructure.exceptions;
 
-public class FestaNotFoundException extends RuntimeException {
-    public FestaNotFoundException(String message) {
+public class PartyNotFoundException extends RuntimeException {
+    public PartyNotFoundException(String message) {
         super(message);
     }
-    public FestaNotFoundException() {
+    public PartyNotFoundException() {
         super("Festa nao encontrada");
     }
 }
