@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpServiceAbstract } from '../../core/abstract/http.abstract';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseListGarcom, IResponseMaterial } from '../../core/interface/event.interface';
+import { IRequestEmployeeType, IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseListGarcom, IResponseMaterial } from '../../core/interface/event.interface';
 import { IRequestUserRegister } from '../../core/interface/register.interface';
 import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/interface/party.interface';
 import { IResponseDashboardContent } from '../../core/interface/dashboard.interface';
@@ -119,5 +119,9 @@ export class ApiService extends HttpServiceAbstract {
 
   public getPartiesByWaiterId(id: number) {
     return this.get<IResponseModalViewPartyWaiter>(`garcom/list/garcom/festas/${id}`);
+  }
+
+  public postCreateEmployeeType(type: IRequestEmployeeType){
+    return this.post(`type/create`, type, 'json');
   }
 }

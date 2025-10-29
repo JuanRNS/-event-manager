@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormGroupArray } from '../../../core/interface/form.interface';
+import { FormGroupArray, IOptions } from '../../../core/interface/form.interface';
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormComponent } from "../../../core/components/form-group/form/form.component";
 import { ApiService } from '../../services/api.service';
-import { IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseMaterial } from '../../../core/interface/event.interface';
+import { IRequestEmployeeType, IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseMaterial } from '../../../core/interface/event.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { OptionsService } from '../../services/options.service';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -16,6 +16,7 @@ import { MaskEnum } from '../../../core/enums/maskEnum';
 import { MatMenuModule } from "@angular/material/menu";
 import { MatIconModule } from '@angular/material/icon';
 import { ModalViewPartyWaiterComponent } from '../../../core/components/modais/modal-view-party-waiter/modal-view-party-waiter.component';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -29,7 +30,7 @@ import { ModalViewPartyWaiterComponent } from '../../../core/components/modais/m
     FormComponent,
     MatPaginatorModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
 ],
   templateUrl: './event-components.component.html',
   styleUrl: './event-components.component.scss'
@@ -43,7 +44,15 @@ export class EventComponentsComponent implements OnInit{
   });
 
   public formSecondary = new FormGroup({
+     employeeType: new FormControl<string | null>(null),
+  });
+
+  public formThird = new FormGroup({
     description: new FormControl<string | null>(null),
+  });
+
+  public formEmployeeType = new FormGroup({
+    type: new FormControl<string | null>(null),
   });
 
   public ListGarcoms: IResponseGarcom[] = [];
@@ -51,6 +60,9 @@ export class EventComponentsComponent implements OnInit{
   public page = 0;
   public pageSize = 5;
   public totalElements = 0;
+  public createEmployeeType: boolean = false;
+  public employeeTypesOptions$ = new BehaviorSubject<IOptions[]>([]);
+  
 
   constructor(
     private readonly _service: ApiService,
@@ -61,6 +73,7 @@ export class EventComponentsComponent implements OnInit{
   ngOnInit(): void {
      this.getGarcoms();
      this.getMaterials();
+     this.getEmployeeTypesOptions();
   }
 
   public get formGroupItensPrimary(): FormGroupArray{
@@ -102,16 +115,41 @@ export class EventComponentsComponent implements OnInit{
         type: 'select',
         options: this._optionsService.getOptionsStatusGarcom(),
         size: '6',
-      }
+      },
     ]
   }
 
   public get formGroupItensSecondary(): FormGroupArray{
     return [
       {
+        component: FormFieldEnum.SELECT,
+        label: 'Tipo de Funcionário',
+        controlName: 'employeeType',
+        type: 'select',
+        options: this.employeeTypesOptions$.asObservable(),
+        size: '12',
+      }
+    ]
+  }
+
+  public get formGroupItensThird(): FormGroupArray{
+    return [
+      {
         component: FormFieldEnum.INPUT,
         label: 'Descrição do Material',
         controlName: 'description',
+        type: 'text',
+        size: '12',
+      }
+    ]
+  }
+
+  public get formGroupItensEmployeeType(): FormGroupArray{
+    return [
+      {
+        component: FormFieldEnum.INPUT,
+        label: 'Tipo de Funcionário',
+        controlName: 'type',
         type: 'text',
         size: '12',
       }
@@ -124,6 +162,21 @@ export class EventComponentsComponent implements OnInit{
     this._service.postCreateGarcom(garcom).subscribe((res) => {
       this.getGarcoms();
       this.formPrimary.reset();
+    });
+  }
+
+  public createEmployeeTypeRequest() {
+    const data = this.formEmployeeType.value as IRequestEmployeeType;
+    this._service.postCreateEmployeeType(data).subscribe((res) => {
+      this.createEmployeeType = false;
+      this.formEmployeeType.reset();
+      this.getEmployeeTypesOptions();
+    });
+  }
+
+  public getEmployeeTypesOptions() {
+    this._optionsService.getOptionsEmployeeType().subscribe((options) => {
+      this.employeeTypesOptions$.next(options);
     });
   }
 

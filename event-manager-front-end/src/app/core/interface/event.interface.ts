@@ -33,3 +33,8 @@ export interface IPage{
   totalElements: number;
   totalPages: number;
 }
+
+
+export interface IRequestEmployeeType{
+  type: string;
+}
