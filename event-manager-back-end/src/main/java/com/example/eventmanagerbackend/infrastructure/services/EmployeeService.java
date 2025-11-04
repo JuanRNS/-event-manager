@@ -3,8 +3,12 @@ package com.example.eventmanagerbackend.infrastructure.services;
 import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.*;
 import com.example.eventmanagerbackend.infrastructure.exceptions.EmployeeNotFoundException;
+import com.example.eventmanagerbackend.infrastructure.exceptions.EmployeeTypeNotFoundException;
+import com.example.eventmanagerbackend.infrastructure.exceptions.PartyNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.EmployeeMapper;
 import com.example.eventmanagerbackend.infrastructure.repositories.EmployeeRepository;
+import com.example.eventmanagerbackend.infrastructure.repositories.EmployeeTypeRepository;
+import com.example.eventmanagerbackend.infrastructure.repositories.PartyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -24,17 +28,28 @@ public class EmployeeService {
 
     private final EmployeeMapper employeeMapper;
     private final EmployeeRepository employeeRepository;
+    private final EmployeeTypeRepository employeeTypeRepository;
     private final UserService userService;
+    private final PartyRepository partyRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, UserService userService) {
+    public EmployeeService(
+            EmployeeRepository employeeRepository,
+            EmployeeMapper employeeMapper,
+            UserService userService,
+            EmployeeTypeRepository employeeTypeRepository,
+            PartyRepository partyRepository
+    ) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
         this.userService = userService;
+        this.employeeTypeRepository = employeeTypeRepository;
+        this.partyRepository = partyRepository;
     }
 
     public Employee createEmployee(EmployeeRequestDTO employee, Authentication authentication) {
         User user = userService.getUser(authentication);
-        Employee employeeCreated = new Employee(employee, user);
+        EmployeeType employeeType = employeeTypeRepository.findById(employee.idEmployeeType()).orElseThrow(EmployeeTypeNotFoundException::new);
+        Employee employeeCreated = new Employee(employee, employeeType, user);
         return employeeRepository.save(employeeCreated);
     }
     public void updateEmployee(Long id, EmployeeRequestDTO employeeUpdate) {
@@ -154,6 +169,16 @@ public class EmployeeService {
                 employee.get().getPixKey(),
                 festas
         );
+    }
+
+    public List<Long> getEmployeeByPartyId(Long id){
+        Party party = partyRepository.findById(id).orElseThrow(PartyNotFoundException::new);
+        List<Long> employeeIds = new ArrayList<>();
+        for(Employee employee :party.getPartyEmployees()) {
+            employeeIds.add(employee.getId());
+        }
+        return employeeIds;
+        
     }
 
 

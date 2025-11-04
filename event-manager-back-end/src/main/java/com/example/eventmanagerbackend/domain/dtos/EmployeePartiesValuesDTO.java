@@ -1,4 +1,9 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public record EmployeePartiesValuesDTO() {
+import java.math.BigDecimal;
+
+public record EmployeePartiesValuesDTO(
+        Long idEmployeeType,
+        BigDecimal value
+) {
 }

@@ -1,4 +1,9 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public class PartyEmployeeAddRequestDTO {
+import java.util.List;
+
+public record PartyEmployeeAddRequestDTO(
+        List<Long> employeeIds,
+        Long partyId
+) {
 }
