@@ -99,6 +99,12 @@
   font-size: 14px;
 }
 
+.button-type{
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap;
+}
+
 .btn-primary {
   background-color: var(--primary-color);
   color: var(--white) !important;

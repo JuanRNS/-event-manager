@@ -14,22 +14,13 @@
                <div class="table">
                   <div class="table-header">
                     <div class="title">
-                      cliente
+                      Cliente
                     </div>
                     <div class="title">
                       Local
                     </div>
                     <div class="title">
                       Data
-                    </div>
-                    <div class="title">
-                      Nº de pessoas
-                    </div>
-                    <div class="title">
-                      Valor 
-                    </div>
-                    <div class="title">
-                      Material
                     </div>
                     <div class="title">
                       Status
@@ -48,24 +39,6 @@
                     </div>
                     <div class="title">
                       {{item.date}}
-                    </div>
-                    <div class="title">
-                      {{item.numberOfPeople}}
-                    </div>
-                    <div class="title">
-                      {{item.valuePerDay}}
-                    </div>
-                    @if (item.material) {
-                      <div class="title">
-                        {{item.material.description}}
-                      </div>
-                    }@else {
-                      <div class="title">
-                        -
-                      </div>
-                    }
-                    <div class="title">
-                      {{item.status}}
                     </div>
                     <div class="title">
                       <mat-menu #menu="matMenu">
