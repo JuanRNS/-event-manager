@@ -35,7 +35,7 @@ export class InputComponent {
   public form = input.required<FormGroup>();
   public size = input<string>();
   public mask = input<MaskEnum>();
-  public maxlength = input<number>();
+  public maxlength = input<number | null>();
 
   public required(): boolean{
     return this.form().get(this.formControl())?.hasValidator(Validators.required) ?? false;

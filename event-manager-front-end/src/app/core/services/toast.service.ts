@@ -26,4 +26,13 @@ export class ToastService {
       verticalPosition: 'top',
     });
   }
+  public warning(message: string, duration: number = 3000) {
+    this._toast.openFromComponent(ToastComponent, {
+      data: message,
+      duration,
+      panelClass: ['toast-warning'],
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+    });
+  }
 }

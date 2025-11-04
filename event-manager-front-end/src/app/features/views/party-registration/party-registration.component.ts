@@ -16,6 +16,7 @@ import { ModalAddGarcomComponent } from '../../../core/components/modais/modal-a
 import { ModalViewPartyComponent } from '../../../core/components/modais/modal-view-party/modal-view-party.component';
 import { ParseDateUtil } from '../../../core/utils/parse-date.util';
 import { MaskEnum } from '../../../core/enums/maskEnum';
+import { ModalValuesEmployeeComponent } from '../../../core/components/modais/modal-values-employee/modal-values-employee.component';
 
 @Component({
   selector: 'app-party-registration',
@@ -38,7 +39,6 @@ export class PartyRegistrationComponent implements OnInit {
     nameClient: new FormControl<string | null>(null, [Validators.required]),
     date: new FormControl<string | null>(null, [Validators.required]),
     idMaterial: new FormControl<number | null>(null, [Validators.required]),
-    valuePerDay: new FormControl<number | null>(null, [Validators.required]),
     numberOfPeople: new FormControl<string | null>(null, [
       Validators.required,
       Validators.min(1),
@@ -98,14 +98,6 @@ export class PartyRegistrationComponent implements OnInit {
       },
       {
         component: FormFieldEnum.INPUT,
-        label: 'Diária',
-        controlName: 'valuePerDay',
-        type: 'text',
-        placeholder: 'Valor da festa',
-        size: '6',
-      },
-      {
-        component: FormFieldEnum.INPUT,
         label: 'Quantidade de Pessoas',
         controlName: 'numberOfPeople',
         placeholder: 'Quantidade de Pessoas',
@@ -138,7 +130,6 @@ export class PartyRegistrationComponent implements OnInit {
         .toISOString()
         .substring(0, 19),
       idMaterial: Number(this.form.controls.idMaterial.value),
-      valuePerDay: Number(this.form.controls.valuePerDay.value),
       numberOfPeople: Number(this.form.controls.numberOfPeople.value),
     };
 
@@ -192,6 +183,17 @@ export class PartyRegistrationComponent implements OnInit {
     this._dialog.open(ModalViewPartyComponent, {
       height: '70vh',
       width: '70vw',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      autoFocus: false,
+      data: { id: id },
+    });
+  }
+
+  public valuesParty(id: number){
+    this._dialog.open(ModalValuesEmployeeComponent, {
+      height: '50vh',
+      width: '40vw',
       maxWidth: '100vw',
       maxHeight: '100vh',
       autoFocus: false,

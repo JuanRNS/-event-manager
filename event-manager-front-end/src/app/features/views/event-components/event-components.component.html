@@ -29,11 +29,11 @@
               >
               </app-form>
               <div class="button-add-type col-6">
-                <button mat-button class="btn btn-success btn-sm col-4" (click)="createEmployeeTypeRequest()">
-                  Cadastrar 
-                </button>
                 <button mat-button class="btn btn-danger btn-sm col-4" (click)="createEmployeeType = false">
                   Cancelar
+                </button>
+                <button mat-button class="btn btn-success btn-sm col-4" (click)="createEmployeeTypeRequest()">
+                  Cadastrar 
                 </button>
               </div>
             </div>
@@ -69,6 +69,9 @@
                       Status
                     </div>
                     <div class="title">
+                      Tipo
+                    </div>
+                    <div class="title">
                       Ações
                     </div>
                   </div>
@@ -85,6 +88,9 @@
                     </div>
                     <div class="title">
                       {{item.statusGarcom}}
+                    </div>
+                    <div class="title">
+                      {{item.employeeType.type}}
                     </div>
                     <div class="title">
                       <mat-menu #menu="matMenu">
