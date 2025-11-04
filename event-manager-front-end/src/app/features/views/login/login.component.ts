@@ -38,6 +38,9 @@ export class LoginComponent {
   ) {}
 
   public login(){
+    if(localStorage.getItem('token')){
+      localStorage.removeItem('token');
+    }
     if(this.formGroup.invalid){
       this.formGroup.markAllAsDirty();
       this.formGroup.updateValueAndValidity();

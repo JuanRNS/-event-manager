@@ -3,9 +3,13 @@ package com.example.eventmanagerbackend.infrastructure.services;
 import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.*;
 import com.example.eventmanagerbackend.domain.enums.StatusFesta;
+import com.example.eventmanagerbackend.infrastructure.exceptions.EmployeeNotFoundException;
+import com.example.eventmanagerbackend.infrastructure.exceptions.EmployeeTypeNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.PartyNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.PartyMapper;
+import com.example.eventmanagerbackend.infrastructure.repositories.EmployeeRepository;
+import com.example.eventmanagerbackend.infrastructure.repositories.EmployeeTypeRepository;
 import com.example.eventmanagerbackend.infrastructure.repositories.PartyRepository;
 import com.example.eventmanagerbackend.infrastructure.repositories.MaterialRepository;
 import org.springframework.data.domain.Page;
@@ -24,11 +28,22 @@ public class PartyService {
     private final MaterialRepository materialRepository;
     private final PartyMapper partyMapper;
     private final EmployeeService employeeService;
-    public PartyService(PartyRepository partyRepository, PartyMapper partyMapper, MaterialRepository materialRepository, EmployeeService employeeService) {
+    private final EmployeeTypeRepository employeeTypeRepository;
+    private final EmployeeRepository employeeRepository;
+    public PartyService(
+            PartyRepository partyRepository,
+            PartyMapper partyMapper,
+            MaterialRepository materialRepository,
+            EmployeeService employeeService,
+            EmployeeTypeRepository employeeTypeRepository,
+            EmployeeRepository employeeRepository
+    ) {
         this.partyRepository = partyRepository;
         this.partyMapper = partyMapper;
         this.materialRepository = materialRepository;
         this.employeeService = employeeService;
+        this.employeeTypeRepository = employeeTypeRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     public PartyResponseDTO createFesta(PartyRequestDTO partyRequestDTO) {
@@ -37,6 +52,14 @@ public class PartyService {
         party.setMaterial(material);
         Party savedParty = partyRepository.save(party);
         return partyMapper.toFestaResponseDTO(savedParty);
+    }
+
+    public void createEmployeePartiesValues(Long idParty,EmployeePartiesValuesDTO employeePartiesValuesDTO){
+        Party party = partyRepository.findById(idParty).orElseThrow(PartyNotFoundException::new);
+        EmployeeType employeeType = employeeTypeRepository.findById(employeePartiesValuesDTO.idEmployeeType()).orElseThrow(EmployeeTypeNotFoundException::new);
+        EmployeePartiesValues employeePartiesValues = new EmployeePartiesValues(employeeType,party,employeePartiesValuesDTO.value());
+        party.addValues(employeePartiesValues);
+        partyRepository.save(party);
     }
 
     public PartyResponseDTO getFestaById(Long id) {
@@ -96,6 +119,22 @@ public class PartyService {
                 employeeList,
                 party.getStatus()
         );
+    }
+
+    public void addEmployeeParty(PartyEmployeeAddRequestDTO partyEmployeeAddRequestDTO) {
+        Party party = partyRepository.findById(partyEmployeeAddRequestDTO.partyId()).orElseThrow(PartyNotFoundException::new);
+        List<Employee> employeeList = parseEmployeeIds(partyEmployeeAddRequestDTO.employeeIds());
+        party.setPartyEmployees(employeeList);
+        partyRepository.save(party);
+    }
+
+    private List<Employee> parseEmployeeIds(List<Long> ids) {
+        List<Employee> employeeList = new ArrayList<>();
+        for (Long id : ids) {
+            Employee employee = employeeRepository.findById(id).orElseThrow(EmployeeNotFoundException::new);
+            employeeList.add(employee);
+        }
+        return employeeList;
     }
 
     private Party parseFesta(PartyRequestDTO partyRequestDTO) {

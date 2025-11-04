@@ -1,14 +1,19 @@
 package com.example.eventmanagerbackend.domain.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmployeePartiesValues {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -21,5 +26,15 @@ public class EmployeePartiesValues {
 
     @Column(nullable = false)
     private BigDecimal value;
+
+    public EmployeePartiesValues(
+            EmployeeType employeeType,
+            Party party,
+            BigDecimal value
+    ) {
+        this.employeeType = employeeType;
+        this.party = party;
+        this.value = value;
+    }
 
 }

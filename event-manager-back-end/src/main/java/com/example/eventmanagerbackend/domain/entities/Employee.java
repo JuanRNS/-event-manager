@@ -48,11 +48,11 @@ public class Employee {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Employee(EmployeeRequestDTO employeeRequestDTO, User user){
+    public Employee(EmployeeRequestDTO employeeRequestDTO,EmployeeType employeeType, User user){
         this.name = employeeRequestDTO.name();
         this.pixKey = employeeRequestDTO.pixKey();
         this.phone = employeeRequestDTO.phone();
-        this.employeeType = employeeRequestDTO.employeeType();
+        this.employeeType = employeeType;
         this.statusGarcom = employeeRequestDTO.statusGarcom();
         this.user = user;
     }

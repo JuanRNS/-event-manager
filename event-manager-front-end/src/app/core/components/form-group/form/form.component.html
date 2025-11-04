@@ -10,7 +10,7 @@
             [formControl]="item.controlName"
             [placeholder]="item.placeholder"
             [mask]="item.mask"
-            [maxlength]="item.maxlength"
+            [maxlength]="item.maxlength ?? null"
           ></app-input>
         } @else if (isSeleect(item)) {
           <app-select

@@ -114,9 +114,9 @@ export class ModalAddGarcomComponent implements OnInit {
       this._dialogRef.close();
       return;
     }
-    this._service.postAddGarcomParty({
-      festaId: this.data.id,
-      garcomIds: this.listGarcomAdd
+    this._service.postAddEmployeeParty({
+      partyId: this.data.id,
+      employeeIds: this.listGarcomAdd
     }).subscribe({
       next: (res) => {
         this._dialogRef.close(true);

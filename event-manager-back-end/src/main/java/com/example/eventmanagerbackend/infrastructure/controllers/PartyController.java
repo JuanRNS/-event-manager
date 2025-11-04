@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/festa")
+@RequestMapping("/api/party")
 public class PartyController {
 
     private final PartyService partyService;
@@ -66,13 +66,13 @@ public class PartyController {
                 .body(festa);
     }
 
-//    @PostMapping("adicionar-garcom")
-//    public ResponseEntity<Void> addGarcom(@RequestBody PartyEmployeeRequestDTO festaGarcom) {
-//        partyEmployeeService.addGarcomToFesta(festaGarcom.festaId(), festaGarcom.garcomIds());
-//        return ResponseEntity
-//                .status(HttpStatus.CREATED)
-//                .build();
-//    }
+    @PostMapping("add-employee")
+    public ResponseEntity<Void> addGarcom(@RequestBody PartyEmployeeAddRequestDTO partyEmployeeAddRequestDTO) {
+        partyService.addEmployeeParty(partyEmployeeAddRequestDTO);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
+    }
 
     @GetMapping("status")
     public ResponseEntity<List<StatusResponseDTO>> getStatus() {
@@ -83,5 +83,11 @@ public class PartyController {
     public ResponseEntity<PartyEmployeeViewDTO> getFestaGarcomById(@PathVariable Long id) {
         PartyEmployeeViewDTO partyEmployeeViewDTO = partyService.getFestaGarcomById(id);
         return ResponseEntity.ok(partyEmployeeViewDTO);
+    }
+
+    @PostMapping("{id}/add/values")
+    public ResponseEntity<Void> addValuesInPary(@PathVariable Long id,@RequestBody EmployeePartiesValuesDTO employeePartiesValuesDTO) {
+        partyService.createEmployeePartiesValues(id,employeePartiesValuesDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

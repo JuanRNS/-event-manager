@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/garcom")
+@RequestMapping("/api/employee")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -85,19 +85,19 @@ public class EmployeeController {
     }
 
     @GetMapping("list/add")
-    public ResponseEntity<Page<EmployeeAddResponseDTO>> getGarcomAdd(Pageable pageable) {
+    public ResponseEntity<Page<EmployeeAddResponseDTO>> getEmployeeAdd(Pageable pageable) {
         Page<EmployeeAddResponseDTO> employeeList = employeeService.getGarcomAddResponseDTO(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(employeeList);
     }
-//    @GetMapping("list/festa/{id}")
-//    public ResponseEntity<List<Long>> getGarcomIdsByFestaId(@PathVariable Long id) {
-//        List<Long> garcomIds = partyEmployeeService.getGarcomIdsByFestaId(id);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(garcomIds);
-//    }
+    @GetMapping("list/party/{id}")
+    public ResponseEntity<List<Long>> getEmployeeIdsByPartyId(@PathVariable Long id) {
+        List<Long> EmployeeIds = employeeService.getEmployeeByPartyId(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(EmployeeIds);
+    }
 
     @GetMapping("list/dashboard/date")
     public ResponseEntity<Page<EmployeeResponseDashboardDTO>> getEmployeeDashboardByFestaId(
@@ -110,7 +110,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeList);
     }
 
-    @GetMapping("list/garcom/festas/{id}")
+    @GetMapping("list/employee/party/{id}")
     public ResponseEntity<EmployeePartyDTO> getEmployeeFestas(@PathVariable Long id, Pageable pageable) {
         EmployeePartyDTO employeeList = employeeService.getEmployeeFestas(id, pageable);
         return ResponseEntity

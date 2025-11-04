@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +39,7 @@ public class Party {
     private Long numberOfPeople;
 
     @OneToMany(mappedBy = "party", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EmployeePartiesValues> values;
+    private List<EmployeePartiesValues> values = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -58,5 +57,9 @@ public class Party {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void addValues(EmployeePartiesValues employeePartiesValues){
+        values.add(employeePartiesValues);
+    }
 
 }
