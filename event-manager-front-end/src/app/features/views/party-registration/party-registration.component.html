@@ -39,7 +39,7 @@
                       Material
                     </div>
                     <div class="title">
-                      Garçons Escalados
+                      Funcionários Escalados
                     </div>
                     <div class="title">
                       Ações
@@ -82,9 +82,10 @@
                     }
                     <div class="title">
                       <mat-menu #menu="matMenu">
-                        <button mat-menu-item (click)="addGarcons(item.id)">Adicionar Garçons</button>
+                        <button mat-menu-item (click)="addGarcons(item.id)">Adicionar Funcionários</button>
                         <button mat-menu-item (click)="editParty(item.id)">Editar Festa</button>
                         <button mat-menu-item (click)="deleteParty(item.id)">Apagar Festa</button>
+                        <button mat-menu-item (click)="valuesParty(item.id)">Definir Valores dos Funcionários</button>
                         @if (item.garcomIds.length > 0) {
                         <button mat-menu-item (click)="viewParty(item.id)">Visualizar Festa</button>
                         }

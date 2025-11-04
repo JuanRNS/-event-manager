@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpServiceAbstract } from '../../core/abstract/http.abstract';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseListGarcom, IResponseMaterial } from '../../core/interface/event.interface';
+import { IRequestEmployeeType, IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseListGarcom, IResponseMaterial } from '../../core/interface/event.interface';
 import { IRequestUserRegister } from '../../core/interface/register.interface';
 import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/interface/party.interface';
 import { IResponseDashboardContent } from '../../core/interface/dashboard.interface';
-import { IRequestAddGarcomParty, IResponseModalAddGarcom } from '../../core/interface/modal-add-garcom.interface';
+import { IRequestAddEmployeeParty, IResponseModalAddGarcom } from '../../core/interface/modal-add-garcom.interface';
 import { IResponseModalViewParty } from '../../core/interface/modal-view-party.interface';
 import { IRequestUpdateFesta } from '../../core/interface/modal-update-festa.interface';
 import { IResponseModalViewPartyWaiter } from '../../core/interface/modal-view-party-waiter.interface';
+import { IRequestModalValuesEmployee } from '../../core/interface/modal-values-employee.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,23 +22,23 @@ export class ApiService extends HttpServiceAbstract {
   }
 
   public getGarcomById(id: number) {
-    return this.get<IResponseGarcom>(`garcom/${id}`);
+    return this.get<IResponseGarcom>(`employee/${id}`);
   }
 
   public postCreateGarcom(garcom: IRequestGarcom){
-    return this.post<IResponseGarcom>(`garcom/create`, garcom);
+    return this.post<IResponseGarcom>(`employee/create`, garcom);
   }
 
   public putUpdateGarcom(id: number,garcom: IRequestGarcom){
-    return this.put(`garcom/${id}`, garcom);
+    return this.put(`employee/${id}`, garcom);
   }
 
   public deleteGarcom(id: number){
-    return this.delete(`garcom/${id}`);
+    return this.delete(`employee/${id}`);
   }
 
   public getGarcoms(page: number, size: number) {
-    return this.get<IResponseListGarcom>(`garcom/list?page=${page}&size=${size}`);
+    return this.get<IResponseListGarcom>(`employee/list?page=${page}&size=${size}`);
   }
 
   public getMaterial() {
@@ -61,63 +62,71 @@ export class ApiService extends HttpServiceAbstract {
   }
 
   public postRegisterUser(user: IRequestUserRegister){
-    return this.post<any>(`user/register`, user, undefined, 'json');
+    return this.post<any>(`user/register`, user, 'json');
   }
 
   public postRegisterParty(party: IRequestParty){
-    return this.post<any>(`festa/create`, party, undefined, 'json');
+    return this.post<any>(`party/create`, party, 'json');
   }
 
   public putUpdateParty(id: number,party: IRequestUpdateFesta){
-    return this.put(`festa/${id}`, party);
+    return this.put(`party/${id}`, party);
   }
 
   public getListPartyStatus(page: number, size: number) {
-    return this.get<IResponseListParty>(`festa/list/status?page=${page}&size=${size}`);
+    return this.get<IResponseListParty>(`party/list/status?page=${page}&size=${size}`);
   }
 
   public getListParty(page: number, size: number) {
-    return this.get<IResponseListParty>(`festa/list?page=${page}&size=${size}`);
+    return this.get<IResponseListParty>(`party/list?page=${page}&size=${size}`);
   }
 
   public deleteParty(id: number){
-    return this.delete(`festa/${id}`);
+    return this.delete(`party/${id}`);
   }
 
   public getPartyById(id: number) {
-    return this.get<IResponseParty>(`festa/${id}`);
+    return this.get<IResponseParty>(`party/${id}`);
   }
 
   public getListDashboard(page: number, size: number) {
-    return this.get<IResponseDashboardContent>(`garcom/list/dashboard?page=${page}&size=${size}`);
+    return this.get<IResponseDashboardContent>(`employee/list/dashboard?page=${page}&size=${size}`);
   }
 
   public getFileDownload(id: number, from?: string, to?: string) {
-    if(!from || !to) return this.fileDownload<string>(`pdf/generate/garcom/${id}`);
-    return this.fileDownload<string>(`pdf/generate/garcom/${id}?fromDate=${from}&toDate=${to}`);
+    if(!from || !to) return this.fileDownload<string>(`pdf/generate/employee/${id}`);
+    return this.fileDownload<string>(`pdf/generate/employee/${id}?fromDate=${from}&toDate=${to}`);
   }
 
   public getListAddGarcom(page: number, size: number) {
-    return this.get<IResponseModalAddGarcom>(`garcom/list/add?page=${page}&size=${size}`);
+    return this.get<IResponseModalAddGarcom>(`employee/list/add?page=${page}&size=${size}`);
   }
 
-  public postAddGarcomParty(request: IRequestAddGarcomParty){
-    return this.post(`festa/adicionar-garcom`, request);
+  public postAddEmployeeParty(request: IRequestAddEmployeeParty){
+    return this.post(`party/add-employee`, request);
   }
 
   public getGarcomIdsByFestaId(festaId: number) {
-    return this.get<number[]>(`garcom/list/festa/${festaId}`);
+    return this.get<number[]>(`employee/list/party/${festaId}`);
   }
 
   public getFestaGarcomById(festaId: number) {
-    return this.get<IResponseModalViewParty>(`festa/view/${festaId}`);
+    return this.get<IResponseModalViewParty>(`party/view/${festaId}`);
   }
 
   public getDashboardFromTo(from: string, to: string) {
-    return this.get<IResponseDashboardContent>(`garcom/list/dashboard/date?fromDate=${from}&toDate=${to}`);
+    return this.get<IResponseDashboardContent>(`employee/list/dashboard/date?fromDate=${from}&toDate=${to}`);
   }
 
   public getPartiesByWaiterId(id: number) {
-    return this.get<IResponseModalViewPartyWaiter>(`garcom/list/garcom/festas/${id}`);
+    return this.get<IResponseModalViewPartyWaiter>(`employee/list/employee/party/${id}`);
+  }
+
+  public postCreateEmployeeType(type: IRequestEmployeeType){
+    return this.post(`type/create`, type, 'json');
+  }
+
+  public postCreatePartyValues(id:number, data: IRequestModalValuesEmployee){
+    return this.post(`party/${id}/add/values`, data);
   }
 }

@@ -7,6 +7,7 @@ export interface IRequestGarcom{
   phone: string;
   pixKey: string;
   statusGarcom: string;
+  idEmployeeType: number;
 }
 
 export interface IResponseGarcom{
@@ -15,6 +16,7 @@ export interface IResponseGarcom{
   phone: string;
   pixKey: string;
   statusGarcom: string;
+  employeeType: IEmployeeType;
 }
 
 export interface IResponseMaterial{
@@ -27,9 +29,19 @@ export interface IResponseListGarcom {
   page: IPage;
 }
 
+export interface IEmployeeType{
+  id: number;
+  type: string;
+}
+
 export interface IPage{
   number: number;
   size: number;
   totalElements: number;
   totalPages: number;
+}
+
+
+export interface IRequestEmployeeType{
+  type: string;
 }

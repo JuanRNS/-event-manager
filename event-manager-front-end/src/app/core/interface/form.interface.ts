@@ -24,7 +24,8 @@ export interface FormGroupValue {
   options?: IOptions[] | Observable<IOptions[]>;
   size?: values;
   mask?: MaskEnum;
-  maxlength?: number
+  maxlength?: number;
+  required?: boolean;
 }
 
 export type values = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';

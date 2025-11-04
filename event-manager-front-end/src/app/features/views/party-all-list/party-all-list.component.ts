@@ -10,7 +10,6 @@ import { ApiService } from '../../services/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ParseDateUtil } from '../../../core/utils/parse-date.util';
 import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal-update-festa/modal-update-festa.component';
-import { FormComponent } from "../../../core/components/form-group/form/form.component";
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -18,7 +17,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-party-all-list',
   standalone: true,
-  imports: [MatPaginatorModule, MatIconModule, MatButtonModule, MatMenuModule, FormComponent],
+  imports: [MatPaginatorModule, MatIconModule, MatButtonModule, MatMenuModule],
   templateUrl: './party-all-list.component.html',
   styleUrl: './party-all-list.component.scss',
 })

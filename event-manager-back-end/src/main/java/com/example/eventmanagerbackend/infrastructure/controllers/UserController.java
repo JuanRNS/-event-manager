@@ -1,11 +1,11 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
+import com.example.eventmanagerbackend.domain.dtos.UserLoginRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.UserRequestDTO;
 import com.example.eventmanagerbackend.domain.entities.User;
 import com.example.eventmanagerbackend.infrastructure.security.AuthenticationService;
 import com.example.eventmanagerbackend.infrastructure.services.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public String login(Authentication authentication) {
-        return authenticationService.authenticate(authentication);
+    public String login(@RequestBody UserLoginRequestDTO user) {
+        return authenticationService.authenticate(user);
     }
 
     @GetMapping("list")

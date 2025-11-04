@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Valores do Funcionário</h2>
+<mat-dialog-content>
+        <p>Preencha os valores do funcionário de acordo com sua categoria:</p>
+        <app-form
+        [group]="formGroupItens"
+        [form]="formGroup"
+        ></app-form>
+        <button type="submit" class="btn btn-primary" (click)="saveValues()">Salvar Valores</button>
+</mat-dialog-content>

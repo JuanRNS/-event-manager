@@ -12,15 +12,19 @@ export class OptionsService extends HttpServiceAbstract {
     super(environment.api, http);
   }
 
-  public getOptionsStatusGarcom() {
-    return this.get<IOptions[]>(`garcom/status`);
+  public getOptionsStatusEmployee() {
+    return this.get<IOptions[]>(`employee/status`);
   }
   
   public getOptionsGarcom() {
-    return this.get<IOptions[]>(`garcom/list/options`);
+    return this.get<IOptions[]>(`employee/list/options`);
   }
 
   public getOptionsStatusFesta() {
     return this.get<IOptions[]>(`festa/status`);
+  }
+
+  public getOptionsEmployeeType() {
+    return this.get<IOptions[]>(`type/options/employee-type`);
   }
 }

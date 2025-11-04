@@ -20,7 +20,7 @@ export interface IResponseModalAddGarcom{
     page: IPage;
 }
 
-export interface IRequestAddGarcomParty{
-    festaId: number;
-    garcomIds: number[];
+export interface IRequestAddEmployeeParty{
+    partyId: number;
+    employeeIds: number[];
 }

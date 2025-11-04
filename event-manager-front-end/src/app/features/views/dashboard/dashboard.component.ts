@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { IResponseDashboard } from '../../../core/interface/dashboard.interface';
 import { ApiService } from '../../services/api.service';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,6 +27,7 @@ export class DashboardComponent implements OnInit{
 
   constructor(
     private readonly _service: ApiService,
+    private readonly _toast: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +41,7 @@ export class DashboardComponent implements OnInit{
         this.totalElements = res.page.totalElements;
       },
       error: (err) => {
-        console.error('Erro ao carregar o dashboard', err);
+        this._toast.error(err.error.message || 'Erro ao carregar o dashboard.');
       },
     });
   }
@@ -61,7 +63,7 @@ export class DashboardComponent implements OnInit{
       URL.revokeObjectURL(url);
       },
       error: (err) => {
-        console.error('Erro ao gerar o relatório', err);
+        this._toast.error('Erro ao baixar o relatório');
       },
     });
   }

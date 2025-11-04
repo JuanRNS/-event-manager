@@ -8,6 +8,7 @@ import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormComponent } from "../../../core/components/form-group/form/form.component";
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-dashboard-date',
@@ -34,7 +35,8 @@ export class DashboardDateComponent{
   });
 
   constructor(
-    private readonly _service: ApiService
+    private readonly _service: ApiService,
+    private readonly _toast: ToastService
   ) { }
 
   public get formGroupItens(): FormGroupArray{
@@ -86,12 +88,11 @@ export class DashboardDateComponent{
 
     this._service.getDashboardFromTo(from, to).subscribe({
       next: (res) => {
-        console.log(res);
         this.listDashboard = res.content;
         this.totalElements = res.page.totalElements;
       },
       error: (err) => {
-        console.error('Erro ao carregar o dashboard', err);
+        this._toast.error(err.error.message || 'Erro ao carregar o dashboard');
       },
     });
   }

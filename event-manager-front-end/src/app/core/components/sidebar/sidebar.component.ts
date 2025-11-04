@@ -23,7 +23,7 @@ export class SidebarComponent {
 
   public logout() {
     localStorage.removeItem('token');
-    window.location.reload();
+    globalThis.location.reload();
   }
 }
 

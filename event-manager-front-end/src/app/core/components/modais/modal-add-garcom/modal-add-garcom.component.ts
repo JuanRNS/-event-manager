@@ -9,6 +9,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormGroupArray } from '../../../interface/form.interface';
 import { FormFieldEnum } from '../../../enums/formFieldEnum';
 import { FormComponent } from "../../form-group/form/form.component";
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-modal-add-garcom',
@@ -37,6 +38,7 @@ export class ModalAddGarcomComponent implements OnInit {
   
   constructor(
     private readonly _service: ApiService,
+    private readonly _toast: ToastService,
     private readonly _dialogRef: MatDialogRef<ModalAddGarcomComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
   ) {}
@@ -75,7 +77,7 @@ export class ModalAddGarcomComponent implements OnInit {
         this.totalElements = res.page.totalElements;
       },
       error: (err) => {
-        console.log(err);
+        this._toast.error(err.error.message || 'Erro ao carregar a lista de garçons.');
       }
     });
   }
@@ -85,7 +87,7 @@ export class ModalAddGarcomComponent implements OnInit {
         this.listGarcomAdd = res;
       },
       error: (err) => {
-        console.log(err);
+        this._toast.error(err.error.message || 'Erro ao carregar os garçons da festa.');
       }
     });
   }
@@ -112,15 +114,15 @@ export class ModalAddGarcomComponent implements OnInit {
       this._dialogRef.close();
       return;
     }
-    this._service.postAddGarcomParty({
-      festaId: this.data.id,
-      garcomIds: this.listGarcomAdd
+    this._service.postAddEmployeeParty({
+      partyId: this.data.id,
+      employeeIds: this.listGarcomAdd
     }).subscribe({
       next: (res) => {
         this._dialogRef.close(true);
       },
       error: (err) => {
-        console.log(err);
+        this._toast.error(err.error.message || 'Erro ao adicionar o garçom à festa.');
       }
     });
   }

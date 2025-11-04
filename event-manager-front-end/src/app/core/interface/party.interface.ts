@@ -17,7 +17,6 @@ export interface IRequestParty{
   nameClient: string;
   date: string;
   idMaterial: number;
-  valuePerDay: number;
   numberOfPeople: number;
 }
 

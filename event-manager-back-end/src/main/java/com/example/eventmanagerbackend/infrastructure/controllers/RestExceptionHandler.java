@@ -21,15 +21,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(material.getMessage());
     }
 
-    @ExceptionHandler(GarcomNotFoundException.class)
-    private ResponseEntity<String> garcomNotFoundException(GarcomNotFoundException garcom) {
+    @ExceptionHandler(EmployeeNotFoundException.class)
+    private ResponseEntity<String> garcomNotFoundException(EmployeeNotFoundException garcom) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(garcom.getMessage());
     }
 
-    @ExceptionHandler(FestaNotFoundException.class)
-    private ResponseEntity<String> festaNotFoundException(FestaNotFoundException festa) {
+    @ExceptionHandler(PartyNotFoundException.class)
+    private ResponseEntity<String> festaNotFoundException(PartyNotFoundException festa) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(festa.getMessage());
