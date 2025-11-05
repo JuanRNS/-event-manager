@@ -260,10 +260,10 @@ export class EventComponentsComponent implements OnInit{
   }
 
   public createMaterial() {
-    const material: IRequestMaterial = this.formSecondary.value as IRequestMaterial;
+    const material: IRequestMaterial = this.formThird.value as IRequestMaterial;
     this._service.postCreateMaterial(material).subscribe(() => {
       this.getMaterials();
-      this.formSecondary.reset();
+      this.formThird.reset();
     });
   }
 
