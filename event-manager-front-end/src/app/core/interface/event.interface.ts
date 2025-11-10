@@ -2,20 +2,20 @@ export interface IRequestMaterial {
   description: string;
 }
 
-export interface IRequestGarcom{
+export interface IRequestEmployee{
   name: string;
   phone: string;
   pixKey: string;
   statusGarcom: string;
   idEmployeeType: number;
 }
-
-export interface IResponseGarcom{
+  
+export interface IResponseEmployee{
   id: number;
   name: string;
   phone: string;
   pixKey: string;
-  statusGarcom: string;
+  statusEmployee: string;
   employeeType: IEmployeeType;
 }
 
@@ -24,8 +24,8 @@ export interface IResponseMaterial{
   description: string;
 }
 
-export interface IResponseListGarcom {
-  content: IResponseGarcom[];
+export interface IResponseListEmployee {
+  content: IResponseEmployee[];
   page: IPage;
 }
 

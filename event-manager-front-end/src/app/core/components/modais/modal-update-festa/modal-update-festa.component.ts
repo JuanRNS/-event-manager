@@ -8,13 +8,18 @@ import { ApiService } from '../../../../features/services/api.service';
 import { OptionsService } from '../../../../features/services/options.service';
 import { IRequestUpdateFesta } from '../../../interface/modal-update-festa.interface';
 import { ToastService } from '../../../services/toast.service';
+import { IResponseValues } from '../../../interface/party.interface';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-modal-update-festa',
   standalone: true,
   imports: [
     MatDialogModule,
-    FormComponent
+    FormComponent,
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './modal-update-festa.component.html',
   styleUrl: './modal-update-festa.component.scss'
@@ -24,11 +29,13 @@ export class ModalUpdateFestaComponent implements OnInit {
     location: new FormControl<string | null>(null, [Validators.required]),
     nameClient: new FormControl<string | null>(null, [Validators.required]),
     date: new FormControl<string | null>(null, [Validators.required]),
-    idMaterial: new FormControl<string | null>(null, [Validators.required]),
-    valuePerDay: new FormControl<number | null>(null, [Validators.required]),
+    idMaterial: new FormControl<number | null>(null, [Validators.required]),
     status: new FormControl<string | null>(null, [Validators.required]),
     numberOfPeople: new FormControl<number | null>(null, [Validators.required]),
   })
+
+  public listValues: IResponseValues[] = [];
+  public alterTable: boolean = false;
 
   constructor(
     private readonly _service: ApiService,
@@ -94,14 +101,6 @@ export class ModalUpdateFestaComponent implements OnInit {
         size: '6',
         options: this._optionsService.getOptionsStatusFesta(),
       },
-      {
-        component: FormFieldEnum.INPUT,
-        label: 'Diária',
-        controlName: 'valuePerDay',
-        type: 'text',
-        placeholder: 'Valor por dia',
-        size: '12',
-      },
     ];
   }
 
@@ -111,20 +110,19 @@ export class ModalUpdateFestaComponent implements OnInit {
         location: response.location,
         nameClient: response.nameClient,
         date: response.date.toString().substring(0, 10),
-        idMaterial: response.material.id.toString(),
-        valuePerDay: response.valuePerDay,
+        idMaterial: response.material.id,
         status: response.status,
         numberOfPeople: response.numberOfPeople
       });
-    }
-    );
+      this.listValues = response.values;
+    });
   }
   public updateParty() {
-    if (!this.form.dirty) {
+    if (!this.form.dirty && this.alterTable === false) {
       this._dialogRef.close();
       return;
     }
-    if (this.form.invalid) {
+    if (this.form.invalid && this.alterTable === false) {
       this.form.markAllAsTouched();
       this.form.markAsDirty();
       return;
@@ -132,6 +130,7 @@ export class ModalUpdateFestaComponent implements OnInit {
    const data = {
      ...this.form.value,
      date: new Date(this.form.value.date?.toString() || '').toISOString(),
+     values: this.listValues
    } as IRequestUpdateFesta;
 
     this._service.putUpdateParty(this.data.id, data).subscribe({
@@ -142,5 +141,10 @@ export class ModalUpdateFestaComponent implements OnInit {
         this._toast.error(err.error.message || 'Erro ao atualizar a festa.');
       }
     });
+  }
+
+  public deleteValue(item: IResponseValues) {
+    this.listValues = this.listValues.filter(i => i.id !== item.id);
+    this.alterTable = !this.alterTable;
   }
 }

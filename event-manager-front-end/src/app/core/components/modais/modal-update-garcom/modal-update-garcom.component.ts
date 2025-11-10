@@ -6,7 +6,7 @@ import { FormFieldEnum } from '../../../enums/formFieldEnum';
 import { OptionsService } from '../../../../features/services/options.service';
 import { FormGroupArray } from '../../../interface/form.interface';
 import { ApiService } from '../../../../features/services/api.service';
-import { IRequestGarcom } from '../../../interface/event.interface';
+import { IRequestEmployee } from '../../../interface/event.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MaskEnum } from '../../../enums/maskEnum';
 
@@ -27,6 +27,7 @@ export class ModalUpdateGarcomComponent implements OnInit {
     pixKey: new FormControl<string | null>(null),
     phone: new FormControl<string | null>(null),
     statusEmployee: new FormControl<string | null>(null),
+    idEmployeeType: new FormControl<number | null>(null),
   });
 
   constructor(
@@ -37,7 +38,7 @@ export class ModalUpdateGarcomComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getGarcomById();
+    this.getEmployeeById();
   }
 
    public get formGroupItensPrimary(): FormGroupArray{
@@ -79,11 +80,19 @@ export class ModalUpdateGarcomComponent implements OnInit {
           type: 'select',
           options: this._optionsService.getOptionsStatusEmployee(),
           size: '6',
+        },
+        {
+          component: FormFieldEnum.SELECT,
+          label: 'Tipo de Funcionário',
+          controlName: 'idEmployeeType',
+          type: 'select',
+          options: this._optionsService.getOptionsEmployeeType(),
+          size: '6',
         }
       ]
     }
 
-    public updateGarcom() {
+    public updateEmployee() {
       if(!this.form.dirty) {
         this._dialogRef.close();
         return
@@ -95,18 +104,24 @@ export class ModalUpdateGarcomComponent implements OnInit {
         return
       };
       
-      const garcom: IRequestGarcom = this.form.value as IRequestGarcom;
+      const garcom: IRequestEmployee = this.form.value as IRequestEmployee;
 
-      this._service.putUpdateGarcom(this.data.id, garcom).subscribe({
+      this._service.putUpdateEmployee(this.data.id, garcom).subscribe({
         next: (response) => {
           this._dialogRef.close(true);
         },
       });
     }
 
-    public getGarcomById(){
-      this._service.getGarcomById(this.data.id).subscribe((response) => {
-        this.form.patchValue(response);
+    public getEmployeeById(){
+      this._service.getEmployeeById(this.data.id).subscribe((response) => {
+        this.form.patchValue({
+          name: response.name,
+          pixKey: response.pixKey,
+          phone: response.phone,
+          statusEmployee: response.statusEmployee,
+          idEmployeeType: response.employeeType.id,
+        });
       });
     }
 }

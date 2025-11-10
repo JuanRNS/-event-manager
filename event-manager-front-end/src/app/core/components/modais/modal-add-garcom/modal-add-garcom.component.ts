@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { IResponseListAddGarcom } from '../../../interface/modal-add-garcom.interface';
+import { IResponseListAddEmployee } from '../../../interface/modal-add-garcom.interface';
 import { ApiService } from '../../../../features/services/api.service';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,8 +25,8 @@ import { ToastService } from '../../../services/toast.service';
   styleUrl: './modal-add-garcom.component.scss'
 })
 export class ModalAddGarcomComponent implements OnInit {
-  public listGarcom: IResponseListAddGarcom[] = [];
-  public listGarcomOriginal: IResponseListAddGarcom[] = [];
+  public listGarcom: IResponseListAddEmployee[] = [];
+  public listGarcomOriginal: IResponseListAddEmployee[] = [];
   public listGarcomAdd: number[] = [];
   public form = new FormGroup({
     search: new FormControl<string | null>(null),
@@ -44,8 +44,8 @@ export class ModalAddGarcomComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getGarcomIdsByFestaId();
-    this.getListGarcom();
+    this.getEmployeeIdsByFestaId();
+    this.getListEmployee();
 
       this.form.controls.search.valueChanges.subscribe(value => {
         if (!value) {
@@ -69,20 +69,20 @@ export class ModalAddGarcomComponent implements OnInit {
     ]
   } 
 
-  public getListGarcom(){
-    this._service.getListAddGarcom(this.page, this.pageSize).subscribe({
+  public getListEmployee(){
+    this._service.getListAddEmployee(this.page, this.pageSize).subscribe({
       next: (res) => {
-        this.listGarcom = res.content.filter(garcom => garcom.statusGarcom === 'ATIVO');
-        this.listGarcomOriginal = res.content.filter(garcom => garcom.statusGarcom === 'ATIVO');
+        this.listGarcom = res.content;
+        this.listGarcomOriginal = res.content;
         this.totalElements = res.page.totalElements;
       },
       error: (err) => {
-        this._toast.error(err.error.message || 'Erro ao carregar a lista de garçons.');
+        this._toast.error(err.error.message || 'Erro ao carregar a lista de funcionários.');
       }
     });
   }
-  public getGarcomIdsByFestaId(){
-    this._service.getGarcomIdsByFestaId(this.data.id).subscribe({
+  public getEmployeeIdsByFestaId(){
+    this._service.getEmployeeIdsByFestaId(this.data.id).subscribe({
       next: (res) => {
         this.listGarcomAdd = res;
       },
@@ -106,7 +106,7 @@ export class ModalAddGarcomComponent implements OnInit {
   public onPageChange(event: PageEvent){
     this.page = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.getListGarcom();
+    this.getListEmployee();
   }
 
   public submit(){

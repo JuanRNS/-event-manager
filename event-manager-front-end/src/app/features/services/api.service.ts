@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpServiceAbstract } from '../../core/abstract/http.abstract';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { IRequestEmployeeType, IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseListGarcom, IResponseMaterial } from '../../core/interface/event.interface';
+import { IRequestEmployee, IRequestEmployeeType, IRequestMaterial, IResponseEmployee, IResponseListEmployee, IResponseMaterial } from '../../core/interface/event.interface';
 import { IRequestUserRegister } from '../../core/interface/register.interface';
 import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/interface/party.interface';
 import { IResponseDashboardContent } from '../../core/interface/dashboard.interface';
-import { IRequestAddEmployeeParty, IResponseModalAddGarcom } from '../../core/interface/modal-add-garcom.interface';
+import { IRequestAddEmployeeParty, IResponseModalAddEmployee } from '../../core/interface/modal-add-garcom.interface';
 import { IResponseModalViewParty } from '../../core/interface/modal-view-party.interface';
 import { IRequestUpdateFesta } from '../../core/interface/modal-update-festa.interface';
 import { IResponseModalViewPartyWaiter } from '../../core/interface/modal-view-party-waiter.interface';
@@ -21,24 +21,24 @@ export class ApiService extends HttpServiceAbstract {
     super(environment.api, http);
   }
 
-  public getGarcomById(id: number) {
-    return this.get<IResponseGarcom>(`employee/${id}`);
+  public getEmployeeById(id: number) {
+    return this.get<IResponseEmployee>(`employee/${id}`);
   }
 
-  public postCreateGarcom(garcom: IRequestGarcom){
-    return this.post<IResponseGarcom>(`employee/create`, garcom);
+  public postCreateEmployee(employee: IRequestEmployee){
+    return this.post<IResponseEmployee>(`employee/create`, employee);
   }
 
-  public putUpdateGarcom(id: number,garcom: IRequestGarcom){
-    return this.put(`employee/${id}`, garcom);
+  public putUpdateEmployee(id: number, employee: IRequestEmployee){
+    return this.put(`employee/${id}`, employee);
   }
 
-  public deleteGarcom(id: number){
+  public deleteEmployee(id: number){
     return this.delete(`employee/${id}`);
   }
 
-  public getGarcoms(page: number, size: number) {
-    return this.get<IResponseListGarcom>(`employee/list?page=${page}&size=${size}`);
+  public getEmployees(page: number, size: number) {
+    return this.get<IResponseListEmployee>(`employee/list?page=${page}&size=${size}`);
   }
 
   public getMaterial() {
@@ -98,19 +98,19 @@ export class ApiService extends HttpServiceAbstract {
     return this.fileDownload<string>(`pdf/generate/employee/${id}?fromDate=${from}&toDate=${to}`);
   }
 
-  public getListAddGarcom(page: number, size: number) {
-    return this.get<IResponseModalAddGarcom>(`employee/list/add?page=${page}&size=${size}`);
+  public getListAddEmployee(page: number, size: number) {
+    return this.get<IResponseModalAddEmployee>(`employee/list/add?page=${page}&size=${size}`);
   }
 
   public postAddEmployeeParty(request: IRequestAddEmployeeParty){
     return this.post(`party/add-employee`, request);
   }
 
-  public getGarcomIdsByFestaId(festaId: number) {
+  public getEmployeeIdsByFestaId(festaId: number) {
     return this.get<number[]>(`employee/list/party/${festaId}`);
   }
 
-  public getFestaGarcomById(festaId: number) {
+  public getFestaEmployeeById(festaId: number) {
     return this.get<IResponseModalViewParty>(`party/view/${festaId}`);
   }
 

@@ -5,7 +5,7 @@ import { FormGroupArray, IOptions } from '../../../core/interface/form.interface
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormComponent } from "../../../core/components/form-group/form/form.component";
 import { ApiService } from '../../services/api.service';
-import { IRequestEmployeeType, IRequestGarcom, IRequestMaterial, IResponseGarcom, IResponseMaterial } from '../../../core/interface/event.interface';
+import { IRequestEmployee, IRequestEmployeeType, IRequestMaterial, IResponseEmployee, IResponseMaterial } from '../../../core/interface/event.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { OptionsService } from '../../services/options.service';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -56,7 +56,7 @@ export class EventComponentsComponent implements OnInit{
     type: new FormControl<string | null>(null, [Validators.required]),
   });
 
-  public ListGarcoms: IResponseGarcom[] = [];
+  public ListEmployees: IResponseEmployee[] = [];
   public ListMaterials: IResponseMaterial[] = [];
   public page = 0;
   public pageSize = 5;
@@ -73,7 +73,7 @@ export class EventComponentsComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-     this.getGarcoms();
+     this.getEmployee();
      this.getMaterials();
      this.getEmployeeTypesOptions();
   }
@@ -159,22 +159,22 @@ export class EventComponentsComponent implements OnInit{
     ]
   }
 
-  public createGarcom(){
-    const garcom = this.formPrimary.value;
+  public createEmployee(){
+    const employee = this.formPrimary.value;
     const data = {
-      ...garcom,
+      ...employee,
       idEmployeeType: this.formSecondary.value.idEmployeeType
-    } as IRequestGarcom;
+    } as IRequestEmployee;
 
-    this._service.postCreateGarcom(data).subscribe(({
+    this._service.postCreateEmployee(data).subscribe(({
       next:(value) => {
         this.formPrimary.reset();
         this.formSecondary.reset();
-        this.getGarcoms();
-        this._toast.success('Garçom criado com sucesso!');
+        this.getEmployee();
+        this._toast.success('Funcionário criado com sucesso!');
       },
       error: (err) => {
-        this._toast.error('Erro ao criar garçom. Tente novamente.', err);
+        this._toast.error('Erro ao criar funcionário. Tente novamente.', err);
       }
     }) 
       
@@ -202,16 +202,16 @@ export class EventComponentsComponent implements OnInit{
     });
   }
 
-  public getGarcoms() {
-    this._service.getGarcoms(this.page, this.pageSize).subscribe((response) => {
-      this.ListGarcoms = response.content;
+  public getEmployee() {
+    this._service.getEmployees(this.page, this.pageSize).subscribe((response) => {
+      this.ListEmployees = response.content;
       this.totalElements = response.page.totalElements;
       this.pageSize = response.page.size;
     });
   }
   public onChangePage(event: PageEvent) {
     this.page = event.pageIndex;
-    this.getGarcoms();
+    this.getEmployee();
   }
 
   public getMaterials() {
@@ -220,7 +220,7 @@ export class EventComponentsComponent implements OnInit{
     });
   }
 
-  public editGarcom(id: number){
+  public editEmployee(id: number){
     const dialogRef = this._dialog.open(ModalUpdateGarcomComponent, {
       width: '600px',
       height: '600px',
@@ -230,7 +230,7 @@ export class EventComponentsComponent implements OnInit{
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getGarcoms();
+        this.getEmployee();
       }
     });
   }
@@ -248,14 +248,14 @@ export class EventComponentsComponent implements OnInit{
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getGarcoms();
+        this.getEmployee();
       }
     });
   }
 
-  public deleteGarcom(id: number) {
-    this._service.deleteGarcom(id).subscribe(() => {
-      this.getGarcoms();
+  public deleteEmployee(id: number) {
+    this._service.deleteEmployee(id).subscribe(() => {
+      this.getEmployee();
     });
   }
 

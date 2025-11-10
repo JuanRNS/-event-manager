@@ -1,4 +1,4 @@
-import { IPage, IResponseMaterial } from "./event.interface";
+import { IEmployeeType, IPage, IResponseMaterial } from "./event.interface";
 
 export interface IResponseParty{
   id: number;
@@ -6,10 +6,16 @@ export interface IResponseParty{
   nameClient: string;
   date: string;
   material: IResponseMaterial;
-  garcomIds: number[];
-  valuePerDay: number;
+  employeeId: number[];
+  values: IResponseValues[];
   numberOfPeople: number;
   status: string;
+}
+
+export interface IResponseValues{
+    id: number;
+    employeeType: IEmployeeType;
+    value: number;
 }
 
 export interface IRequestParty{

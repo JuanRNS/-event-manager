@@ -1,4 +1,4 @@
-import { IResponseGarcom, IResponseMaterial } from "./event.interface";
+import { IResponseEmployee, IResponseMaterial } from "./event.interface";
 
 export interface IResponseModalViewParty{
     id: number;
@@ -9,5 +9,5 @@ export interface IResponseModalViewParty{
     valuePerDay: number;
     numberOfPeople: number;
     status: string;
-    garcoms: IResponseGarcom[];
+    employees: IResponseEmployee[];
 }

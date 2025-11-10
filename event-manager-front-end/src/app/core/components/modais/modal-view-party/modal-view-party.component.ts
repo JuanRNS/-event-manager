@@ -26,7 +26,7 @@ export class ModalViewPartyComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-      this._service.getFestaGarcomById(this.data.id).subscribe((response) => {
+      this._service.getFestaEmployeeById(this.data.id).subscribe((response) => {
         this.listViewParty = {
           ...response,
           date: ParseDateUtil.parseDate(response.date),

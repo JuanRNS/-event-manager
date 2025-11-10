@@ -33,9 +33,6 @@
                       Nº de pessoas
                     </div>
                     <div class="title">
-                      Valor
-                    </div>
-                    <div class="title">
                       Material
                     </div>
                     <div class="title">
@@ -59,9 +56,6 @@
                     <div class="title">
                       {{item.numberOfPeople}}
                     </div>
-                    <div class="title">
-                      {{item.valuePerDay}}
-                    </div>
                     @if (item.material) {
                       <div class="title">
                         {{item.material.description}}
@@ -71,9 +65,9 @@
                         -
                       </div>
                     }
-                    @if (item.garcomIds.length > 0) {
+                    @if (item.employeeId.length > 0) {
                       <div class="title">
-                        {{item.garcomIds.length}}
+                        {{item.employeeId.length}}
                       </div>
                     }@else {
                       <div class="title">
@@ -86,7 +80,7 @@
                         <button mat-menu-item (click)="editParty(item.id)">Editar Festa</button>
                         <button mat-menu-item (click)="deleteParty(item.id)">Apagar Festa</button>
                         <button mat-menu-item (click)="valuesParty(item.id)">Definir Valores dos Funcionários</button>
-                        @if (item.garcomIds.length > 0) {
+                        @if (item.employeeId.length > 0) {
                         <button mat-menu-item (click)="viewParty(item.id)">Visualizar Festa</button>
                         }
                       </mat-menu>

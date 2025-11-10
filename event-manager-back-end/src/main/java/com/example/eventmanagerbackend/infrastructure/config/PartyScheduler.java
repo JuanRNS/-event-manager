@@ -1,7 +1,7 @@
 package com.example.eventmanagerbackend.infrastructure.config;
 
 import com.example.eventmanagerbackend.domain.entities.Party;
-import com.example.eventmanagerbackend.domain.enums.StatusFesta;
+import com.example.eventmanagerbackend.domain.enums.StatusParty;
 import com.example.eventmanagerbackend.infrastructure.repositories.PartyRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,11 +22,11 @@ public class FestaScheduler {
     @Scheduled(cron = "0 0 0 * * *")
     public void updateFestas() {
         LocalDate now = LocalDate.now();
-        List<Party> parties = partyRepository.findAllByStatus(StatusFesta.AGENDADA);
+        List<Party> parties = partyRepository.findAllByStatus(StatusParty.AGENDADA);
 
         for (Party party : parties) {
             if (party.getDate().toLocalDate().isBefore(now) || party.getDate().toLocalDate().equals(now)) {
-                party.setStatus(StatusFesta.REALIZADA);
+                party.setStatus(StatusParty.REALIZADA);
                 partyRepository.save(party);
             }
         }

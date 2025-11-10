@@ -1,9 +1,12 @@
+import { IResponseValues } from "./party.interface";
+
+
 export interface IRequestUpdateFesta {
     nameClient: string;
     location: string;
     date: string;
-    idMaterial: string;
-    valuePerDay: number;
+    idMaterial: number;
+    values: IResponseValues[];
     numberOfPeople: number;
     status: string;
 }
