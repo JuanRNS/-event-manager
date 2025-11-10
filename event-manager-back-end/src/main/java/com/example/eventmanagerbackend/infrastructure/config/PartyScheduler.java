@@ -10,17 +10,17 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class FestaScheduler {
+public class PartyScheduler {
 
 
     private final PartyRepository partyRepository;
 
-    public FestaScheduler(PartyRepository partyRepository) {
+    public PartyScheduler(PartyRepository partyRepository) {
         this.partyRepository = partyRepository;
     }
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void updateFestas() {
+    public void updateParties() {
         LocalDate now = LocalDate.now();
         List<Party> parties = partyRepository.findAllByStatus(StatusParty.AGENDADA);
 

@@ -1,6 +1,7 @@
 package com.example.eventmanagerbackend.domain.entities;
 
-import com.example.eventmanagerbackend.domain.enums.StatusFesta;
+import com.example.eventmanagerbackend.domain.enums.StatusParty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +34,7 @@ public class Party {
     private LocalDateTime date;
 
     @Column(name = "status")
-    private StatusFesta status = StatusFesta.AGENDADA;
+    private StatusParty status = StatusParty.AGENDADA;
 
     @Column(name = "number_of_people", nullable = false)
     private Long numberOfPeople;
@@ -43,7 +44,7 @@ public class Party {
 
     @ManyToMany
     @JoinTable(
-            name = "party_employee",
+            name = "employee_parties",
             joinColumns = @JoinColumn(name = "party_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
@@ -56,6 +57,7 @@ public class Party {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public void addValues(EmployeePartiesValues employeePartiesValues){

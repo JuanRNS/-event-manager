@@ -1,7 +1,8 @@
 package com.example.eventmanagerbackend.domain.entities;
 
 import com.example.eventmanagerbackend.domain.dtos.EmployeeRequestDTO;
-import com.example.eventmanagerbackend.domain.enums.StatusGarcom;
+import com.example.eventmanagerbackend.domain.enums.StatusEmployee;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,13 +40,14 @@ public class Employee {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusGarcom statusGarcom = StatusGarcom.ATIVO;
+    private StatusEmployee statusEmployee = StatusEmployee.ATIVO;
 
     @ManyToMany(mappedBy = "partyEmployees", fetch = FetchType.LAZY)
-    private List<Party> parties = new ArrayList<>();
+    private List<Party> employeeParties = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Employee(EmployeeRequestDTO employeeRequestDTO,EmployeeType employeeType, User user){
@@ -53,7 +55,7 @@ public class Employee {
         this.pixKey = employeeRequestDTO.pixKey();
         this.phone = employeeRequestDTO.phone();
         this.employeeType = employeeType;
-        this.statusGarcom = employeeRequestDTO.statusGarcom();
+        this.statusEmployee = employeeRequestDTO.statusEmployee();
         this.user = user;
     }
 }

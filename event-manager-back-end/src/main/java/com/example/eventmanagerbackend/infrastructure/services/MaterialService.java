@@ -3,9 +3,11 @@ package com.example.eventmanagerbackend.infrastructure.services;
 import com.example.eventmanagerbackend.domain.dtos.MaterialRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.MaterialResponseDTO;
 import com.example.eventmanagerbackend.domain.entities.Material;
+import com.example.eventmanagerbackend.domain.entities.User;
 import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.MaterialMapper;
 import com.example.eventmanagerbackend.infrastructure.repositories.MaterialRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,15 +17,18 @@ public class MaterialService {
 
     private final MaterialRepository materialRepository;
     private final MaterialMapper materialMapper;
+    private final UserService userService;
 
-    public MaterialService(MaterialRepository materialRepository, MaterialMapper materialMapper) {
+    public MaterialService(MaterialRepository materialRepository, MaterialMapper materialMapper, UserService userService) {
         this.materialRepository = materialRepository;
         this.materialMapper = materialMapper;
+        this.userService = userService;
     }
 
-    public List<MaterialResponseDTO> getAllMaterials() {
+    public List<MaterialResponseDTO> getAllMaterials(Authentication authentication) {
+        User user = userService.getUser(authentication);
         return materialRepository
-                .findAll()
+                .findAllByUser(user)
                 .stream().map(materialMapper::toMaterialResponseDTO)
                 .toList();
     }
@@ -33,13 +38,16 @@ public class MaterialService {
         return materialMapper.toMaterialResponseDTO(material);
     }
 
-    public Material createMaterial(MaterialRequestDTO material) {
+    public MaterialResponseDTO createMaterial(Authentication authentication, MaterialRequestDTO material) {
         if (material == null) {
             throw new MaterialNotFoundException();
         }
+        User user = userService. getUser(authentication);
         Material newMaterial = new Material();
+        newMaterial.setUser(user);
         newMaterial.setDescription(material.description());
-        return materialRepository.save(newMaterial);
+        Material savedMaterial = materialRepository.save(newMaterial);
+        return materialMapper.toMaterialResponseDTO(savedMaterial);
     }
 
     public void updateMaterial(Long id, MaterialRequestDTO materialRequest) {

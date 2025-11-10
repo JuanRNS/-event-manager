@@ -2,10 +2,10 @@ package com.example.eventmanagerbackend.infrastructure.controllers;
 
 import com.example.eventmanagerbackend.domain.dtos.MaterialRequestDTO;
 import com.example.eventmanagerbackend.domain.dtos.MaterialResponseDTO;
-import com.example.eventmanagerbackend.domain.entities.Material;
 import com.example.eventmanagerbackend.infrastructure.services.MaterialService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public class MaterialController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<Material> createMaterial(@RequestBody MaterialRequestDTO materialRequest) {
-        Material material = materialService.createMaterial(materialRequest);
+    public ResponseEntity<MaterialResponseDTO> createMaterial(@RequestBody MaterialRequestDTO materialRequest, Authentication authentication) {
+        MaterialResponseDTO material = materialService.createMaterial(authentication,materialRequest);
         return new ResponseEntity<>(material, HttpStatus.CREATED);
     }
 
@@ -33,8 +33,8 @@ public class MaterialController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<List<MaterialResponseDTO>> getAllMaterials() {
-        List<MaterialResponseDTO> materialList = materialService.getAllMaterials();
+    public ResponseEntity<List<MaterialResponseDTO>> getAllMaterials(Authentication authentication) {
+        List<MaterialResponseDTO> materialList = materialService.getAllMaterials(authentication);
         return new ResponseEntity<>(materialList, HttpStatus.OK);
     }
 

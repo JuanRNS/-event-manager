@@ -6,6 +6,6 @@ public record PdfRequestDashboardDTO(
         String name,
         String phone,
         String pixKey,
-        List<PdfRequestDashboardFestaDTO> pdfRequestDashboardFesta
+        List<PdfRequestDashboardFestaDTO> pdfRequestDashboardParty
 ) {
 }

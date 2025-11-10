@@ -1,17 +1,18 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-import com.example.eventmanagerbackend.domain.enums.StatusFesta;
+import com.example.eventmanagerbackend.domain.enums.StatusParty;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record PartyUpdateRequestDTO(
         String nameClient,
         String location,
         LocalDateTime date,
-        BigDecimal valuePerDay,
+
+        List<EmployeePartiesValuesResponseDTO> values,
         Long idMaterial,
         Long numberOfPeople,
-        StatusFesta status
+        StatusParty status
 ) {
 }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,53 +22,53 @@ public class PartyController {
     }
 
     @GetMapping("list/status")
-    public ResponseEntity<Page<PartyResponseDTO>> getAllFestasByStatus(Pageable pageable) {
-        Page<PartyResponseDTO> festaList = partyService.getAllFestasByStatus(pageable);
+    public ResponseEntity<Page<PartyResponseDTO>> getAllPartiesByStatus(Authentication authentication, Pageable pageable) {
+        Page<PartyResponseDTO> partyList = partyService.getAllPartiesByStatus(authentication,pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(festaList);
-    }
-    @GetMapping("list")
-    public ResponseEntity<Page<PartyResponseDTO>> getAllFestas(Pageable pageable) {
-        Page<PartyResponseDTO> festaList = partyService.getAllFestas(pageable);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(festaList);
+                .body(partyList);
     }
 
+    @GetMapping("list")
+    public ResponseEntity<Page<PartyResponseDTO>> getAllParties(Pageable pageable) {
+        Page<PartyResponseDTO> partyList = partyService.getAllParties(pageable);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(partyList);
+    }
 
     @PostMapping("create")
-    public ResponseEntity<PartyResponseDTO> createFesta(@RequestBody PartyRequestDTO festa) {
-        PartyResponseDTO createdFesta = partyService.createFesta(festa);
+    public ResponseEntity<PartyResponseDTO> createParty(@RequestBody PartyRequestDTO party, Authentication authentication) {
+        PartyResponseDTO createdParty = partyService.createParty(authentication,party);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(createdFesta);
+                .body(createdParty);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteFesta(@PathVariable Long id) {
-        partyService.deleteFesta(id);
+    public ResponseEntity<Void> deleteParty(@PathVariable Long id) {
+        partyService.deleteParty(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateFesta(@PathVariable Long id, @RequestBody PartyUpdateRequestDTO festa) {
-        partyService.updateFesta(id, festa);
+    public ResponseEntity<Void> updateParty(@PathVariable Long id, @RequestBody PartyUpdateRequestDTO party) {
+        partyService.updateParty(id, party);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<PartyResponseDTO> getFesta(@PathVariable Long id) {
-        PartyResponseDTO festa = partyService.getFestaById(id);
+    public ResponseEntity<PartyResponseDTO> getParty(@PathVariable Long id) {
+        PartyResponseDTO party = partyService.getPartyById(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(festa);
+                .body(party);
     }
 
     @PostMapping("add-employee")
-    public ResponseEntity<Void> addGarcom(@RequestBody PartyEmployeeAddRequestDTO partyEmployeeAddRequestDTO) {
+    public ResponseEntity<Void> addEmployeeParty(@RequestBody PartyEmployeeAddRequestDTO partyEmployeeAddRequestDTO) {
         partyService.addEmployeeParty(partyEmployeeAddRequestDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -80,14 +81,14 @@ public class PartyController {
     }
 
     @GetMapping("view/{id}")
-    public ResponseEntity<PartyEmployeeViewDTO> getFestaGarcomById(@PathVariable Long id) {
-        PartyEmployeeViewDTO partyEmployeeViewDTO = partyService.getFestaGarcomById(id);
+    public ResponseEntity<PartyEmployeeViewDTO> getPartyEmployeeById(@PathVariable Long id) {
+        PartyEmployeeViewDTO partyEmployeeViewDTO = partyService.getPartyEmployeeById(id);
         return ResponseEntity.ok(partyEmployeeViewDTO);
     }
 
     @PostMapping("{id}/add/values")
-    public ResponseEntity<Void> addValuesInPary(@PathVariable Long id,@RequestBody EmployeePartiesValuesDTO employeePartiesValuesDTO) {
-        partyService.createEmployeePartiesValues(id,employeePartiesValuesDTO);
+    public ResponseEntity<Void> addValuesInParty(@PathVariable Long id, @RequestBody EmployeePartiesValuesDTO employeePartiesValuesDTO) {
+        partyService.createEmployeePartiesValues(id, employeePartiesValuesDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

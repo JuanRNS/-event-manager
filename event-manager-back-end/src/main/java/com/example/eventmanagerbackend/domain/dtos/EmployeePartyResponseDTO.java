@@ -7,7 +7,7 @@ import com.example.eventmanagerbackend.domain.enums.StatusEmployee;
 import java.util.List;
 
 
-public record EmployeeResponseDTO(
+public record EmployeePartyResponseDTO(
     Long id,
     String name,
     String pixKey,

@@ -2,7 +2,7 @@ package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.dtos.*;
 import com.example.eventmanagerbackend.domain.entities.*;
-import com.example.eventmanagerbackend.domain.enums.StatusFesta;
+import com.example.eventmanagerbackend.domain.enums.StatusParty;
 import com.example.eventmanagerbackend.infrastructure.exceptions.EmployeeNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.EmployeeTypeNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.exceptions.PartyNotFoundException;
@@ -14,6 +14,7 @@ import com.example.eventmanagerbackend.infrastructure.repositories.PartyReposito
 import com.example.eventmanagerbackend.infrastructure.repositories.MaterialRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,13 +31,15 @@ public class PartyService {
     private final EmployeeService employeeService;
     private final EmployeeTypeRepository employeeTypeRepository;
     private final EmployeeRepository employeeRepository;
+    private final UserService userService;
     public PartyService(
             PartyRepository partyRepository,
             PartyMapper partyMapper,
             MaterialRepository materialRepository,
             EmployeeService employeeService,
             EmployeeTypeRepository employeeTypeRepository,
-            EmployeeRepository employeeRepository
+            EmployeeRepository employeeRepository,
+            UserService userService
     ) {
         this.partyRepository = partyRepository;
         this.partyMapper = partyMapper;
@@ -44,14 +47,17 @@ public class PartyService {
         this.employeeService = employeeService;
         this.employeeTypeRepository = employeeTypeRepository;
         this.employeeRepository = employeeRepository;
+        this.userService = userService;
     }
 
-    public PartyResponseDTO createFesta(PartyRequestDTO partyRequestDTO) {
+    public PartyResponseDTO createParty(Authentication authentication,PartyRequestDTO partyRequestDTO) {
         Material material = materialRepository.findById(partyRequestDTO.idMaterial()).orElseThrow(MaterialNotFoundException::new);
-        Party party = parseFesta(partyRequestDTO);
+        User user = userService.getUser(authentication);
+        Party party = parseParty(partyRequestDTO);
         party.setMaterial(material);
+        party.setUser(user);
         Party savedParty = partyRepository.save(party);
-        return partyMapper.toFestaResponseDTO(savedParty);
+        return partyMapper.toPartyResponseDTO(savedParty);
     }
 
     public void createEmployeePartiesValues(Long idParty,EmployeePartiesValuesDTO employeePartiesValuesDTO){
@@ -62,59 +68,61 @@ public class PartyService {
         partyRepository.save(party);
     }
 
-    public PartyResponseDTO getFestaById(Long id) {
+    public PartyResponseDTO getPartyById(Long id) {
         Party party = partyRepository.findById(id).orElseThrow(PartyNotFoundException::new);
-        return getFestaResponseDTO(party);
+        return getPartyResponseDTO(party);
     }
 
-    public void updateFesta(Long id, PartyUpdateRequestDTO festaRequestDTO) {
-        Party party = parseUpdateFesta(id, festaRequestDTO);
+    public void updateParty(Long id, PartyUpdateRequestDTO partyRequestDTO) {
+        Party party = parseUpdateParty(id, partyRequestDTO);
         partyRepository.save(party);
     }
 
-    public void deleteFesta(Long id) {
+    public void deleteParty(Long id) {
         if (!partyRepository.existsById(id)) {
             throw new PartyNotFoundException();
         }
         partyRepository.deleteById(id);
     }
 
-    public Page<PartyResponseDTO> getAllFestasByStatus(Pageable pageable) {
-        Page<Party> festas = partyRepository.findAllByStatus(StatusFesta.AGENDADA, pageable);
-        return parseFestaResponseDTO(festas);
+    public Page<PartyResponseDTO> getAllPartiesByStatus(Authentication authentication, Pageable pageable) {
+        User user = userService.getUser(authentication);
+        Page<Party> parties = partyRepository.findAllByUserAndStatus(user,StatusParty.AGENDADA, pageable);
+        return parsePartyResponseDTO(parties);
     }
 
-    public Page<PartyResponseDTO> getAllFestas(Pageable pageable) {
-        Page<Party> festas = partyRepository.findAll(pageable);
-        return parseFestaResponseDTO(festas);
+    public Page<PartyResponseDTO> getAllParties(Pageable pageable) {
+        Page<Party> parties = partyRepository.findAll(pageable);
+        return parsePartyResponseDTO(parties);
     }
 
     public List<StatusResponseDTO> getStatus() {
-       return List.of(
-               new StatusResponseDTO("REALIZADA", "REALIZADA"),
-               new StatusResponseDTO("CANCELADA", "CANCELADA"),
-               new StatusResponseDTO("AGENDADA", "AGENDADA")
-       );
+        return List.of(
+                new StatusResponseDTO("REALIZADA", "REALIZADA"),
+                new StatusResponseDTO("CANCELADA", "CANCELADA"),
+                new StatusResponseDTO("AGENDADA", "AGENDADA")
+        );
     }
 
-    public PartyEmployeeViewDTO getFestaGarcomById(Long idParty) {
+    public PartyEmployeeViewDTO getPartyEmployeeById(Long idParty) {
         Party party = partyRepository.findById(idParty).orElseThrow(PartyNotFoundException::new);
         List<Long> employeeId = party.getPartyEmployees()
                 .stream()
                 .map(Employee::getId)
                 .toList();
-        List<EmployeeResponseDTO> employeeList = new ArrayList<>();
+        List<EmployeeIdResponseDTO> employeeList = new ArrayList<>();
         for (Long id : employeeId) {
-            EmployeeResponseDTO employee = employeeService.getEmployeeById(id);
+            EmployeeIdResponseDTO employee = employeeService.getEmployeeById(id);
             employeeList.add(employee);
         }
+        MaterialResponseDTO materialResponseDTO = parseMaterialResponseDTO(party.getMaterial());
         return new PartyEmployeeViewDTO(
                 party.getId(),
                 party.getLocation(),
                 party.getNameClient(),
                 party.getDate(),
                 party.getValues(),
-                party.getMaterial(),
+                materialResponseDTO,
                 party.getNumberOfPeople(),
                 employeeList,
                 party.getStatus()
@@ -137,7 +145,7 @@ public class PartyService {
         return employeeList;
     }
 
-    private Party parseFesta(PartyRequestDTO partyRequestDTO) {
+    private Party parseParty(PartyRequestDTO partyRequestDTO) {
         Party party = new Party();
         party.setLocation(partyRequestDTO.location());
         party.setNameClient(partyRequestDTO.nameClient());
@@ -146,44 +154,68 @@ public class PartyService {
         return party;
     }
 
-    private PartyResponseDTO getFestaResponseDTO(Party party) {
+    private PartyResponseDTO getPartyResponseDTO(Party party) {
         MaterialResponseDTO materialResponseDTO = parseMaterialResponseDTO(party.getMaterial());
-        List<Long> garcomId = party.getPartyEmployees()
+        List<Long> employeeId = party.getPartyEmployees()
                 .stream()
                 .map(Employee::getId)
                 .collect(Collectors.toList());
+        List<EmployeePartiesValuesResponseDTO> employeePartiesValuesResponseDTOS = party
+                .getValues()
+                .stream()
+                .map(
+                        employeePartiesValues -> new EmployeePartiesValuesResponseDTO(
+                                employeePartiesValues.getId(),
+                                employeePartiesValues.getEmployeeType(),
+                                employeePartiesValues.getValue()
+                        )
+                )
+                .toList();
         return new PartyResponseDTO(
                 party.getId(),
                 party.getLocation(),
                 party.getNameClient(),
                 party.getDate(),
-                party.getValues(),
+                employeePartiesValuesResponseDTOS,
                 materialResponseDTO,
-                garcomId,
+                employeeId,
                 party.getNumberOfPeople(),
                 party.getStatus()
         );
     }
 
-    private Party parseUpdateFesta(Long id, PartyUpdateRequestDTO festaRequestDTO) {
+    private Party parseUpdateParty(Long id, PartyUpdateRequestDTO partyRequestDTO) {
         Party party = partyRepository.findById(id).orElseThrow(PartyNotFoundException::new);
-        if(!Objects.equals(party.getMaterial().getId(), festaRequestDTO.idMaterial())) {
-            Material material = materialRepository.findById(festaRequestDTO.idMaterial()).orElseThrow(MaterialNotFoundException::new);
+        if(!Objects.equals(party.getMaterial().getId(), partyRequestDTO.idMaterial())) {
+            Material material = materialRepository.findById(partyRequestDTO.idMaterial()).orElseThrow(MaterialNotFoundException::new);
             party.setMaterial(material);
         }
-        party.setLocation(festaRequestDTO.location());
-        party.setDate(festaRequestDTO.date());
-        party.setNameClient(festaRequestDTO.nameClient());
-        party.setNumberOfPeople(festaRequestDTO.numberOfPeople());
-        party.setStatus(festaRequestDTO.status());
+        List<EmployeePartiesValues> values = partyRequestDTO
+                .values()
+                .stream()
+                .map(valueDTO -> {
+                        EmployeeType employeeType = employeeTypeRepository.findById(valueDTO.id()).orElseThrow(EmployeeNotFoundException::new);
+                        return new EmployeePartiesValues(
+                                employeeType,
+                                party,
+                                valueDTO.value());
+                })
+                .collect(Collectors.toList());
+        party.getValues().clear();
+        party.getValues().addAll(values);
+        party.setLocation(partyRequestDTO.location());
+        party.setDate(partyRequestDTO.date());
+        party.setNameClient(partyRequestDTO.nameClient());
+        party.setNumberOfPeople(partyRequestDTO.numberOfPeople());
+        party.setStatus(partyRequestDTO.status());
         return party;
     }
 
-    private Page<PartyResponseDTO> parseFestaResponseDTO(Page<Party> festas) {
-        if (festas.isEmpty()) {
+    private Page<PartyResponseDTO> parsePartyResponseDTO(Page<Party> parties) {
+        if (parties.isEmpty()) {
             return Page.empty();
         }
-        return festas.map(this::getFestaResponseDTO);
+        return parties.map(this::getPartyResponseDTO);
     }
 
     private MaterialResponseDTO parseMaterialResponseDTO(Material material) {

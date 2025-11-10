@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public record EmployeeResponseDashboardDTO(
     Long id,
     String name,
-    Long totalFestas,
+    Long totalParties,
     BigDecimal valueTotal,
     EmployeeType employeeType
 ) {

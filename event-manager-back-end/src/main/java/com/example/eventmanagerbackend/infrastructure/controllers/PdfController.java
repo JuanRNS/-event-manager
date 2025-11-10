@@ -19,12 +19,12 @@ public class PdfController {
         this.pdfService = pdfService;
     }
 
-    @PostMapping("/generate/garcom/{id}")
+    @PostMapping("/generate/employee/{id}")
     public ResponseEntity<byte[]> generatePDF(
             @PathVariable Long id,
             @RequestParam(required = false) Optional<LocalDate> fromDate,
             @RequestParam(required = false) Optional<LocalDate> toDate
-    ) throws Exception {
+    ){
         byte[] pdf = pdfService.generatePDF(
                 id,
                 fromDate.orElse(null),
@@ -32,7 +32,7 @@ public class PdfController {
         );
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=garcom_" + id + ".pdf")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=funcionário_" + id + ".pdf")
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdf);
     }
