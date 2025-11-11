@@ -4,11 +4,9 @@ import com.example.eventmanagerbackend.domain.entities.EmployeeType;
 
 import java.math.BigDecimal;
 
-public record EmployeeResponseDashboardDTO(
-    Long id,
-    String name,
-    Long totalParties,
-    BigDecimal valueTotal,
-    EmployeeType employeeType
+public record EmployeePartiesValuesResponseDTO(
+        Long id,
+        EmployeeType employeeType,
+        BigDecimal value
 ) {
 }

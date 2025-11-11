@@ -1,6 +1,6 @@
 package com.example.eventmanagerbackend.domain.enums;
 
-public enum StatusFesta {
+public enum StatusParty {
     REALIZADA,
     CANCELADA,
     AGENDADA

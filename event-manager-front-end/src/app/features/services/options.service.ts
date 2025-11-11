@@ -21,7 +21,7 @@ export class OptionsService extends HttpServiceAbstract {
   }
 
   public getOptionsStatusFesta() {
-    return this.get<IOptions[]>(`festa/status`);
+    return this.get<IOptions[]>(`party/status`);
   }
 
   public getOptionsEmployeeType() {

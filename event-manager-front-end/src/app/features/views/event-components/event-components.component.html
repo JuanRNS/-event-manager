@@ -46,7 +46,7 @@
           }
         </div>
       </div>
-        <button type="submit" class="btn btn-primary" (click)="createGarcom()">Cadastrar</button>
+        <button type="submit" class="btn btn-primary" (click)="createEmployee()">Cadastrar</button>
 
         <div class="waiters-section">
           <h3 class="subsection-title">Funcionários Cadastrados</h3>
@@ -75,7 +75,7 @@
                       Ações
                     </div>
                   </div>
-                  @for (item of ListGarcoms; track $index) {
+                  @for (item of ListEmployees; track $index) {
                   <div class="table-row">
                     <div class="title">
                       {{item.name}}
@@ -87,15 +87,15 @@
                       {{item.phone}}
                     </div>
                     <div class="title">
-                      {{item.statusGarcom}}
+                      {{item.statusEmployee}}
                     </div>
                     <div class="title">
                       {{item.employeeType.type}}
                     </div>
                     <div class="title">
                       <mat-menu #menu="matMenu">
-                        <button mat-menu-item (click)="editGarcom(item.id)">Editar Garçom</button>
-                        <button mat-menu-item (click)="deleteGarcom(item.id)">Excluir Garçom</button>
+                        <button mat-menu-item (click)="editEmployee(item.id)">Editar Garçom</button>
+                        <button mat-menu-item (click)="deleteEmployee(item.id)">Excluir Garçom</button>
                         <button mat-menu-item (click)="viewFestas(item.id)">Visualizar Garçom</button>
                       </mat-menu>
                       <button mat-icon-button [matMenuTriggerFor]="menu">

@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface PartyMapper {
 
-    PartyResponseDTO toFestaResponseDTO(Party party);
+    PartyResponseDTO toPartyResponseDTO(Party party);
 
     MaterialResponseDTO toMaterialResponseDTO(Material material);
 }

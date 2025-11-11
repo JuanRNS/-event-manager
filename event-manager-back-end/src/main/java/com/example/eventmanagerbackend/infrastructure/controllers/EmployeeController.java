@@ -1,7 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.controllers;
 
 import com.example.eventmanagerbackend.domain.dtos.*;
-import com.example.eventmanagerbackend.domain.entities.Employee;
 import com.example.eventmanagerbackend.infrastructure.services.EmployeeService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,19 +31,17 @@ public class EmployeeController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<Page<EmployeeResponseDTO>> getAllEmployee(Authentication authentication,Pageable pageable) {
-        Page<EmployeeResponseDTO> garcomList = employeeService.getAllEmployee(authentication,pageable);
+    public ResponseEntity<Page<EmployeeIdResponseDTO>> getAllEmployee(Authentication authentication,Pageable pageable) {
+        Page<EmployeeIdResponseDTO> employeeList = employeeService.getAllEmployee(authentication,pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(garcomList);
+                .body(employeeList);
     }
 
     @PostMapping("create")
-    public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeRequestDTO employee, Authentication authentication) {
-        Employee createdEmployee = employeeService.createEmployee(employee, authentication);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(createdEmployee);
+    public ResponseEntity<Void> createEmployee(@RequestBody EmployeeRequestDTO employee, Authentication authentication) {
+        employeeService.createEmployee(employee, authentication);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
@@ -55,11 +52,11 @@ public class EmployeeController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<EmployeeResponseDTO> getEmployee(@PathVariable Long id) {
-        EmployeeResponseDTO garcom = employeeService.getEmployeeById(id);
+    public ResponseEntity<EmployeeIdResponseDTO> getEmployee(@PathVariable Long id) {
+        EmployeeIdResponseDTO employee = employeeService.getEmployeeById(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(garcom);
+                .body(employee);
     }
 
     @GetMapping("status")
@@ -85,8 +82,8 @@ public class EmployeeController {
     }
 
     @GetMapping("list/add")
-    public ResponseEntity<Page<EmployeeAddResponseDTO>> getEmployeeAdd(Pageable pageable) {
-        Page<EmployeeAddResponseDTO> employeeList = employeeService.getGarcomAddResponseDTO(pageable);
+    public ResponseEntity<Page<EmployeeAddResponseDTO>> getEmployeeAdd(Authentication authentication,Pageable pageable) {
+        Page<EmployeeAddResponseDTO> employeeList = employeeService.getEmployeeAddResponseDTO(authentication,pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(employeeList);
@@ -100,7 +97,7 @@ public class EmployeeController {
     }
 
     @GetMapping("list/dashboard/date")
-    public ResponseEntity<Page<EmployeeResponseDashboardDTO>> getEmployeeDashboardByFestaId(
+    public ResponseEntity<Page<EmployeeResponseDashboardDTO>> getEmployeeDashboardByPartyId(
             Authentication authentication,
             Pageable pageable,
             @RequestParam LocalDate fromDate,
@@ -111,8 +108,8 @@ public class EmployeeController {
     }
 
     @GetMapping("list/employee/party/{id}")
-    public ResponseEntity<EmployeePartyDTO> getEmployeeFestas(@PathVariable Long id, Pageable pageable) {
-        EmployeePartyDTO employeeList = employeeService.getEmployeeFestas(id, pageable);
+    public ResponseEntity<EmployeePartyDTO> getEmployeeParties(@PathVariable Long id) {
+        EmployeePartyDTO employeeList = employeeService.getEmployeeParties(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(employeeList);

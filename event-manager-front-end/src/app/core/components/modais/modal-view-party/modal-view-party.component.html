@@ -37,7 +37,7 @@
 
   <h2 class="mt-3 mb-2">
     <mat-icon class="icon" fontIcon="person_apron"></mat-icon>
-     Garçons
+     Funcionários
     </h2>
   <div class="table">
     <div class="table-header">
@@ -47,14 +47,14 @@
       <div class="title">Status</div>
     </div>
 
-    @for (garcom of listViewParty ? listViewParty.garcoms : []; track $index) {
+    @for (employee of listViewParty ? listViewParty.employees : []; track $index) {
       <div class="table-row">
-        <div class="title">{{ garcom.name }}</div>
-        <div class="title">{{ garcom.phone }}</div>
-        <div class="title">{{ garcom.pixKey }}</div>
+        <div class="title">{{ employee.name }}</div>
+        <div class="title">{{ employee.phone }}</div>
+        <div class="title">{{ employee.pixKey }}</div>
         <div class="title">
-          <span class="status status-{{ garcom.statusGarcom }}">
-            {{ garcom.statusGarcom }}
+          <span class="status status-{{ employee.statusEmployee }}">
+            {{ employee.statusEmployee }}
           </span>
         </div>
       </div>

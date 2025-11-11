@@ -1,10 +1,11 @@
 package com.example.eventmanagerbackend.infrastructure.services;
 
-import com.example.eventmanagerbackend.domain.dtos.EmployeeResponseDTO;
+import com.example.eventmanagerbackend.domain.dtos.EmployeePartyResponseDTO;
 import com.example.eventmanagerbackend.domain.dtos.PdfRequestDashboardDTO;
 import com.example.eventmanagerbackend.domain.dtos.PdfRequestDashboardFestaDTO;
 import com.example.eventmanagerbackend.domain.entities.EmployeePartiesValues;
 import com.example.eventmanagerbackend.domain.entities.Party;
+import com.example.eventmanagerbackend.infrastructure.utils.DateUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -40,53 +41,57 @@ public class PdfService {
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage();
             document.addPage(page);
-            try (InputStream inputStream = PdfService.class.getResourceAsStream("/relatorioPagamento.png")) {
-                if (inputStream == null) {
-                    throw new IOException("Não foi possível carregar o arquivo");
-                }
-                PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, inputStream.readAllBytes(), "relatorio");
-                PDPageContentStream contentStream = new PDPageContentStream(document, page);
-                PDFont font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
-                contentStream.drawImage(pdImage, 0, 0,
-                        page.getMediaBox().getWidth(),
-                        page.getMediaBox().getHeight());
-                writeText(contentStream, font, 16, 291, 682, initialWeek());
-                writeText(contentStream, font, 16, 150, 627, dashboardDTO.name());
-                writeText(contentStream, font, 16, 134, 602, formatPhone(dashboardDTO.phone()));
-                writeText(contentStream, font, 16, 140, 577, dashboardDTO.pixKey());
-                int yTable = 475;
-                BigDecimal totalValue = BigDecimal.ZERO;
-                String[] aligns = {"left", "center", "right"};
-                for (int i = 0; i < dashboardDTO.pdfRequestDashboardFesta().size(); i++) {
-                    List<String> values = new ArrayList<>();
-                    values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).date());
-                    values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).location());
-                    values.add(dashboardDTO.pdfRequestDashboardFesta().get(i).valuePerDay().toString());
-
-                    writeRow(contentStream, font, 16, yTable, values, aligns);
-                    yTable -= 23;
-                    totalValue = totalValue.add(dashboardDTO.pdfRequestDashboardFesta().get(i).valuePerDay());
-                }
-                writeText(contentStream, font, 16, 500, 228, totalValue.toString());
-                contentStream.close();
-
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                document.save(out);
-                return out.toByteArray();
-            }
-
+            return getBytes(document, page, dashboardDTO);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private byte[] getBytes(PDDocument document, PDPage page, PdfRequestDashboardDTO dashboardDTO) {
+        try (InputStream inputStream = PdfService.class.getResourceAsStream("/relatorioPagamento.png")) {
+            if (inputStream == null) {
+                throw new IOException("Não foi possível carregar o arquivo");
+            }
+            PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, inputStream.readAllBytes(), "relatorio");
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+            PDFont font = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
+            contentStream.drawImage(pdImage, 0, 0,
+                    page.getMediaBox().getWidth(),
+                    page.getMediaBox().getHeight());
+            writeText(contentStream, font, 291, 682, initialWeek());
+            writeText(contentStream, font, 150, 627, dashboardDTO.name());
+            writeText(contentStream, font, 134, 602, formatPhone(dashboardDTO.phone()));
+            writeText(contentStream, font, 140, 577, dashboardDTO.pixKey());
+            int yTable = 475;
+            BigDecimal totalValue = BigDecimal.ZERO;
+            String[] aligns = {"left", "center", "right"};
+            for (int i = 0; i < dashboardDTO.pdfRequestDashboardParty().size(); i++) {
+                List<String> values = new ArrayList<>();
+                values.add(dashboardDTO.pdfRequestDashboardParty().get(i).date());
+                values.add(dashboardDTO.pdfRequestDashboardParty().get(i).location());
+                values.add(dashboardDTO.pdfRequestDashboardParty().get(i).values().toString());
+
+                writeRow(contentStream, font, yTable, values, aligns);
+                yTable -= 23;
+                totalValue = totalValue.add(dashboardDTO.pdfRequestDashboardParty().get(i).values());
+            }
+            writeText(contentStream, font, 500, 228, totalValue.toString());
+            contentStream.close();
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            document.save(out);
+            return out.toByteArray();
+        }catch (IOException e) {
+            throw new RuntimeException(e);        }
+    }
+
     private PdfRequestDashboardDTO dashboardDTO(Long id, LocalDate fromDate, LocalDate toDate) {
-        EmployeeResponseDTO employee = employeeService.getEmployeeById(id);
+        EmployeePartyResponseDTO employee = employeeService.getEmployeePartyByIdEmployee(id);
         List<Party> parties = employee.parties();
         if (fromDate != null && toDate != null) {
             parties.removeIf(party -> !verifyFromDateAndToDate(party.getDate(), fromDate, toDate));
         }else{
-            parties.removeIf(party -> !initialWeek(party.getDate()));
+            parties.removeIf(party -> !DateUtils.initialWeek(party.getDate()));
         }
         List<PdfRequestDashboardFestaDTO> partyDTO = parties.stream().map(p ->
                 new PdfRequestDashboardFestaDTO(
@@ -108,24 +113,14 @@ public class PdfService {
                 partyDTO
         );
     }
-
-    private boolean initialWeek(LocalDateTime todayDate){
-        LocalDate todayDateParty = todayDate.toLocalDate();
-        LocalDate today = LocalDate.now();
-        LocalDate monday = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate lastMonday = monday.minusWeeks(1);
-        LocalDate lastSunday = lastMonday.plusDays(6);
-
-        return !todayDateParty.isBefore(lastMonday) && !todayDateParty.isAfter(lastSunday);
-    }
     private boolean verifyFromDateAndToDate(LocalDateTime partyDate,LocalDate fromDate, LocalDate toDate) {
         LocalDate partyDateParty = partyDate.toLocalDate();
         return !partyDateParty.isBefore(fromDate) && !partyDateParty.isAfter(toDate);
     }
 
-    private void writeText(PDPageContentStream cs, PDFont font, int fontSize, float x, float y, String text) throws IOException {
+    private void writeText(PDPageContentStream cs, PDFont font, float x, float y, String text) throws IOException {
         cs.beginText();
-        cs.setFont(font, fontSize);
+        cs.setFont(font, 16);
         cs.newLineAtOffset(x, y);
         cs.showText(text);
         cs.endText();
@@ -148,15 +143,15 @@ public class PdfService {
         );
     }
 
-    private void writeRow(PDPageContentStream cs, PDFont font, int fontSize,
+    private void writeRow(PDPageContentStream cs, PDFont font,
                           float y, List<String> values, String[] aligns) throws IOException {
-        cs.setFont(font, fontSize);
+        cs.setFont(font, 16);
 
         float[] colWidths = {150, 210, 120};
         float x = 70;
         for (int i = 0; i < values.size(); i++) {
             String value = values.get(i);
-            float textWidth = font.getStringWidth(value) / 1000 * fontSize;
+            float textWidth = font.getStringWidth(value) / 1000 * 16;
             float cellX = x;
 
             switch (aligns[i].toLowerCase()) {

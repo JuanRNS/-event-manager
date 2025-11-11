@@ -5,18 +5,18 @@ export interface IRequestModalAddGarcom{
     name: string;
     phone: string;
     pixKey: string;
-    statusGarcom: string;
+    statusEmployee: string;
 }
 
-export interface IResponseListAddGarcom{
+export interface IResponseListAddEmployee{
     id: number;
     name: string;
     phone: string;
-    statusGarcom: string;
+    statusEmployee: string;
 }
 
-export interface IResponseModalAddGarcom{
-    content: IResponseListAddGarcom[];
+export interface IResponseModalAddEmployee{
+    content: IResponseListAddEmployee[];
     page: IPage;
 }
 

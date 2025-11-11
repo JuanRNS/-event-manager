@@ -1,22 +1,40 @@
 <h2 mat-dialog-title>Atualizar Festa</h2>
 <mat-dialog-content>
-    <app-form
-    [group]="formGroupItens"
-    [form]="form"
-    ></app-form>
+    <app-form [group]="formGroupItens" [form]="form"></app-form>
+    <div class="table">
+        <div class="table-header">
+            <div class="title">
+                Tipo
+            </div>
+            <div class="title">
+                Valor
+            </div>
+            <div class="title">
+                Ações
+            </div>
+        </div>
+        @for (item of listValues; track $index) {
+        <div class="table-row">
+            <div class="title">
+                {{item.employeeType.type}}
+            </div>
+            <div class="title">
+                {{item.value}}
+            </div>
+            <div class="title">
+                <button mat-icon-button (click)="deleteValue(item)">
+                    <mat-icon fontIcon="delete"></mat-icon>
+                </button>
+            </div>
+        </div>
+        }
+    </div>
     <div class="button">
-        <button 
-        mat-button
-        mat-dialog-close
-        class="btn btn-secondary"
-        >
+        <button mat-button mat-dialog-close class="btn btn-secondary">
             Fechar
         </button>
-        <button 
-        mat-button
-        class="btn btn-primary" 
-        (click)="updateParty()"
-        >
+        <button mat-button class="btn btn-primary" (click)="updateParty()">
             Atualizar
         </button>
     </div>
+</mat-dialog-content>

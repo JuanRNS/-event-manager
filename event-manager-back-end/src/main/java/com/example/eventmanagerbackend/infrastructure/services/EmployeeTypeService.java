@@ -6,7 +6,6 @@ import com.example.eventmanagerbackend.domain.entities.EmployeeType;
 import com.example.eventmanagerbackend.domain.entities.User;
 import com.example.eventmanagerbackend.infrastructure.exceptions.EmployeeTypeNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.repositories.EmployeeTypeRepository;
-import com.example.eventmanagerbackend.infrastructure.repositories.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 

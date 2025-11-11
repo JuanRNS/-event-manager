@@ -48,6 +48,7 @@ export class RegisterComponent {
       this.formGroup.markAllAsDirty();
       this.formGroup.updateValueAndValidity();
       this.formGroup.markAllAsTouched();
+      this._toast.warning('As senhas não coincidem.');
       return;
     }
 
