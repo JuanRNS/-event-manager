@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    api: 'http://localhost:8080/api/'
+    api: 'https://event-manager-production-b7d9.up.railway.app/api/'
 };
