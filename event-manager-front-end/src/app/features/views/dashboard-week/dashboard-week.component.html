@@ -1,0 +1,20 @@
+<div class="page-layout">
+
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Painel de Relatório Semanal</h1>
+      <button class="btn btn-primary" [class.disabled]="true">
+        <mat-icon fontIcon="description"></mat-icon>
+        Gerar Relatório
+      </button>
+    </div>
+
+  <app-dashboard
+  [listDashboard]="listDashboard"
+  [totalElements]="totalElements"
+  [pageSize]="pageSize"
+  (pageChange)="onPageChange($event)"
+  (download)="downloadReport($event.id, $event.name)"
+  ></app-dashboard>
+  </div>
+</div>

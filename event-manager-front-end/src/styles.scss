@@ -85,24 +85,23 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: #45B7B8;
+  background-color: #b14b32;
   transform: translateY(-2px);
 }
 
 .btn-secondary {
-  background-color: var(--black) !important;
+  background-color: var(--danger) !important;
   color: var(--white) !important;
 }
 
 .btn-secondary:hover {
-  background-color: #333;
-  transform: translateY(-2px);
+  transform: translateY(-2px) !important;
 }
 
 .btn-outline {
   background-color: transparent;
   border: 2px solid var(--primary-color);
-  color: var(--primary-color);
+  color: var(--primary-color) !important;
 }
 
 .btn-outline:hover {
@@ -273,11 +272,9 @@ body {
   border: 1px solid #FFEAA7;
 }
 
-// Variáveis básicas
 $grid-columns: 12;
-$gutter-width: 16px; // espaçamento lateral
+$gutter-width: 16px;
 
-// Row (linha)
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -285,14 +282,12 @@ $gutter-width: 16px; // espaçamento lateral
   margin-right: -($gutter-width / 2);
 }
 
-// Colunas genéricas
 [class*="col-"] {
   padding-left: ($gutter-width / 2);
   padding-right: ($gutter-width / 2);
   box-sizing: border-box;
 }
 
-// Loop para gerar as colunas (col-1 até col-12)
 @for $i from 1 through $grid-columns {
   .col-#{$i} {
     flex: 0 0 percentage($i / $grid-columns);
@@ -300,7 +295,6 @@ $gutter-width: 16px; // espaçamento lateral
   }
 }
 
-/* Responsividade */
 @media (max-width: 990px) {
   .container {
     padding: 0 15px;
@@ -325,7 +319,6 @@ $gutter-width: 16px; // espaçamento lateral
   }
 }
 
-/* Animações */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -341,7 +334,6 @@ $gutter-width: 16px; // espaçamento lateral
   animation: fadeIn 0.5s ease-out;
 }
 
-/* Utilitários */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }

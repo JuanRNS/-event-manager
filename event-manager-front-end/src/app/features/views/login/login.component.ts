@@ -10,6 +10,7 @@ import { UserService } from '../../services/user.service';
 import { IRequestLogin } from '../../../core/interface/login.interface';
 import { MaskEnum } from '../../../core/enums/maskEnum';
 import { ToastService } from '../../../core/services/toast.service';
+import { HomePageSideComponent } from "../../../core/components/home-page-side/home-page-side.component";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ import { ToastService } from '../../../core/services/toast.service';
     MatIconModule,
     FormComponent,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    HomePageSideComponent
 ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -64,12 +66,11 @@ export class LoginComponent {
     })
   }
 
-
   public get formGroupItens(): FormGroupArray{
     return [
       {
         component: FormFieldEnum.INPUT,
-        label: 'Username',
+        label: 'Usuário',
         controlName: 'userName',
         type: 'text',
         size: '12',
@@ -77,7 +78,7 @@ export class LoginComponent {
       },
       {
         component: FormFieldEnum.INPUT,
-        label: 'Password',
+        label: 'Senha',
         controlName: 'password',
         type: 'password',
         size: '12',

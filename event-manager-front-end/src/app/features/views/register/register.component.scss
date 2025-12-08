@@ -121,28 +121,13 @@
   margin-bottom: 20px;
 }
 
-.btn-social {
-  flex: 1;
+.social-login {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px;
-  border: 1px solid var(--gray-light);
-  background-color: var(--white);
-  color: var(--text-color);
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  margin-bottom: 12px;
 }
 
 .btn-google {
-  background-color: var(--black);
-  color: var(--white) !important;
-  border-color: var(--black);
-}
-
-.btn-apple {
   background-color: var(--black);
   color: var(--white) !important;
   border-color: var(--black);

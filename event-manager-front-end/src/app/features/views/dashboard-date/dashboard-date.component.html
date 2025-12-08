@@ -2,9 +2,9 @@
 
   <div class="main-content">
     <div class="page-header">
-      <h1 class="page-title">Dashboard</h1>
+      <h1 class="page-title">Painel de Relatórios por Data</h1>
 
-      <button class="btn btn-primary">
+      <button class="btn btn-primary" [class.disabled]="true">
           <mat-icon fontIcon="description"></mat-icon>
           Gerar Relatório
         </button>
@@ -20,71 +20,12 @@
         </button>
     </div>
     
-    <div class="content-wrapper">
-        @for (item of listDashboard; track $index) {
-        <div class="waiters-grid">
-          <div class="waiter-card">
-              <div class="waiter-header">
-                <h3 class="waiter-name">
-                  <mat-icon class="waiter-icon" fontIcon="person"></mat-icon>
-                  Garçom: {{ item.name}}
-                </h3>
-              </div>
-              <div class="waiter-stats">
-                <div class="stat-item">
-                  <span class="stat-label">
-                    <mat-icon class="stat-icon" fontIcon="event"></mat-icon>
-                    Festas na semana: {{ item.totalParties}}
-                  </span>
-                  <span class="stat-value"></span>
-                </div>
-                <div class="stat-item">
-                  <span class="stat-label">
-                    <mat-icon class="stat-icon" fontIcon="attach_money"></mat-icon>
-                    Total a receber: R${{item.valueTotal}}
-                  </span>
-                  <button class="btn btn-primary" (click)="downloadReport(item.id, item.name)">
-                  Imprimir Relatório
-                  <mat-icon fontIcon="description"></mat-icon>
-                </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        }
-        <mat-paginator
-        [length]="totalElements"
-        [pageSize]="pageSize"
-        (page)="onPageChange($event)"
-        hidePageSize
-        ></mat-paginator>
-      <div class="summary-section">
-        <div class="summary-grid">
-          <div class="summary-card">
-            <div class="summary-header">
-              <mat-icon class="summary-icon" fontIcon="group"></mat-icon>
-              <h3 class="summary-title">Total de Garçons</h3>
-            </div>
-            <div class="summary-value"></div>
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-header">
-              <mat-icon class="summary-icon" fontIcon="celebration"></mat-icon>
-              <h3 class="summary-title">Total de Festas</h3>
-            </div>
-            <div class="summary-value"></div>
-          </div>
-
-          <div class="summary-card">
-            <div class="summary-header">
-              <mat-icon class="summary-icon" fontIcon="payments"></mat-icon>
-              <h3 class="summary-title">Total Pago</h3>
-            </div>
-            <div class="summary-value"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-dashboard
+    [listDashboard]="listDashboard"
+    [totalElements]="totalElements"
+    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)"
+    (download)="downloadReport($event.id, $event.name)"
+    ></app-dashboard>
   </div>
 </div>

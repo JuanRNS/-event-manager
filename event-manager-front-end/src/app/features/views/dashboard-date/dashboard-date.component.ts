@@ -9,6 +9,7 @@ import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FormComponent } from "../../../core/components/form-group/form/form.component";
 import { ToastService } from '../../../core/services/toast.service';
+import { DashboardComponent } from '../../../core/components/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-dashboard-date',
@@ -17,7 +18,8 @@ import { ToastService } from '../../../core/services/toast.service';
     MatIconModule,
     MatButtonModule,
     MatPaginatorModule,
-    FormComponent
+    FormComponent,
+    DashboardComponent
 ],
   templateUrl: './dashboard-date.component.html',
   styleUrl: './dashboard-date.component.scss'
@@ -47,6 +49,7 @@ export class DashboardDateComponent{
         controlName: 'fromDate',
         type: 'date',
         size: '6',
+        maxlength: 10,
       },
       {
         component: FormFieldEnum.INPUT,
@@ -54,6 +57,7 @@ export class DashboardDateComponent{
         controlName: 'toDate',
         type: 'date',
         size: '6',
+        maxlength: 10,
       },
     ]
   }
@@ -77,15 +81,18 @@ export class DashboardDateComponent{
       URL.revokeObjectURL(url);
       },
       error: (err) => {
-        console.error('Erro ao gerar o relatório', err);
+        this._toast.error('Erro ao gerar o relatório', err);
       },
     });
   }
 
   public getDashBoardFromTo() {
+    if (!this.form.value.fromDate || !this.form.value.toDate) {
+      this._toast.error('Por favor, preencha as datas para filtrar o dashboard');
+      return;
+    }
     const from = new Date(this.form.value.fromDate ?? '').toISOString().substring(0, 10);
     const to = new Date(this.form.value.toDate ?? '').toISOString().substring(0, 10);
-
     this._service.getDashboardFromTo(from, to).subscribe({
       next: (res) => {
         this.listDashboard = res.content;

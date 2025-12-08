@@ -93,6 +93,10 @@ export class ApiService extends HttpServiceAbstract {
     return this.get<IResponseDashboardContent>(`employee/list/dashboard?page=${page}&size=${size}`);
   }
 
+  public getDashboardSummary() {
+    return this.get<any>(`dashboard/stats`);
+  }
+
   public getFileDownload(id: number, from?: string, to?: string) {
     if(!from || !to) return this.fileDownload<string>(`pdf/generate/employee/${id}`);
     return this.fileDownload<string>(`pdf/generate/employee/${id}?fromDate=${from}&toDate=${to}`);

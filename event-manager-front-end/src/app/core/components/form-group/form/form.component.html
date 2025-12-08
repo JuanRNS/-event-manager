@@ -11,6 +11,7 @@
             [placeholder]="item.placeholder"
             [mask]="item.mask"
             [maxlength]="item.maxlength ?? null"
+            [hidden]="item.hidden ?? false"
           ></app-input>
         } @else if (isSeleect(item)) {
           <app-select
