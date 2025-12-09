@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormComponent } from '../../../core/components/form-group/form/form.component';
@@ -8,9 +8,10 @@ import { FormGroupArray } from '../../../core/interface/form.interface';
 import { ApiService } from '../../services/api.service';
 import { IRequestUserRegister } from '../../../core/interface/register.interface';
 import { Router, RouterLink } from '@angular/router';
-import { MaskEnum } from '../../../core/enums/maskEnum';
 import { ToastService } from '../../../core/services/toast.service';
 import { HomePageSideComponent } from "../../../core/components/home-page-side/home-page-side.component";
+import { AuthGoogle } from '../../services/auth-google.service';
+import { MaskEnum } from '../../../core/enums/maskEnum';
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,7 @@ import { HomePageSideComponent } from "../../../core/components/home-page-side/h
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent{
   public formGroup = new FormGroup({
     email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
     userName: new FormControl<string | null>(null, [Validators.required]),
@@ -36,8 +37,10 @@ export class RegisterComponent {
   constructor(
     private readonly _service: ApiService,
     private readonly _router: Router,
-    private readonly _toast: ToastService
+    private readonly _toast: ToastService,
+    private readonly _authGoogle: AuthGoogle
   ) { }
+
 
   public register(){
     if(this.formGroup.invalid){
@@ -85,7 +88,7 @@ export class RegisterComponent {
         controlName: 'userName',
         type: 'text',
         size: '12',
-        mask: MaskEnum.NOME
+        mask: MaskEnum.ALPHANUMERIC
       },
       {
         component: FormFieldEnum.INPUT,

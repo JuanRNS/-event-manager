@@ -1,6 +1,8 @@
 package com.example.eventmanagerbackend.infrastructure.services;
 
+import com.example.eventmanagerbackend.domain.entities.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -34,6 +36,16 @@ public class JwtService {
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+    }
+
+    public String generateToken(User user) {
+
+        Authentication userAuthentication = new UsernamePasswordAuthenticationToken(
+                user.getUserName(),
+                null
+        );
+
+        return generateToken(userAuthentication);
     }
 
 }
