@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,9 +8,10 @@ import { FormComponent } from "../../../core/components/form-group/form/form.com
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../../services/user.service';
 import { IRequestLogin } from '../../../core/interface/login.interface';
-import { MaskEnum } from '../../../core/enums/maskEnum';
 import { ToastService } from '../../../core/services/toast.service';
 import { HomePageSideComponent } from "../../../core/components/home-page-side/home-page-side.component";
+import { AuthGoogle } from '../../services/auth-google.service';
+import { MaskEnum } from '../../../core/enums/maskEnum';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ import { HomePageSideComponent } from "../../../core/components/home-page-side/h
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   public formGroup = new FormGroup({
     userName: new FormControl<string | null>(null, [Validators.required]),
@@ -36,8 +37,13 @@ export class LoginComponent {
   constructor(
     private readonly router: Router,
     private readonly userService: UserService,
-    private readonly _toast: ToastService
+    private readonly _toast: ToastService,
+    private readonly _authGoogle: AuthGoogle
   ) {}
+
+  ngOnInit(): void {
+    this._authGoogle.initializeGoogleSignIn('google-signin-button');
+  }
 
   public login(){
     if(localStorage.getItem('token')){
@@ -74,7 +80,7 @@ export class LoginComponent {
         controlName: 'userName',
         type: 'text',
         size: '12',
-        mask: MaskEnum.NOME
+        mask: MaskEnum.ALPHANUMERIC
       },
       {
         component: FormFieldEnum.INPUT,

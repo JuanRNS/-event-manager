@@ -42,6 +42,10 @@ export class MaskDirective implements ControlValueAccessor {
         this.valueUnmasked = value;
         this._el.nativeElement.value = this.applyName(value);
         break;
+      case MaskEnum.ALPHANUMERIC:
+        this.valueUnmasked = value;
+        this._el.nativeElement.value = this.applyAlphanumeric(value);
+        break;
       case MaskEnum.PHONE:
         this.valueUnmasked = valueNumber;
         this._el.nativeElement.value = this.applyTelefone(valueNumber);
@@ -89,7 +93,12 @@ export class MaskDirective implements ControlValueAccessor {
 
     return value;
   }
- private applyName(value: string): string {
+  private applyName(value: string): string {
     return value.replace(/[^a-zA-ZÀ-ÿ ]/g, '');
-}
+  }
+  private applyAlphanumeric(value: string): string {
+    let cleanedValue = value.replace(/\s/g, '');
+    
+    return cleanedValue.replace(/[^a-zA-Z0-9À-ÿ]/g, '');
+  }
 }

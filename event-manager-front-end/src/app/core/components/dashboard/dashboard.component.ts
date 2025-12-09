@@ -19,9 +19,7 @@ export class DashboardComponent {
   public listDashboard = input<IResponseDashboard[]>([]);
   public totalElements = input<number>(0);
   public pageSize = input<number>(3);
-  constructor() {
-    console.log(this.totalElements.toString());
-   }
+  constructor() {}
 
   @Output() pageChange = new EventEmitter<PageEvent>();
   @Output() download = new EventEmitter<{id: number, name: string}>();
