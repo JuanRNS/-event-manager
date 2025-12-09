@@ -6,32 +6,28 @@ import com.example.eventmanagerbackend.domain.entities.EmployeeType;
 import com.example.eventmanagerbackend.domain.entities.User;
 import com.example.eventmanagerbackend.infrastructure.exceptions.EmployeeTypeNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.repositories.EmployeeTypeRepository;
-import org.springframework.security.core.Authentication;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeTypeService {
 
     private final EmployeeTypeRepository employeeTypeRepository;
     private final UserService userService;
 
-    public EmployeeTypeService(EmployeeTypeRepository employeeTypeRepository, UserService userRepository) {
-        this.employeeTypeRepository = employeeTypeRepository;
-        this.userService = userRepository;
-    }
-
-    public void saveEmployeeType(EmployeeTypeRequestDTO employeeTypeRequestDTO, Authentication authentication) {
+    public void saveEmployeeType(EmployeeTypeRequestDTO employeeTypeRequestDTO) {
         EmployeeType employeeType = new EmployeeType();
-        User user = userService.getUser(authentication);
+        User user = userService.getCurrentUser();
         employeeType.setUser(user);
         employeeType.setType(employeeTypeRequestDTO.type());
         employeeTypeRepository.save(employeeType);
     }
 
-    public List<EmployeeTypeResponseDTO> getAllEmployeeTypes(Authentication authentication) {
-        User user = userService.getUser(authentication);
+    public List<EmployeeTypeResponseDTO> getAllEmployeeTypes() {
+        User user = userService.getCurrentUser();
         return employeeTypeRepository
                 .findByUser(user)
                 .stream()
@@ -52,5 +48,10 @@ public class EmployeeTypeService {
                 .orElseThrow(EmployeeTypeNotFoundException::new);
         employeeType.setType(employeeTypeRequestDTO.type());
         employeeTypeRepository.save(employeeType);
+    }
+
+    public EmployeeType getEmployeeTypeById(Long id) {
+        return employeeTypeRepository.findById(id)
+                .orElseThrow(EmployeeTypeNotFoundException::new);
     }
 }

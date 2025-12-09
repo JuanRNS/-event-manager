@@ -1,4 +1,12 @@
 package com.example.eventmanagerbackend.domain.dtos;
 
-public record EmployeeRequestUpdateDTO() {
+import com.example.eventmanagerbackend.domain.enums.StatusEmployee;
+
+public record EmployeeRequestUpdateDTO(
+        String name,
+        String pixKey,
+        String phone,
+        Long idEmployeeType,
+        StatusEmployee statusEmployee
+) {
 }

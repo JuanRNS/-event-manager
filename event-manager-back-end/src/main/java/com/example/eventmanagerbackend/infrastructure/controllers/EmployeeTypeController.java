@@ -21,16 +21,16 @@ public class EmployeeTypeController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<Void> createEmployeeType(@RequestBody EmployeeTypeRequestDTO employeeTypeRequestDTO, Authentication authentication) {
-        employeeTypeService.saveEmployeeType(employeeTypeRequestDTO, authentication);
+    public ResponseEntity<Void> createEmployeeType(@RequestBody EmployeeTypeRequestDTO employeeTypeRequestDTO) {
+        employeeTypeService.saveEmployeeType(employeeTypeRequestDTO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
     }
 
     @GetMapping("options/employee-type")
-    public ResponseEntity<List<EmployeeTypeResponseDTO>> getOptions(Authentication authentication) {
-        List<EmployeeTypeResponseDTO> employeeTypeList = employeeTypeService.getAllEmployeeTypes(authentication);
+    public ResponseEntity<List<EmployeeTypeResponseDTO>> getOptions() {
+        List<EmployeeTypeResponseDTO> employeeTypeList = employeeTypeService.getAllEmployeeTypes();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(employeeTypeList);
