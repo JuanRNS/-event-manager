@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { IResponseDashboard } from '../../../core/interface/dashboard.interface';
@@ -12,7 +11,6 @@ import { DashboardComponent } from '../../../core/components/dashboard/dashboard
   selector: 'app-dashboard-week',
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     MatIconModule,
     MatPaginatorModule,

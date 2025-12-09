@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {  Injectable } from '@angular/core';
 import { HttpServiceAbstract } from '../../core/abstract/http.abstract';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { IRequestEmployee, IRequestEmployeeType, IRequestMaterial, IResponseEmployee, IResponseListEmployee, IResponseMaterial } from '../../core/interface/event.interface';
 import { IRequestUserRegister } from '../../core/interface/register.interface';
 import { IRequestParty, IResponseListParty, IResponseParty } from '../../core/interface/party.interface';
@@ -11,6 +10,8 @@ import { IResponseModalViewParty } from '../../core/interface/modal-view-party.i
 import { IRequestUpdateFesta } from '../../core/interface/modal-update-festa.interface';
 import { IResponseModalViewPartyWaiter } from '../../core/interface/modal-view-party-waiter.interface';
 import { IRequestModalValuesEmployee } from '../../core/interface/modal-values-employee.interface';
+import { ICalendarEvent } from '../../core/interface/calendar.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -132,5 +133,9 @@ export class ApiService extends HttpServiceAbstract {
 
   public postCreatePartyValues(id:number, data: IRequestModalValuesEmployee){
     return this.post(`party/${id}/add/values`, data);
+  }
+
+  public getEventsCalendar() {
+    return this.get<ICalendarEvent[]>(`party/calendar/events`);
   }
 }

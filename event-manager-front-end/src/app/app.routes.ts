@@ -43,6 +43,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/views/dashboard-date/dashboard-date.component').then((m) => m.DashboardDateComponent),
     canActivate: [authGuard]
   },
+  {
+    path: 'calendar',
+    loadComponent: () => import('./features/views/calendar/calendar.component').then((m) => m.CalendarComponent),
+    canActivate: [authGuard]
+  },
   { 
     path: '**', 
     redirectTo: '/login' 

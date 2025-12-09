@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Output, output } from '@angular/core';
+import { Component, EventEmitter, input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { SummaryComponent } from '../summary/summary.component';

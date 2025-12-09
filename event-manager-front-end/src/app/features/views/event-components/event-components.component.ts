@@ -5,7 +5,7 @@ import {
   FormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import {
   FormGroupArray,
   IOptions,
@@ -40,13 +40,12 @@ import { ModalPixTelConfirmationComponent } from '../../../core/components/modai
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule,
     MatButtonModule,
     FormComponent,
     MatPaginatorModule,
     MatMenuModule,
-    MatIconModule,
-  ],
+    MatIconModule
+],
   templateUrl: './event-components.component.html',
   styleUrl: './event-components.component.scss',
 })

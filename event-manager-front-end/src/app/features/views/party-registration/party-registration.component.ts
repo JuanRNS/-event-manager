@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormComponent } from '../../../core/components/form-group/form/form.component';
@@ -21,13 +20,12 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule,
     FormComponent,
     MatPaginatorModule,
     MatMenuModule,
     MatIconModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
   templateUrl: './party-registration.component.html',
   styleUrl: './party-registration.component.scss',
 })

@@ -16,6 +16,6 @@ export class App {
   ) { }
 
   public showSidebar() {
-    return this._route.url !== '/login' && this._route.url !== '/register';
+    return this._route.url !== '/login' && this._route.url !== '/register' && !this._route.url.startsWith('/calendar');
   }
 }
