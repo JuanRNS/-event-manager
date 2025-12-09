@@ -1,5 +1,6 @@
 package com.example.eventmanagerbackend.infrastructure.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -10,14 +11,11 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.stream.Collectors;
 
-
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     private final JwtEncoder jwtEncoder;
-    public JwtService(JwtEncoder jwtEncoder) {
-        this.jwtEncoder = jwtEncoder;
-    }
 
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();

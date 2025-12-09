@@ -10,6 +10,7 @@ import { IRequestUserRegister } from '../../../core/interface/register.interface
 import { Router, RouterLink } from '@angular/router';
 import { MaskEnum } from '../../../core/enums/maskEnum';
 import { ToastService } from '../../../core/services/toast.service';
+import { HomePageSideComponent } from "../../../core/components/home-page-side/home-page-side.component";
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,8 @@ import { ToastService } from '../../../core/services/toast.service';
     MatIconModule,
     MatButtonModule,
     FormComponent,
-    RouterLink
+    RouterLink,
+    HomePageSideComponent
 ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -79,7 +81,7 @@ export class RegisterComponent {
       },
       {
         component: FormFieldEnum.INPUT,
-        label: 'Username',
+        label: 'Usuário',
         controlName: 'userName',
         type: 'text',
         size: '12',
@@ -87,14 +89,14 @@ export class RegisterComponent {
       },
       {
         component: FormFieldEnum.INPUT,
-        label: 'Password',
+        label: 'Senha',
         controlName: 'password',
         type: 'password',
         size: '12',
       },
       {
         component: FormFieldEnum.INPUT,
-        label: 'Confirm Password',
+        label: 'Confirmar Senha',
         controlName: 'confirmPassword',
         type: 'password',
         size: '12',

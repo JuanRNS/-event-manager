@@ -40,4 +40,12 @@ export class InputComponent {
   public required(): boolean{
     return this.form().get(this.formControl())?.hasValidator(Validators.required) ?? false;
   }
+
+  public max(){
+    if (this.type() !== 'date') {
+      return null;
+    }
+    const maxDate = new Date(2100, 11, 31);
+    return maxDate.toISOString().substring(0, 10);
+  }
 }

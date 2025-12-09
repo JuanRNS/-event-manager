@@ -1,35 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormComponent } from '../../../core/components/form-group/form/form.component';
 import { ApiService } from '../../services/api.service';
 import { IRequestParty, IResponseParty } from '../../../core/interface/party.interface';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from '@angular/material/dialog';
-import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal-update-festa/modal-update-festa.component';
-import { ModalAddGarcomComponent } from '../../../core/components/modais/modal-add-garcom/modal-add-garcom.component';
-import { ModalViewPartyComponent } from '../../../core/components/modais/modal-view-party/modal-view-party.component';
 import { ParseDateUtil } from '../../../core/utils/parse-date.util';
 import { MaskEnum } from '../../../core/enums/maskEnum';
-import { ModalValuesEmployeeComponent } from '../../../core/components/modais/modal-values-employee/modal-values-employee.component';
+import { ToastService } from '../../../core/services/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-party-registration',
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule,
     FormComponent,
     MatPaginatorModule,
     MatMenuModule,
     MatIconModule,
-    MatButtonModule,
-  ],
+    MatButtonModule
+],
   templateUrl: './party-registration.component.html',
   styleUrl: './party-registration.component.scss',
 })
@@ -52,7 +48,9 @@ export class PartyRegistrationComponent implements OnInit {
 
   constructor(
     private readonly _service: ApiService,
-    private readonly _dialog: MatDialog
+    private readonly _dialog: MatDialog,
+    private readonly _toast: ToastService,
+    private readonly _route: Router
   ) {}
 
   ngOnInit(): void {
@@ -133,72 +131,15 @@ export class PartyRegistrationComponent implements OnInit {
       numberOfPeople: Number(this.form.controls.numberOfPeople.value),
     };
 
-    this._service.postRegisterParty(data).subscribe((res) => {
-      this.getListParty();
-    });
+    this._service.postRegisterParty(data).subscribe(({
+      next: () => {
+        this._toast.success('Festa criada com sucesso!');
+        this._route.navigate(['/party-list']);
+      },
+      error: (err) => {
+        this._toast.error('Erro ao criar festa. Tente novamente.', err);
+      }
+    }));
     this.form.reset();
   }
-
-  public onChangePage(event: PageEvent) {
-    this.page = event.pageIndex;
-    this.pageSize = event.pageSize;
-    this.getListParty();
-  }
-
-  public editParty(id: number) {
-    const dialogRef = this._dialog.open(ModalUpdateFestaComponent, {
-      width: '500px',
-      height: '600px',
-      data: { id: id },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.getListParty();
-      }
-    });
-  }
-
-  public deleteParty(id: number) {
-    this._service.deleteParty(id).subscribe(() => {
-      this.getListParty();
-    });
-  }
-
-  public addGarcons(id: number) {
-    const modalRef = this._dialog.open(ModalAddGarcomComponent,{
-      height: '70vh',
-      width: '90vw',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      data: { id: id },
-    })
-    modalRef.afterClosed().subscribe((result) => {
-      if(result) {
-        this.getListParty();
-      }
-    })
-  };
-
-  public viewParty(id: number) {
-    this._dialog.open(ModalViewPartyComponent, {
-      height: '70vh',
-      width: '70vw',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      autoFocus: false,
-      data: { id: id },
-    });
-  }
-
-  public valuesParty(id: number){
-    this._dialog.open(ModalValuesEmployeeComponent, {
-      height: '50vh',
-      width: '40vw',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      autoFocus: false,
-      data: { id: id },
-    });
-  }
-
 }

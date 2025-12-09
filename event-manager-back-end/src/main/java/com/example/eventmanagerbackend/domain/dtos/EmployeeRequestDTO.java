@@ -6,7 +6,6 @@ public record EmployeeRequestDTO(
         String name,
         String pixKey,
         String phone,
-        Long idEmployeeType,
-        StatusEmployee statusEmployee
+        Long idEmployeeType
 ) {
 }

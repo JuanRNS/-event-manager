@@ -55,7 +55,6 @@ public class Employee {
         this.pixKey = employeeRequestDTO.pixKey();
         this.phone = employeeRequestDTO.phone();
         this.employeeType = employeeType;
-        this.statusEmployee = employeeRequestDTO.statusEmployee();
         this.user = user;
     }
 }

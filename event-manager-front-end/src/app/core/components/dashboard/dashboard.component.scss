@@ -1,0 +1,66 @@
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.waiters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.waiter-card {
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid var(--primary-color);
+}
+
+.waiter-header {
+  margin-bottom: 20px;
+}
+
+.waiter-name {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+  gap: 12px;
+}
+
+.waiter-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+    button{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px;
+  }
+}
+
+.stat-label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--gray-medium);
+  font-weight: 500;
+  gap: 12px;
+}
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-color);
+}

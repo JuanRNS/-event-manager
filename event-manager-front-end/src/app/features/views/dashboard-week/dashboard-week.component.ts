@@ -1,35 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { IResponseDashboard } from '../../../core/interface/dashboard.interface';
 import { ApiService } from '../../services/api.service';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ToastService } from '../../../core/services/toast.service';
+import { DashboardComponent } from '../../../core/components/dashboard/dashboard.component';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-dashboard-week',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule, 
+    RouterModule,
     MatIconModule,
     MatPaginatorModule,
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+    DashboardComponent
+],
+  templateUrl: './dashboard-week.component.html',
+  styleUrl: './dashboard-week.component.scss'
 })
-export class DashboardComponent implements OnInit{
+export class DashboardWeekComponent implements OnInit{
   public listDashboard: IResponseDashboard [] = [];
   public page = 0;
   public pageSize = 3;
   public totalElements = 0;
-
   constructor(
     private readonly _service: ApiService,
     private readonly _toast: ToastService
-  ) { }
-
+  ) {}
   ngOnInit(): void {
     this.getListDashboard();
   }
@@ -45,7 +43,6 @@ export class DashboardComponent implements OnInit{
       },
     });
   }
-
   public downloadReport(id: number, name: string) {
     this._service.getFileDownload(id).subscribe({
       next: (res) => {

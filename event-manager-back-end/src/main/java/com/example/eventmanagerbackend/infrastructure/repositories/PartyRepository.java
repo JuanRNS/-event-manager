@@ -15,5 +15,11 @@ public interface PartyRepository extends JpaRepository<Party, Long> {
 
     List<Party> findAllByStatus(StatusParty statusParty);
 
+    Page<Party> findAllByUser(User user, Pageable pageable);
     Page<Party> findAllByUserAndStatus(User user, StatusParty statusParty, Pageable pageable);
+
+    Long countByStatusAndUser(StatusParty statusParty, User user);
+
+    List<Party> findAllByUser(User user);
+
 }

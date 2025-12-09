@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +21,8 @@ public class PartyController {
     }
 
     @GetMapping("list/status")
-    public ResponseEntity<Page<PartyResponseDTO>> getAllPartiesByStatus(Authentication authentication, Pageable pageable) {
-        Page<PartyResponseDTO> partyList = partyService.getAllPartiesByStatus(authentication,pageable);
+    public ResponseEntity<Page<PartyResponseDTO>> getAllPartiesByStatus(Pageable pageable) {
+        Page<PartyResponseDTO> partyList = partyService.getAllPartiesByStatus(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(partyList);
@@ -38,8 +37,8 @@ public class PartyController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<PartyResponseDTO> createParty(@RequestBody PartyRequestDTO party, Authentication authentication) {
-        PartyResponseDTO createdParty = partyService.createParty(authentication,party);
+    public ResponseEntity<PartyResponseDTO> createParty(@RequestBody PartyRequestDTO party) {
+        PartyResponseDTO createdParty = partyService.createParty(party);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createdParty);
@@ -61,7 +60,7 @@ public class PartyController {
 
     @GetMapping("{id}")
     public ResponseEntity<PartyResponseDTO> getParty(@PathVariable Long id) {
-        PartyResponseDTO party = partyService.getPartyById(id);
+        PartyResponseDTO party = partyService.getPartyResponseDTOById(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(party);
@@ -81,7 +80,9 @@ public class PartyController {
     }
 
     @GetMapping("view/{id}")
-    public ResponseEntity<PartyEmployeeViewDTO> getPartyEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<PartyEmployeeViewDTO> getPartyEmployeeById(
+            @PathVariable Long id
+    ) {
         PartyEmployeeViewDTO partyEmployeeViewDTO = partyService.getPartyEmployeeById(id);
         return ResponseEntity.ok(partyEmployeeViewDTO);
     }
@@ -90,5 +91,11 @@ public class PartyController {
     public ResponseEntity<Void> addValuesInParty(@PathVariable Long id, @RequestBody EmployeePartiesValuesDTO employeePartiesValuesDTO) {
         partyService.createEmployeePartiesValues(id, employeePartiesValuesDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("calendar/events")
+    public ResponseEntity<List<PartyResponseCalendarDTO>> getCalendarEvents() {
+        List<PartyResponseCalendarDTO> events = partyService.getPartiesForCalendar();
+        return ResponseEntity.ok(events);
     }
 }

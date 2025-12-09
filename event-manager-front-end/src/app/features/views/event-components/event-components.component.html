@@ -2,7 +2,7 @@
 
   <div class="main-content">
     <div class="page-header">
-      <h1 class="page-title">Cadastro de Garçons</h1>
+      <h1 class="page-title">Cadastro de Funcionários</h1>
     </div>
 
     <div class="content-wrapper">
@@ -13,13 +13,7 @@
         >
       </app-form>
       <div class="row">
-        <app-form
-          [group]="formGroupItensSecondary"
-          [form]="formSecondary"
-          class="col-6"
-        >
-        </app-form>
-        <div class="col-6">
+        <div class="col-12">
           @if (createEmployeeType) {
             <div class="row">
               <app-form
@@ -29,17 +23,17 @@
               >
               </app-form>
               <div class="button-add-type col-6">
-                <button mat-button class="btn btn-danger btn-sm col-4" (click)="createEmployeeType = false">
+                <button mat-button class="btn btn-secondary" (click)="createEmployeeType = false">
                   Cancelar
                 </button>
-                <button mat-button class="btn btn-success btn-sm col-4" (click)="createEmployeeTypeRequest()">
+                <button mat-button class="btn btn-primary" (click)="createEmployeeTypeRequest()">
                   Cadastrar 
                 </button>
               </div>
             </div>
           }@else {
             <div class="button-add-type col-12">
-              <button mat-button class="btn btn-primary btn-sm button-type" (click)="createEmployeeType = true" title="Adicionar Tipo de Funcionário">
+              <button mat-button class="btn btn-primary button-type" (click)="createEmployeeType = true" title="Adicionar Tipo de Funcionário">
                 Adicionar Tipo de Funcionário
               </button> 
             </div>
@@ -151,12 +145,13 @@
                 <div class="title">
                   {{item.description}}
                 </div>
-                <div class="title-buttons">
-                  <button mat-button class="btn btn-primary btn-sm" (click)="editMaterial(item.id)">
-                    Editar Material
-                  </button>
-                  <button mat-button class="btn btn-secondary btn-sm" (click)="deleteMaterial(item.id)">
-                    Excluir
+                <div class="title">
+                  <mat-menu #menuMaterial="matMenu">
+                    <button mat-menu-item (click)="editMaterial(item.id)">Editar Material</button>
+                    <button mat-menu-item (click)="deleteMaterial(item.id)">Excluir Material</button>
+                  </mat-menu>
+                  <button mat-icon-button [matMenuTriggerFor]="menuMaterial">
+                    <mat-icon fontIcon="menu"></mat-icon>
                   </button>
                 </div>
               </div>

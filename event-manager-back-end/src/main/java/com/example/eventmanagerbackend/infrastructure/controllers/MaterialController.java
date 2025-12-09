@@ -21,20 +21,20 @@ public class MaterialController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MaterialResponseDTO> createMaterial(@RequestBody MaterialRequestDTO materialRequest, Authentication authentication) {
-        MaterialResponseDTO material = materialService.createMaterial(authentication,materialRequest);
+    public ResponseEntity<MaterialResponseDTO> createMaterial(@RequestBody MaterialRequestDTO materialRequest) {
+        MaterialResponseDTO material = materialService.createMaterial(materialRequest);
         return new ResponseEntity<>(material, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<MaterialResponseDTO> getMaterialById(@PathVariable Long id) {
-        MaterialResponseDTO materialResponseDTO = materialService.getMaterialById(id);
+        MaterialResponseDTO materialResponseDTO = materialService.getMaterialDTOById(id);
         return new ResponseEntity<>(materialResponseDTO, HttpStatus.OK);
     }
 
     @GetMapping("list")
-    public ResponseEntity<List<MaterialResponseDTO>> getAllMaterials(Authentication authentication) {
-        List<MaterialResponseDTO> materialList = materialService.getAllMaterials(authentication);
+    public ResponseEntity<List<MaterialResponseDTO>> getAllMaterials() {
+        List<MaterialResponseDTO> materialList = materialService.getAllMaterials();
         return new ResponseEntity<>(materialList, HttpStatus.OK);
     }
 

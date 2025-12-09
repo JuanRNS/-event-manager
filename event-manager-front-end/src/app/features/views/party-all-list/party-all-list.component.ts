@@ -13,6 +13,7 @@ import { ModalUpdateFestaComponent } from '../../../core/components/modais/modal
 import { FormFieldEnum } from '../../../core/enums/formFieldEnum';
 import { FormGroupArray } from '../../../core/interface/form.interface';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ModalValuesEmployeeComponent } from '../../../core/components/modais/modal-values-employee/modal-values-employee.component';
 
 @Component({
   selector: 'app-party-all-list',
@@ -103,6 +104,19 @@ export class PartyAllListComponent implements OnInit{
       height: '600px',
       data: { id: id },
     });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getListParty();
+      }
+    });
+  }
+
+  public valuesParty(id: number){
+    const dialogRef = this._dialog.open(ModalValuesEmployeeComponent, {
+      width: '500px',
+      height: '600px',
+      data: { id: id },
+    })
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getListParty();

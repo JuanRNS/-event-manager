@@ -89,7 +89,7 @@ export class MaskDirective implements ControlValueAccessor {
 
     return value;
   }
-  private applyName(value: string): string {
-    return value.replaceAll(/[^a-zA-Z0-9]/g, '');
-  }
+ private applyName(value: string): string {
+    return value.replace(/[^a-zA-ZÀ-ÿ ]/g, '');
+}
 }

@@ -8,6 +8,7 @@
     [required]="required()"
     [appMask]="mask()"
     [maxlength]="maxlength() ?? null"
+    [max]="max() ?? null"
     >
     @if (form().get(formControl())?.hasError('required')) {
         <mat-error>

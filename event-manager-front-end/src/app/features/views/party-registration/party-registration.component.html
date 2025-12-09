@@ -2,7 +2,7 @@
   
   <div class="main-content">
     <div class="page-header">
-      <h1 class="page-title">Lançamento de Trabalhos</h1>
+      <h1 class="page-title">Cadastro de Festas</h1>
     </div>
     
     <div class="content-wrapper">
@@ -10,101 +10,7 @@
       [group]="formGroupItens"
       [form]="form"
       ></app-form>
-      <button type="submit" class="btn btn-primary" (click)="createParty()">Lançar Trabalho</button>
-      
-      <div class="parties-section">
-        <h2 class="section-title">Festas Agendadas</h2>
-        
-        <div class="parties-list">
-          <div class="party-item">
-            <div class="party-info">
-               <div class="table">
-                  <div class="table-header">
-                    <div class="title">
-                      Cliente
-                    </div>
-                    <div class="title">
-                      Local
-                    </div>
-                    <div class="title">
-                      Data
-                    </div>
-                    <div class="title">
-                      Nº de pessoas
-                    </div>
-                    <div class="title">
-                      Material
-                    </div>
-                    <div class="title">
-                      Funcionários Escalados
-                    </div>
-                    <div class="title">
-                      Ações
-                    </div>
-                  </div>
-                  @for (item of listParty; track $index) {
-                  <div class="table-row">
-                    <div class="title">
-                      {{item.nameClient}}
-                    </div>
-                    <div class="title">
-                      {{item.location}}
-                    </div>
-                    <div class="title">
-                      {{item.date}}
-                    </div>
-                    <div class="title">
-                      {{item.numberOfPeople}}
-                    </div>
-                    @if (item.material) {
-                      <div class="title">
-                        {{item.material.description}}
-                      </div>
-                    }@else {
-                      <div class="title">
-                        -
-                      </div>
-                    }
-                    @if (item.employeeId.length > 0) {
-                      <div class="title">
-                        {{item.employeeId.length}}
-                      </div>
-                    }@else {
-                      <div class="title">
-                        0
-                      </div>
-                    }
-                    <div class="title">
-                      <mat-menu #menu="matMenu">
-                        <button mat-menu-item (click)="addGarcons(item.id)">Adicionar Funcionários</button>
-                        <button mat-menu-item (click)="editParty(item.id)">Editar Festa</button>
-                        <button mat-menu-item (click)="deleteParty(item.id)">Apagar Festa</button>
-                        <button mat-menu-item (click)="valuesParty(item.id)">Definir Valores dos Funcionários</button>
-                        @if (item.employeeId.length > 0) {
-                        <button mat-menu-item (click)="viewParty(item.id)">Visualizar Festa</button>
-                        }
-                      </mat-menu>
-                      <button mat-icon-button [matMenuTriggerFor]="menu">
-                        <mat-icon fontIcon="menu"></mat-icon>
-                      </button>
-                    </div>
-                  </div>
-                  }
-                </div>
-                <mat-paginator 
-                [length]="totalElements" 
-                [pageSize]="pageSize"
-                (page)="onChangePage($event)"
-                hidePageSize
-                ></mat-paginator>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="party-placeholder">
-        </div>
-      </div>
+      <button type="submit" class="btn btn-primary" (click)="createParty()">Cadastrar Festa</button>
     </div>
   </div>
 

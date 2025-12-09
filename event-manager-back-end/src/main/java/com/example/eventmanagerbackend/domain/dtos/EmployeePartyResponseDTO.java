@@ -14,6 +14,6 @@ public record EmployeePartyResponseDTO(
     String phone,
     StatusEmployee statusEmployee,
     EmployeeType employeeType,
-    List<Party> parties
+    List<Party> employeeParties
 ) {
 }

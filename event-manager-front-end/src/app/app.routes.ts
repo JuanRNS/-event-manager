@@ -20,7 +20,7 @@ export const routes: Routes = [
   },
   { 
     path: 'dashboard', 
-    loadComponent: () => import('./features/views/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+    loadComponent: () => import('./features/views/dashboard-week/dashboard-week.component').then((m) => m.DashboardWeekComponent),
     canActivate: [authGuard]
   },
   { 
@@ -34,13 +34,18 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   { 
-    path: 'party-all-list', 
+    path: 'party-list', 
     loadComponent: () => import('./features/views/party-all-list/party-all-list.component').then((m) => m.PartyAllListComponent),
     canActivate: [authGuard]
   },
   {
     path: 'dashboard-date',
     loadComponent: () => import('./features/views/dashboard-date/dashboard-date.component').then((m) => m.DashboardDateComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'calendar',
+    loadComponent: () => import('./features/views/calendar/calendar.component').then((m) => m.CalendarComponent),
     canActivate: [authGuard]
   },
   { 

@@ -6,6 +6,7 @@ import com.example.eventmanagerbackend.domain.dtos.PdfRequestDashboardFestaDTO;
 import com.example.eventmanagerbackend.domain.entities.EmployeePartiesValues;
 import com.example.eventmanagerbackend.domain.entities.Party;
 import com.example.eventmanagerbackend.infrastructure.utils.DateUtils;
+import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -28,13 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PdfService {
 
     private final EmployeeService employeeService;
-
-    public PdfService(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
 
     public byte[] generatePDF(Long id, LocalDate fromDate, LocalDate toDate) {
         PdfRequestDashboardDTO dashboardDTO = dashboardDTO(id, fromDate, toDate);
@@ -87,12 +85,13 @@ public class PdfService {
 
     private PdfRequestDashboardDTO dashboardDTO(Long id, LocalDate fromDate, LocalDate toDate) {
         EmployeePartyResponseDTO employee = employeeService.getEmployeePartyByIdEmployee(id);
-        List<Party> parties = employee.parties();
+        List<Party> parties = employee.employeeParties();
         if (fromDate != null && toDate != null) {
             parties.removeIf(party -> !verifyFromDateAndToDate(party.getDate(), fromDate, toDate));
         }else{
             parties.removeIf(party -> !DateUtils.initialWeek(party.getDate()));
         }
+
         List<PdfRequestDashboardFestaDTO> partyDTO = parties.stream().map(p ->
                 new PdfRequestDashboardFestaDTO(
                         p.getNameClient(),

@@ -1,0 +1,36 @@
+.summary-section {
+    margin-top: 20px;
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+
+        .summary-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: var(--primary-color);
+
+            .summary-header {
+                margin-bottom: 16px;
+
+                .summary-title {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    margin: 0;
+                }
+            }
+
+            .summary-value {
+                font-size: 32px;
+                font-weight: 700;
+            }
+        }
+
+    }
+
+}

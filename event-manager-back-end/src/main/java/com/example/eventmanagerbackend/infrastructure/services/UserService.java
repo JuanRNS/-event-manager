@@ -2,27 +2,22 @@ package com.example.eventmanagerbackend.infrastructure.services;
 
 import com.example.eventmanagerbackend.domain.dtos.UserRequestDTO;
 import com.example.eventmanagerbackend.domain.entities.User;
-import com.example.eventmanagerbackend.infrastructure.exceptions.EmailExistsException;
-import com.example.eventmanagerbackend.infrastructure.exceptions.UserNameExistsException;
-import com.example.eventmanagerbackend.infrastructure.exceptions.UserNameStringFirstException;
-import com.example.eventmanagerbackend.infrastructure.exceptions.UserNotFoundException;
+import com.example.eventmanagerbackend.infrastructure.exceptions.*;
 import com.example.eventmanagerbackend.infrastructure.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public User createUser(UserRequestDTO user) {
         if(!validateUserName(user.userName())) {
@@ -42,8 +37,15 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUser(Authentication authentication) {
-        return userRepository.findByUserName(authentication.getName()).orElseThrow(UserNotFoundException::new);
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UserNotAuthenticatedException("Usuário não autorizado.");
+        }
+
+        return userRepository.findByUserName(authentication.getName())
+                .orElseThrow(UserNotFoundException::new);
     }
 
     private User parseUser(UserRequestDTO user) {

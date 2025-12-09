@@ -2,7 +2,9 @@
   <button mat-icon-button (click)="toggleSidebar()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>Gerenciador de Recepções</span>
+  <span>
+    Gerenciador de Recepções
+  </span>
 </mat-toolbar>
 
 <div class="sidebar" [class.sidebar-open]="isSidebarOpen">
@@ -27,21 +29,27 @@
         </a>
       </li>
       <li>
-        <a routerLink="/party-registration" routerLinkActive="active">
-          <mat-icon class="icon" fontIcon="add_ad"></mat-icon>
-          Adicionar Festa
-        </a>
-      </li>
-      <li>
         <a routerLink="/event-components" routerLinkActive="active">
           <mat-icon class="icon" fontIcon="group"></mat-icon>
           Cadastro Equipe e Materiais
         </a>
       </li>
       <li>
-        <a routerLink="/party-all-list" routerLinkActive="active">
+        <a routerLink="/party-registration" routerLinkActive="active">
+          <mat-icon class="icon" fontIcon="add_ad"></mat-icon>
+          Adicionar Festa
+        </a>
+      </li>
+      <li>
+        <a routerLink="/party-list" routerLinkActive="active">
           <mat-icon class="icon" fontIcon="work"></mat-icon>
           Festas
+        </a>
+      </li>
+      <li>
+        <a routerLink="/calendar" routerLinkActive="active">
+          <mat-icon class="icon" fontIcon="event"></mat-icon>
+          Calendário
         </a>
       </li>
       <li>

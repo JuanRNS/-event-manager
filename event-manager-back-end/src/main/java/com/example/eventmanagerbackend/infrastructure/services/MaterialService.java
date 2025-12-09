@@ -7,42 +7,43 @@ import com.example.eventmanagerbackend.domain.entities.User;
 import com.example.eventmanagerbackend.infrastructure.exceptions.MaterialNotFoundException;
 import com.example.eventmanagerbackend.infrastructure.mappers.MaterialMapper;
 import com.example.eventmanagerbackend.infrastructure.repositories.MaterialRepository;
-import org.springframework.security.core.Authentication;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MaterialService {
 
     private final MaterialRepository materialRepository;
     private final MaterialMapper materialMapper;
     private final UserService userService;
 
-    public MaterialService(MaterialRepository materialRepository, MaterialMapper materialMapper, UserService userService) {
-        this.materialRepository = materialRepository;
-        this.materialMapper = materialMapper;
-        this.userService = userService;
-    }
-
-    public List<MaterialResponseDTO> getAllMaterials(Authentication authentication) {
-        User user = userService.getUser(authentication);
+    public List<MaterialResponseDTO> getAllMaterials() {
+        User user = userService.getCurrentUser();
         return materialRepository
                 .findAllByUser(user)
                 .stream().map(materialMapper::toMaterialResponseDTO)
                 .toList();
     }
 
-    public MaterialResponseDTO getMaterialById(Long id) {
-        Material material = materialRepository.findById(id).orElseThrow(MaterialNotFoundException::new);
+    public MaterialResponseDTO getMaterialDTOById(Long id) {
+        User user = userService.getCurrentUser();
+        Material material = materialRepository.findByIdAndUser(id, user);
         return materialMapper.toMaterialResponseDTO(material);
     }
 
-    public MaterialResponseDTO createMaterial(Authentication authentication, MaterialRequestDTO material) {
+    public Material getMaterialById(Long id) {
+        User user = userService.getCurrentUser();
+        return materialRepository.findByIdAndUser(id,user);
+    }
+
+    public MaterialResponseDTO createMaterial(MaterialRequestDTO material) {
         if (material == null) {
             throw new MaterialNotFoundException();
         }
-        User user = userService. getUser(authentication);
+        User user = userService. getCurrentUser();
         Material newMaterial = new Material();
         newMaterial.setUser(user);
         newMaterial.setDescription(material.description());
